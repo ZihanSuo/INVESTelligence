@@ -197,7 +197,7 @@ if os.path.exists(words_file):
             width=500,
             height=300,
             background_color="white",
-            colormap="Pastel1"
+            colormap="Pastel1",
             max_words=50
         ).generate_from_frequencies(freq_dict)
 

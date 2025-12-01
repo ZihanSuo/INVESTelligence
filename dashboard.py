@@ -98,9 +98,67 @@ if os.path.exists(scores_file):
 else:
     st.warning("scores.csv not found.")
 
+# ============================
+# PART B — Sentiment Distribution (100% stacked bar)
+# ============================
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+sentiment_file = os.path.join(latest_folder, "sentiment_dist.csv")
+
+if os.path.exists(sentiment_file):
+    st.header("📊 Sentiment Distribution by Keyword (100% Stacked)")
+
+    df_sent = pd.read_csv(sentiment_file)
+
+    required_cols = [
+        "keyword",
+        "pct_strong_neg", "pct_weak_neg",
+        "pct_neutral",
+        "pct_weak_pos", "pct_strong_pos"
+    ]
+    for col in required_cols:
+        if col not in df_sent.columns:
+            st.error(f"Missing column: {col}")
+            st.stop()
+
+    df_plot = df_sent.copy()
+    df_plot = df_plot.sort_values("keyword")
+
+    categories = [
+        "pct_strong_neg", "pct_weak_neg",
+        "pct_neutral",
+        "pct_weak_pos", "pct_strong_pos"
+    ]
+
+    x = np.arange(len(df_plot["keyword"]))
+    bottom = np.zeros(len(df_plot))
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    # Plot layers
+    for cat in categories:
+        values = df_plot[cat].astype(float)
+        ax.bar(x, values, bottom=bottom, label=cat)
+        bottom += values
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(df_plot["keyword"], rotation=30, ha="right")
+    ax.set_ylabel("Percentage")
+    ax.set_title("Sentiment Distribution Across Keywords (100% scaled)")
+
+    ax.legend(loc="upper right", fontsize=8)
+
+    st.pyplot(fig)
+
+else:
+    st.warning("sentiment_dist.csv not found.")
+
+
 
 # ============================
-# PART B — WORD CLOUD (2 per row with captions)
+# PART C — WORD CLOUD (2 per row with captions)
 # ============================
 
 from wordcloud import WordCloud

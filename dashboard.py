@@ -3,11 +3,11 @@ import pandas as pd
 import os
 import plotly.express as px
 
-# --- 1. Page Setup ---
+# Page Setup 
 st.set_page_config(page_title="INVESTelligence", layout="wide")
 st.title("📊 INVESTelligence Dashboard")
 
-# --- 2. Find Latest Data ---
+# Find Latest Data
 current_dir = os.path.dirname(os.path.abspath(__file__))
 data_root = os.path.join(current_dir, 'data')
 
@@ -81,7 +81,7 @@ def plot_mixed_scatter(df_scores):
 
 
 
-# --- Load scores.csv and display section ---
+# Load scores.csv and display section
 if os.path.exists(scores_file):
     df_scores = pd.read_csv(scores_file)
 
@@ -99,10 +99,10 @@ else:
     st.warning("scores.csv not found.")
 
 
+# ============================
+# PART B — WORD CLOUD (2 per row with captions)
+# ============================
 
-# ============================
-# PART B — WORD CLOUD
-# ============================
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
@@ -110,35 +110,43 @@ if os.path.exists(words_file):
     st.header("☁️ Word Cloud")
 
     df_words = pd.read_csv(words_file)
+    required_cols = ["keyword", "word", "count"]
+    for col in required_cols:
+        if col not in df_words.columns:
+            st.error(f"Missing column: {col}")
+            st.stop()
 
-    if df_words.empty:
-        st.warning("word_count.csv is empty.")
-    else:
-        required_cols = ["keyword", "word", "count"]
-        for col in required_cols:
-            if col not in df_words.columns:
-                st.error(f"Missing column: {col}")
-                st.stop()
+    keywords = df_words["keyword"].unique().tolist()
 
-        keywords = df_words["keyword"].unique().tolist()
-        selected_keyword = st.selectbox("Select keyword:", keywords)
-
-        df_kw = df_words[df_words["keyword"] == selected_keyword]
+    # Build wordclouds for each keyword
+    wc_images = []
+    for kw in keywords:
+        df_kw = df_words[df_words["keyword"] == kw]
         freq_dict = dict(zip(df_kw["word"], df_kw["count"]))
 
         wc = WordCloud(
-            width=800,
-            height=400,
+            width=500,
+            height=300,
             background_color="white",
-            max_words=200
+            max_words=150
         ).generate_from_frequencies(freq_dict)
 
-        fig, ax = plt.subplots(figsize=(12, 6))
+        fig, ax = plt.subplots(figsize=(5, 3))
         ax.imshow(wc, interpolation="bilinear")
         ax.axis("off")
-        st.pyplot(fig)
 
-        with st.expander("Word frequency table"):
-            st.dataframe(df_kw.sort_values("count", ascending=False))
+        wc_images.append((kw, fig))
+
+    # Display 3 per row
+    for i in range(0, len(wc_images), 3):
+        cols = st.columns(2)
+
+        for j in range(2):
+            if i + j < len(wc_images):
+                kw, fig = wc_images[i + j]
+                with cols[j]:
+                    st.pyplot(fig)
+                    st.markdown(f"<div style='text-align:center; color:#555;'>{kw}</div>", unsafe_allow_html=True)
+
 else:
     st.warning("word_count.csv not found.")

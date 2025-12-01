@@ -115,7 +115,7 @@ if os.path.exists(sentiment_file):
     required_cols = [
         "keyword",
         "strong_neg", "weak_neg",
-        "pct_neutral",
+        "neutral",
         "weak_pos", "strong_pos"
     ]
     for col in required_cols:

@@ -114,9 +114,9 @@ if os.path.exists(sentiment_file):
 
     required_cols = [
         "keyword",
-        "pct_strong_neg", "pct_weak_neg",
+        "strong_neg", "weak_neg",
         "pct_neutral",
-        "pct_weak_pos", "pct_strong_pos"
+        "weak_pos", "strong_pos"
     ]
     for col in required_cols:
         if col not in df_sent.columns:
@@ -127,9 +127,9 @@ if os.path.exists(sentiment_file):
     df_plot = df_plot.sort_values("keyword")
 
     categories = [
-        "pct_strong_neg", "pct_weak_neg",
-        "pct_neutral",
-        "pct_weak_pos", "pct_strong_pos"
+        "strong_neg", "weak_neg",
+        "neutral",
+        "weak_pos", "strong_pos"
     ]
 
     x = np.arange(len(df_plot["keyword"]))
@@ -146,7 +146,7 @@ if os.path.exists(sentiment_file):
     ax.set_xticks(x)
     ax.set_xticklabels(df_plot["keyword"], rotation=30, ha="right")
     ax.set_ylabel("Percentage")
-    ax.set_title("Sentiment Distribution Across Keywords (100% scaled)")
+    ax.set_title("Sentiment Distribution Across Keywords")
 
     ax.legend(loc="upper right", fontsize=8)
 

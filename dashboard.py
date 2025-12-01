@@ -109,7 +109,21 @@ def plot_mixed_scatter(df_scores):
 df_scores = None
 if os.path.exists(scores_file):
     df_scores = pd.read_csv(scores_file)
-    fig_a = plot_mixed_scatter(df_scores)
+
+    # ------------------------------
+    # FILTER INSERTED HERE (Part A)
+    # ------------------------------
+    keywords_available = sorted(df_scores["keyword"].unique())
+    selected_keywords_a = st.multiselect(
+        "Filter keywords for Scatter Plot",
+        options=keywords_available,
+        default=keywords_available,
+        key="filter_scatter"
+    )
+    df_scores_filtered_a = df_scores[df_scores["keyword"].isin(selected_keywords_a)]
+
+    fig_a = plot_mixed_scatter(df_scores_filtered_a)
+
 else:
     st.error("scores.csv not found.")
     st.stop()
@@ -141,17 +155,28 @@ if os.path.exists(sentiment_file):
 else:
     st.warning("sentiment_statistics.csv not found.")
 
-
 # ====================================================
 # Prepare PART C — Density Heatmap
 # ====================================================
 df_density = df_scores.dropna(subset=["final_score", "sentiment_score"])
 
+# ------------------------------
+# FILTER INSERTED HERE (Part C)
+# ------------------------------
+keywords_density = sorted(df_density["keyword"].unique())
+selected_keywords_c = st.multiselect(
+    "Filter keywords for Density Heatmap",
+    options=keywords_density,
+    default=keywords_density,
+    key="filter_density"
+)
+df_density_filtered = df_density[df_density["keyword"].isin(selected_keywords_c)]
+
 fig_c = px.density_heatmap(
-    df_density,
+    df_density_filtered,
     x="final_score",
     y="sentiment_score",
-    facet_col="keyword" if df_density["keyword"].nunique() > 1 else None,
+    facet_col="keyword" if df_density_filtered["keyword"].nunique() > 1 else None,
     nbinsx=20,
     nbinsy=20,
     color_continuous_scale="Pinkyl",
@@ -162,7 +187,6 @@ fig_c.update_layout(
     yaxis_title="Sentiment Score",
     coloraxis_colorbar_title="Density",
 )
-
 
 # ====================================================
 # Prepare PART D — Word Clouds

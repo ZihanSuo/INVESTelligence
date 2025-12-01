@@ -1,11 +1,22 @@
 import streamlit as st
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 import plotly.express as px
 
 # Page Setup 
 st.set_page_config(page_title="INVESTelligence", layout="wide")
 st.title("📊 INVESTelligence Dashboard")
+
+
+PASTEL_COLORS = [
+    "#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9", "#BAE1FF",  # red–yellow–green–blue soft
+    "#FF9AA2", "#FFB7B2", "#FFDAC1", "#E2F0CB", "#B5EAD7", "#C7CEEA",  # classic pastel
+    "#F4B6C2", "#F6E2B3", "#C7D8C6", "#D5E1DF", "#E4C1F9",  # purple variants
+    "#F1C0E8", "#FDE2E4", "#FAD2E1", "#D8E2DC", "#ECE4DB",  # elegant earth pastels
+]
+
+plt.rcParams["axes.prop_cycle"] = plt.cycler(color=PASTEL_COLORS)
 
 # Find Latest Data
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -186,7 +197,8 @@ if os.path.exists(words_file):
             width=500,
             height=300,
             background_color="white",
-            max_words=150
+            colormap="Pastel1"
+            max_words=50
         ).generate_from_frequencies(freq_dict)
 
         fig, ax = plt.subplots(figsize=(5, 3))

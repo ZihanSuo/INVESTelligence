@@ -139,9 +139,9 @@ if os.path.exists(words_file):
 
     # Display 3 per row
     for i in range(0, len(wc_images), 3):
-        cols = st.columns(2)
+        cols = st.columns(3)
 
-        for j in range(2):
+        for j in range(3):
             if i + j < len(wc_images):
                 kw, fig = wc_images[i + j]
                 with cols[j]:

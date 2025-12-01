@@ -36,21 +36,19 @@ words_file = os.path.join(latest_folder, 'word_count.csv')
 # ============================================================
 
 def plot_mixed_scatter(df_scores):
-    # 必须包含这些列
+
     required_cols = ['keyword', 'title', 'final_score', 'sentiment_score', 'url']
     for col in required_cols:
         if col not in df_scores.columns:
             st.error(f"Missing column in scores.csv: {col}")
             return None
 
-    # 为每个 keyword 选 top10（按 final_score）
     df_top10 = (
         df_scores.sort_values("final_score", ascending=False)
         .groupby("keyword")
         .head(10)
     )
 
-    # hover 文本
     df_top10["hover_text"] = (
         "<b>" + df_top10["title"] + "</b><br>" +
         "Final Score: " + df_top10["final_score"].astype(str) + "<br>" +
@@ -90,7 +88,6 @@ if os.path.exists(scores_file):
     st.header("📌 Article Score Insights")
     st.write(f"Total Articles: **{len(df_scores)}**")
 
-    # 绘制散点图
     fig = plot_mixed_scatter(df_scores)
     if fig:
         st.plotly_chart(fig, use_container_width=True)
@@ -103,15 +100,45 @@ else:
 
 
 
-# ============================================================
-#   PART B — WORD COUNT QUICK VIEW
-# ============================================================
+# ============================
+# PART B — WORD CLOUD
+# ============================
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
 if os.path.exists(words_file):
-    st.header("🔤 Word Frequency Table")
+    st.header("☁️ Word Cloud")
+
     df_words = pd.read_csv(words_file)
 
-    if not df_words.empty:
-        st.dataframe(df_words)
+    if df_words.empty:
+        st.warning("word_count.csv is empty.")
+    else:
+        required_cols = ["keyword", "word", "count"]
+        for col in required_cols:
+            if col not in df_words.columns:
+                st.error(f"Missing column: {col}")
+                st.stop()
 
+        keywords = df_words["keyword"].unique().tolist()
+        selected_keyword = st.selectbox("Select keyword:", keywords)
+
+        df_kw = df_words[df_words["keyword"] == selected_keyword]
+        freq_dict = dict(zip(df_kw["word"], df_kw["count"]))
+
+        wc = WordCloud(
+            width=800,
+            height=400,
+            background_color="white",
+            max_words=200
+        ).generate_from_frequencies(freq_dict)
+
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.imshow(wc, interpolation="bilinear")
+        ax.axis("off")
+        st.pyplot(fig)
+
+        with st.expander("Word frequency table"):
+            st.dataframe(df_kw.sort_values("count", ascending=False))
 else:
     st.warning("word_count.csv not found.")

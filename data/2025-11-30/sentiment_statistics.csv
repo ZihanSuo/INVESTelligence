@@ -1,2 +1,5 @@
-keyword,strong_neg,weak_neg,neutral,weak_pos,strong_pos
-rare earth,20,20,0,20,40
+[
+  {
+    "csv_content": "keyword,strong_neg,weak_neg,neutral,weak_pos,strong_pos\nrare earth,7.14,7.14,14.29,0,71.43\n"
+  }
+]

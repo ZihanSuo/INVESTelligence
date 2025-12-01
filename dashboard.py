@@ -74,6 +74,7 @@ def plot_mixed_scatter(df_scores):
         color="keyword",
         hover_name="title",
         custom_data=["hover_text"],
+        color_discrete_sequence=PASTEL_COLORS,
         size_max=12,
         opacity=0.85,
         height=600

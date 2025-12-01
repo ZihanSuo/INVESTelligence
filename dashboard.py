@@ -105,7 +105,7 @@ else:
 import matplotlib.pyplot as plt
 import numpy as np
 
-sentiment_file = os.path.join(latest_folder, "sentiment_dist.csv")
+sentiment_file = os.path.join(latest_folder, "sentiment_statistics.csv")
 
 if os.path.exists(sentiment_file):
     st.header("📊 Sentiment Distribution by Keyword (100% Stacked)")

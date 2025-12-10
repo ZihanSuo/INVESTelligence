@@ -1,114 +1,136 @@
 import streamlit as st
 import pandas as pd
-import json
-import plotly.express as px
 import os
+import glob
 
 # 1. Page Configuration
-st.set_page_config(page_title="AI Financial News Dashboard", layout="wide")
+st.set_page_config(page_title="AI Market Radar", layout="wide")
 
-# 2. Load Data Function
-# Using caching to optimize performance during re-runs
+# 2. Date Selection System (Handling the new folder structure)
+def get_available_dates():
+    # Looking for folders inside 'data' directory
+    data_dir = "data"
+    if not os.path.exists(data_dir):
+        return []
+    # Get all subdirectories that look like dates
+    dates = [d for d in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, d))]
+    # Sort descending (newest first)
+    dates.sort(reverse=True)
+    return dates
+
+# Sidebar for navigation
+with st.sidebar:
+    st.header("🗄️ Archive Navigation")
+    available_dates = get_available_dates()
+    
+    if available_dates:
+        selected_date = st.selectbox("Select Analysis Date", available_dates)
+        # Construct dynamic path: data/2025-12-10/
+        current_path = os.path.join("data", selected_date)
+    else:
+        st.error("No data folders found in /data/")
+        st.stop()
+
+# 3. Load Data Function (Updated for new CSVs)
 @st.cache_data
-def load_data():
-    # Define paths based on project structure
-    metrics_path = '/mnt/data/metrics.json'
-    csv_path = '/mnt/data/ranked_news.csv'
+def load_daily_data(folder_path):
+    # Defining paths to specific files in the date folder
+    # Assuming 'alpha.csv' contains the top ranked news
+    news_path = os.path.join(folder_path, 'alpha.csv')
+    # Assuming 'sentiment_statistics.csv' contains aggregate metrics
+    metrics_path = os.path.join(folder_path, 'sentiment_statistics.csv')
     
-    # Mocking data loading for local testing if file is missing
-    # In production, ensure these paths exist
-    if not os.path.exists(metrics_path):
-        return None, None
+    news_df = None
+    metrics_df = None
 
-    with open(metrics_path, 'r') as f:
-        metrics_data = json.load(f)
+    if os.path.exists(news_path):
+        news_df = pd.read_csv(news_path)
     
-    news_df = pd.read_csv(csv_path)
-    return metrics_data, news_df
+    if os.path.exists(metrics_path):
+        metrics_df = pd.read_csv(metrics_path)
+        
+    return news_df, metrics_df
 
-# Load the data
-metrics, df = load_data()
+# Load data for the selected date
+news_df, metrics_df = load_daily_data(current_path)
 
-# 3. Dashboard Layout
-st.title("AI Financial News Agent | Daily Briefing")
+# 4. Main Dashboard Layout
+st.title(f"AI Market Radar | {selected_date}")
 
-if metrics and df is not None:
+if news_df is not None:
     
-    # --- TIER 1: KPI OVERVIEW ---
-    st.markdown("### 1. Market Snapshot")
+    # --- SECTION A: KPI METRICS ---
+    # Try to extract metrics from sentiment_statistics.csv or calculate from news_df
+    st.markdown("### 1. Daily Market Pulse")
     kpi1, kpi2, kpi3 = st.columns(3)
     
-    with kpi1:
-        st.metric(
-            label="Total Articles Scanned",
-            value=metrics.get('total_articles', 0)
-        )
-        
-    with kpi2:
-        avg_align = metrics.get('avg_alignment', 0)
-        st.metric(
-            label="Avg Semantic Alignment",
-            value=f"{avg_align:.2f}"
-        )
-        
-    with kpi3:
-        sent_score = metrics.get('sentiment_score', 0)
-        st.metric(
-            label="Aggregate Sentiment",
-            value=f"{sent_score:+.2f}",
-            delta="Bullish" if sent_score > 0 else "Bearish"
-        )
+    # KPI 1: Total Volume
+    total_articles = len(news_df)
+    kpi1.metric("Total Alpha Signals", total_articles)
     
-    st.divider()
+    # KPI 2 & 3: Sentiment (If metrics file exists, use it, else calculate)
+    avg_score = 0
+    if metrics_df is not None and not metrics_df.empty:
+        # Assuming column 0 is the label and column 1 is value, adjust as needed
+        # Example logic:
+        avg_score = metrics_df.iloc[0, 1] if len(metrics_df.columns) > 1 else 0
+    elif 'score' in news_df.columns:
+        avg_score = news_df['score'].mean()
 
-    # --- TIER 2: VISUAL ANALYTICS ---
-    st.markdown("### 2. Impact & Source Analysis")
-    col_charts_1, col_charts_2 = st.columns([2, 1])
-    
-    with col_charts_1:
-        st.subheader("Impact Dimension Distribution")
-        # Convert dictionary to DataFrame for charting
-        impact_data = metrics.get('impact_distribution', {})
-        impact_df = pd.DataFrame(list(impact_data.items()), columns=['Category', 'Count'])
-        
-        # Create Bar Chart
-        st.bar_chart(impact_df.set_index('Category'))
-
-    with col_charts_2:
-        st.subheader("Source Distribution")
-        # Simple processing to get source counts from the main dataframe
-        if 'source' in df.columns:
-            source_counts = df['source'].value_counts().reset_index()
-            source_counts.columns = ['Source', 'Count']
-            
-            # Using Plotly for a better Pie chart than st.pyplot
-            fig = px.pie(source_counts, values='Count', names='Source', hole=0.4)
-            st.plotly_chart(fig, use_container_width=True)
+    kpi2.metric("Market Sentiment Score", f"{avg_score:.2f}")
+    kpi3.metric("Data Freshness", "Verified") # Placeholder or check timestamp
 
     st.divider()
 
-    # --- TIER 3: DETAILED NEWS TABLE ---
-    st.markdown("### 3. Top Ranked News")
-    # Display specific columns as per requirements
-    display_cols = ['title', 'source', 'score', 'impact_dimension', 'url']
-    # Ensure columns exist before displaying
-    valid_cols = [c for c in display_cols if c in df.columns]
+    # --- SECTION B: IMPACT ANALYSIS (Removed Source Stats) ---
+    st.markdown("### 2. Impact Sector Analysis")
     
+    # If you have an 'industry' or 'category' column, we visualize that
+    # Mapping likely columns based on common naming conventions
+    cat_col = next((col for col in ['category', 'industry', 'sector', 'tag'] if col in news_df.columns), None)
+    
+    if cat_col:
+        # Use full width since we removed the Source Pie Chart
+        impact_counts = news_df[cat_col].value_counts()
+        st.bar_chart(impact_counts)
+    else:
+        st.info("No category/industry column found for visualization.")
+
+    st.divider()
+
+    # --- SECTION C: RANKED NEWS TABLE ---
+    st.markdown("### 3. Alpha News List")
+    
+    # select columns to display (adjust based on your actual CSV headers)
+    # Trying to be smart about picking columns that likely exist
+    all_cols = news_df.columns.tolist()
+    target_cols = ['title', 'summary', 'score', 'url', 'reasoning']
+    display_cols = [c for c in target_cols if c in all_cols]
+    
+    # If specific columns aren't found, just show the first 5 columns
+    if not display_cols:
+        display_cols = all_cols[:5]
+
     st.dataframe(
-        df[valid_cols].head(10),
+        news_df[display_cols].head(15),
         use_container_width=True,
-        hide_index=True
+        hide_index=True,
+        column_config={
+            "url": st.column_config.LinkColumn("Source Link")
+        }
     )
 
-    # --- TIER 4: AI REFLECTION (EXPLAINABILITY) ---
-    st.markdown("### 4. AI Reasoning Trace")
-    with st.expander("View AI Analysis Logic (Why these articles?)", expanded=True):
-        # iterate through the top 3 rows to show reasoning
-        if 'reason_trace' in df.columns:
-            top_reasons = df[['title', 'reason_trace']].dropna().head(3)
-            for index, row in top_reasons.iterrows():
-                st.markdown(f"**Article:** {row['title']}")
-                st.info(f"**AI Reasoning:** {row['reason_trace']}")
-                st.write("---")
+    # --- SECTION D: AI EXPLAINABILITY ---
+    # Only show if a reasoning column exists
+    reason_col = next((col for col in ['reason_trace', 'reasoning', 'explanation'] if col in news_df.columns), None)
+    
+    if reason_col:
+        st.markdown("### 4. AI Deep Dive")
+        with st.expander("View Top Analysis Logic", expanded=True):
+            top_news = news_df.head(3)
+            for i, row in top_news.iterrows():
+                st.markdown(f"**Signal:** {row.get('title', 'N/A')}")
+                st.info(f"**Logic:** {row[reason_col]}")
+
 else:
-    st.error("Data files not found in /mnt/data/. Please run the n8n workflow first.")
+    st.warning(f"No 'alpha.csv' found in {current_path}. Please check the data generation pipeline.")

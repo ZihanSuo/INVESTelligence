@@ -1,127 +1,114 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
+import json
+import plotly.express as px
+import os
 
-# ==========================================
-# 1. 页面配置 (必须是第一行)
-# ==========================================
-st.set_page_config(
-    page_title="Market Radar - INVESTelligence",
-    page_icon="🚀",
-    layout="wide", # 关键：开启宽屏
-    initial_sidebar_state="expanded"
-)
+# 1. Page Configuration
+st.set_page_config(page_title="AI Financial News Dashboard", layout="wide")
 
-# ==========================================
-# 2. 审美调整 (CSS 注入)
-# ==========================================
-# 这里我们微调一下顶部边距，让数据尽可能靠上，利用好屏幕空间
-st.markdown("""
-<style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-    /* 让指标卡片有点立体感 */
-    div[data-testid="metric-container"] {
-        background-color: #f9f9f9;
-        border: 1px solid #e6e6e6;
-        padding: 10px;
-        border-radius: 5px;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# ==========================================
-# 3. 数据加载逻辑 (Data Pipeline)
-# ==========================================
-
-# 🔴 开关：True = 使用假数据测试排版; False = 从 GitHub 读取
-USE_MOCK_DATA = True 
-
+# 2. Load Data Function
+# Using caching to optimize performance during re-runs
 @st.cache_data
-def load_data_from_github(date_str):
-    """
-    实际逻辑：从 GitHub 读取 CSV
-    """
-    if USE_MOCK_DATA:
-        return generate_mock_data(date_str)
-        
-    # TODO: 替换为你的真实 GitHub Raw URL
-    # url = f"https://raw.githubusercontent.com/ZihanSuo/INVESTelligence/main/data/{date_str}/alpha.csv"
-    # try:
-    #     return pd.read_csv(url)
-    # except:
-    #     return None
-    return None
-
-def generate_mock_data(date_str):
-    """生成用于测试的假数据，包含 5 个核心资产"""
-    np.random.seed(int(date_str.replace("-", ""))) # 保证同一天生成的假数据一样
+def load_data():
+    # Define paths based on project structure
+    metrics_path = '/mnt/data/metrics.json'
+    csv_path = '/mnt/data/ranked_news.csv'
     
-    keywords = ["Bitcoin", "Tesla", "Nvidia", "Rare Earth", "Gold"]
-    data = []
-    for k in keywords:
-        data.append({
-            "keyword": k,
-            "title": f"{k} market update for {date_str}",
-            "url": "https://google.com",
-            # 生成一些随机分值
-            "source_credibility": np.random.uniform(0.4, 1.0),
-            "materiality_score": np.random.uniform(0.3, 0.9),
-            "sentiment_score": np.random.uniform(-1.0, 1.0),
-            "pickup_count": np.random.randint(10, 100),
-            "final_score": np.random.randint(50, 95)
-        })
-    return pd.DataFrame(data)
+    # Mocking data loading for local testing if file is missing
+    # In production, ensure these paths exist
+    if not os.path.exists(metrics_path):
+        return None, None
 
-# ==========================================
-# 4. 侧边栏控制区
-# ==========================================
-with st.sidebar:
-    st.header("🎛️ 这里的控制台")
-    # 默认选今天
-    selected_date = st.date_input("选择日期", datetime.now())
+    with open(metrics_path, 'r') as f:
+        metrics_data = json.load(f)
+    
+    news_df = pd.read_csv(csv_path)
+    return metrics_data, news_df
+
+# Load the data
+metrics, df = load_data()
+
+# 3. Dashboard Layout
+st.title("AI Financial News Agent | Daily Briefing")
+
+if metrics and df is not None:
+    
+    # --- TIER 1: KPI OVERVIEW ---
+    st.markdown("### 1. Market Snapshot")
+    kpi1, kpi2, kpi3 = st.columns(3)
+    
+    with kpi1:
+        st.metric(
+            label="Total Articles Scanned",
+            value=metrics.get('total_articles', 0)
+        )
+        
+    with kpi2:
+        avg_align = metrics.get('avg_alignment', 0)
+        st.metric(
+            label="Avg Semantic Alignment",
+            value=f"{avg_align:.2f}"
+        )
+        
+    with kpi3:
+        sent_score = metrics.get('sentiment_score', 0)
+        st.metric(
+            label="Aggregate Sentiment",
+            value=f"{sent_score:+.2f}",
+            delta="Bullish" if sent_score > 0 else "Bearish"
+        )
     
     st.divider()
-    st.caption(f"Backend Status: {'🟢 Mock Mode' if USE_MOCK_DATA else '🟠 Live GitHub'}")
 
-# ==========================================
-# 5. 核心逻辑：加载今日 vs 昨日数据
-# ==========================================
-date_today_str = selected_date.strftime("%Y-%m-%d")
-date_yesterday_str = (selected_date - timedelta(days=1)).strftime("%Y-%m-%d")
+    # --- TIER 2: VISUAL ANALYTICS ---
+    st.markdown("### 2. Impact & Source Analysis")
+    col_charts_1, col_charts_2 = st.columns([2, 1])
+    
+    with col_charts_1:
+        st.subheader("Impact Dimension Distribution")
+        # Convert dictionary to DataFrame for charting
+        impact_data = metrics.get('impact_distribution', {})
+        impact_df = pd.DataFrame(list(impact_data.items()), columns=['Category', 'Count'])
+        
+        # Create Bar Chart
+        st.bar_chart(impact_df.set_index('Category'))
 
-# 加载数据
-current_df = load_data_from_github(date_today_str)
-prev_df = load_data_from_github(date_yesterday_str)
+    with col_charts_2:
+        st.subheader("Source Distribution")
+        # Simple processing to get source counts from the main dataframe
+        if 'source' in df.columns:
+            source_counts = df['source'].value_counts().reset_index()
+            source_counts.columns = ['Source', 'Count']
+            
+            # Using Plotly for a better Pie chart than st.pyplot
+            fig = px.pie(source_counts, values='Count', names='Source', hole=0.4)
+            st.plotly_chart(fig, use_container_width=True)
 
-# ==========================================
-# 6. 页面头部渲染 (方案 B：终端风格)
-# ==========================================
-col_header_1, col_header_2 = st.columns([3, 1])
+    st.divider()
 
-with col_header_1:
-    st.title(f"🚀 Market Radar")
-    st.caption(f"Intelligent Financial Surveillance System | Date: {date_today_str}")
+    # --- TIER 3: DETAILED NEWS TABLE ---
+    st.markdown("### 3. Top Ranked News")
+    # Display specific columns as per requirements
+    display_cols = ['title', 'source', 'score', 'impact_dimension', 'url']
+    # Ensure columns exist before displaying
+    valid_cols = [c for c in display_cols if c in df.columns]
+    
+    st.dataframe(
+        df[valid_cols].head(10),
+        use_container_width=True,
+        hide_index=True
+    )
 
-with col_header_2:
-    # 右上角显示数据状态
-    if current_df is not None and not current_df.empty:
-        st.success(f"✅ Data Synced ({len(current_df)} assets)")
-    else:
-        st.error("❌ No Data Found")
-
-st.markdown("---")
-
-# ==========================================
-# 7. (预留位置) 下一步要做的东西
-# ==========================================
-st.info("🚧 这里的区域即将放置：Step 2 - Sentiment Ticker (Sparklines)")
-st.info("🚧 这里的区域即将放置：Step 3 - Alpha Quadrant Chart")
-
-# 临时展示一下读取到的数据，方便调试
-if current_df is not None:
-    with st.expander("🔍 调试：查看原始数据 (Raw Data)"):
-        st.dataframe(current_df)
+    # --- TIER 4: AI REFLECTION (EXPLAINABILITY) ---
+    st.markdown("### 4. AI Reasoning Trace")
+    with st.expander("View AI Analysis Logic (Why these articles?)", expanded=True):
+        # iterate through the top 3 rows to show reasoning
+        if 'reason_trace' in df.columns:
+            top_reasons = df[['title', 'reason_trace']].dropna().head(3)
+            for index, row in top_reasons.iterrows():
+                st.markdown(f"**Article:** {row['title']}")
+                st.info(f"**AI Reasoning:** {row['reason_trace']}")
+                st.write("---")
+else:
+    st.error("Data files not found in /mnt/data/. Please run the n8n workflow first.")

@@ -106,7 +106,7 @@ with col1:
         <div class="icon-box">🚀</div>
         <div class="card-title">Market Radar</div>
         <div class="card-text">
-            <strong>The Daily Alpha.</strong><br>
+            <strong>The Daily Visualization.</strong><br>
             Visualize market sentiment, spot anomalies, and identify high-materiality events using the Alpha Quadrant.
         </div>
     </div>
@@ -154,4 +154,4 @@ with col4:
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 # Footer
-st.info("👈 **Action Required: Please verify the data connection in the 'Market Radar' page.**")
+st.info("Zihan Suo, Dec 2025**")

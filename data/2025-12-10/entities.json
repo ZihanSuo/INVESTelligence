@@ -1,0 +1,58 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "This bank just halved its bitcoin price target down from $200,000. Here’s why. - MarketWatch",
+        "url": "https://www.marketwatch.com/story/standard-chartered-is-finally-slashing-its-bitcoin-target-by-half-heres-why-3e7c726b",
+        "entities": [
+          "Standard Chartered",
+          "Digital Assets",
+          "Cryptocurrency",
+          "Geoff Kendrick",
+          "Price Targets"
+        ],
+        "score": 70.92,
+        "sentiment": -0.3
+      },
+      {
+        "title": "One of bitcoin's biggest bulls just slashed their forecast in half - Business Insider",
+        "url": "https://www.businessinsider.com/bitcoin-price-prediction-btc-2026-forecast-standard-chartered-150k-2025-12",
+        "entities": [
+          "Bear Market",
+          "Bitcoin Treasuries",
+          "Standard Chartered",
+          "ETF Buying"
+        ],
+        "score": 70.28,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Kazakhmys says it will have new controlling shareholder - Mining.com",
+        "url": "https://www.mining.com/web/kazakhmys-says-it-will-have-new-controlling-shareholder/",
+        "entities": [
+          "Kazakhmys",
+          "Kazakh Copper",
+          "Share Purchase Agreement",
+          "Mining Sector",
+          "Shareholder"
+        ],
+        "score": 48,
+        "sentiment": 0
+      },
+      {
+        "title": "Comparative evaluation and simulation of blockchain consensus mechanisms for secure and scalable peer to peer energy trading in microgrids - Nature",
+        "url": "https://www.nature.com/articles/s41598-025-27431-w",
+        "entities": [
+          "Consensus Mechanisms",
+          "Peer-to-Peer Networks",
+          "Blockchain",
+          "Energy Trading"
+        ],
+        "score": 53.64,
+        "sentiment": 0.1
+      }
+    ],
+    "node_count": 4
+  }
+]

@@ -1,0 +1,660 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "This bank just halved its bitcoin price target down from $200,000. Here’s why. - MarketWatch",
+        "url": "https://www.marketwatch.com/story/standard-chartered-is-finally-slashing-its-bitcoin-target-by-half-heres-why-3e7c726b",
+        "entities": [
+          "Standard Chartered",
+          "Digital Assets",
+          "Cryptocurrency",
+          "Geoff Kendrick",
+          "Market Forecasts"
+        ],
+        "score": 70.92,
+        "sentiment": -0.2
+      },
+      {
+        "title": "One of bitcoin's biggest bulls just slashed their forecast in half - Business Insider",
+        "url": "https://www.businessinsider.com/bitcoin-price-prediction-btc-2026-forecast-standard-chartered-150k-2025-12",
+        "entities": [
+          "Bear Market",
+          "Bitcoin Treasuries",
+          "Standard Chartered",
+          "ETF Buying"
+        ],
+        "score": 70.28,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Kazakhmys says it will have new controlling shareholder - Mining.com",
+        "url": "https://www.mining.com/web/kazakhmys-says-it-will-have-new-controlling-shareholder/",
+        "entities": [
+          "Kazakhmys",
+          "Copper",
+          "Regulatory Impact",
+          "Mining Sector",
+          "Shareholder Agreement"
+        ],
+        "score": 53,
+        "sentiment": 0
+      },
+      {
+        "title": "Comparative evaluation and simulation of blockchain consensus mechanisms for secure and scalable peer to peer energy trading in microgrids - Nature",
+        "url": "https://www.nature.com/articles/s41598-025-27431-w",
+        "entities": [
+          "Proof of Stake",
+          "Energy Trading",
+          "Proof of Work",
+          "Blockchain Technology"
+        ],
+        "score": 53.64,
+        "sentiment": 0
+      },
+      {
+        "title": "Should You Buy Bitcoin While It's Under $100,000? - The Motley Fool",
+        "url": "https://www.fool.com/investing/2025/12/05/should-you-buy-bitcoin-while-its-under-100000/",
+        "entities": [
+          "Bull Market Cycle",
+          "MicroStrategy",
+          "Halving Event",
+          "Cryptocurrency"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Bitdeer reduces Bitcoin holdings by 148.5 - bloomingbit",
+        "url": "https://bloomingbit.io/en/feed/news/101978",
+        "entities": [
+          "Bitcoin Holdings",
+          "Mining Company",
+          "Cryptocurrency Market",
+          "Bitdeer"
+        ],
+        "score": 50.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Cathedra Bitcoin (OTC:CBTTF) Shares Down 2.2% – Here’s What Happened - Defense World",
+        "url": "https://www.defenseworld.net/2025/12/06/cathedra-bitcoin-otccbttf-shares-down-2-2-heres-what-happened.html",
+        "entities": [
+          "Bitcoin Mining",
+          "Stock Price",
+          "Fortress Technologies",
+          "Cathedra Bitcoin"
+        ],
+        "score": 50.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "American Bitcoin increases holdings by 363 bitcoins, bringing total holdings to 4,367 bitcoins - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605095940",
+        "entities": [
+          "Crypto Fear & Greed Index",
+          "American Bitcoin",
+          "Crypto Mining",
+          "Trump family"
+        ],
+        "score": 50.8,
+        "sentiment": 0
+      },
+      {
+        "title": "Drones, Fake Birdsong, and Broken Glass Traps: Malaysia is Undergoing an Unprecedented \"Bitcoin Crackdown\" - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605099899",
+        "entities": [
+          "Mining Operations",
+          "Malaysia",
+          "Electricity Theft",
+          "Regulatory Crackdown"
+        ],
+        "score": 70.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "‘StableChain’ Launch Shows How Far Crypto Has Strayed From Bitcoin’s Original Promise - Gizmodo",
+        "url": "https://gizmodo.com/stablechain-launch-shows-how-far-crypto-has-strayed-from-bitcoins-original-promise-2000696959",
+        "entities": [
+          "Circle",
+          "Ethereum",
+          "Tether",
+          "USDT",
+          "StableChain",
+          "Stablecoins"
+        ],
+        "score": 55.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Green Blockchain Consensus: Balancing Energy Efficiency, Security, And Decentralization - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/04/green-blockchain-consensus-balancing-energy-efficiency-security-and-decentralization/",
+        "entities": [
+          "Proof-of-Space-and-Time",
+          "Chia",
+          "Proof-of-Work",
+          "Hybrid Models"
+        ],
+        "score": 56.4,
+        "sentiment": 0.1
+      },
+      {
+        "title": "There's no Dow or S&P 500 for cryptocurrencies yet. Bitwise is getting a step closer with new ETF - CNBC",
+        "url": "https://www.cnbc.com/2025/12/09/theres-no-dow-or-sp-500-for-cryptocurrencies-yet-bitwise-is-getting-a-step-closer-with-new-etf.html",
+        "entities": [
+          "Polkadot",
+          "Bitwise 10 Crypto Index ETF",
+          "Retail Investors",
+          "Sui",
+          "Cardano",
+          "Financial Advisors",
+          "Avalanche"
+        ],
+        "score": 66.4,
+        "sentiment": 0.15
+      },
+      {
+        "title": "Is an ETF Safer than an Exchange for Bitcoin? - BeInCrypto",
+        "url": "https://beincrypto.com/etfs-crossfire-bitcoin-self-custody-debate/",
+        "entities": [
+          "ETF",
+          "Institutions",
+          "Self-Custody",
+          "Custodial Trust"
+        ],
+        "score": 50.8,
+        "sentiment": 0.15
+      },
+      {
+        "title": "ETFs in the Crossfire Amid Bitcoin’s Growing Self-Custody Debate - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/etfs-crossfire-amid-bitcoin-growing-215004125.html",
+        "entities": [
+          "ETF",
+          "Adoption",
+          "Self-Custody",
+          "Exchanges"
+        ],
+        "score": 75.6,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Is bitcoin really digital gold? In 2025, the leading crypto has failed to answer that question - CNBC",
+        "url": "https://www.cnbc.com/2025/12/05/bitcoin-digital-gold-crypto-store-of-value.html",
+        "entities": [
+          "Risk Assets",
+          "Gold",
+          "Crypto Index ETFs",
+          "Portfolio Diversification"
+        ],
+        "score": 56.4,
+        "sentiment": -0.2
+      },
+      {
+        "title": "They ‘Bought More’—BlackRock CEO Reveals Sovereign Fund Bitcoin Price Bombshell Alongside A Stark Trump Warning - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/04/faster-than-most-expect-blackrock-ceo-issues-enormous-price-prediction-as-bitcoin-suddenly-soars-toward-2-trillion/",
+        "entities": [
+          "BlackRock",
+          "Tokenization",
+          "Spot Bitcoin ETF",
+          "Sovereign Funds"
+        ],
+        "score": 76.4,
+        "sentiment": 0.4
+      }
+    ],
+    "node_count": 16
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "Ford suppliers receive China’s new streamlined rare earth licences - Mining.com",
+        "url": "https://www.mining.com/web/ford-suppliers-receive-chinas-new-streamlined-rare-earth-licences/",
+        "entities": [
+          "China",
+          "Aerospace",
+          "Ford",
+          "Semiconductors"
+        ],
+        "score": 78,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Trump trade rep changes China soybean purchase timeline, cites 'discrepancy'",
+        "url": "https://www.cnbc.com/2025/12/09/trump-trade-rep-changes-china-soybean-purchase-timeline-cites-discrepancy.html",
+        "entities": [
+          "Agriculture",
+          "Soybeans",
+          "Trade Policy",
+          "China",
+          "Trump"
+        ],
+        "score": 41.4,
+        "sentiment": 0
+      },
+      {
+        "title": "Supply chain diversification away from China is progressing from talks to action, EU chamber says - CNBC",
+        "url": "https://www.cnbc.com/2025/12/10/supply-chain-diversification-away-from-china-is-progressing-from-talks-to-action-eu-chamber-says.html",
+        "entities": [
+          "Trade surplus",
+          "Global demand",
+          "China",
+          "U.S. tariffs",
+          "Supply chain diversification"
+        ],
+        "score": 41.4,
+        "sentiment": 0
+      },
+      {
+        "title": "GE Vernova working with US government to boost stocks of rare earth yttrium - Reuters",
+        "url": "https://www.reuters.com/business/energy/ge-vernova-working-with-us-government-boost-stocks-rare-earth-yttrium-2025-12-10/",
+        "entities": [
+          "GE Vernova",
+          "U.S. Government",
+          "Rare Earths",
+          "Energy Sector",
+          "Yttrium"
+        ],
+        "score": 78.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Critical Metals inks another offtake deal for Tanbreez rare earth concentrate - Mining.com",
+        "url": "https://www.mining.com/critical-metals-inks-another-offtake-deal-for-tanbreez-rare-earth-concentrate/",
+        "entities": [
+          "REalloys",
+          "European Union",
+          "Critical Metals",
+          "Romania",
+          "Tanbreez"
+        ],
+        "score": 78,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Launch your mining career today - Mining.com",
+        "url": "https://www.mining.com/video/launch-your-mining-career-today-mining-com/",
+        "entities": [
+          "Commercial Production",
+          "Mining Sector",
+          "Job Opportunities",
+          "USA Rare Earth",
+          "Careers Education"
+        ],
+        "score": 63,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Mali clears domestic arrears after back payment from miners - Mining.com",
+        "url": "https://www.mining.com/web/mali-clears-domestic-arrears-after-back-payment-from-miners/",
+        "entities": [
+          "Ford",
+          "Islamist Insurgents",
+          "Mali",
+          "Rare Earth Licences",
+          "International Mining Companies"
+        ],
+        "score": 53,
+        "sentiment": 0.1
+      },
+      {
+        "title": "3 Mining Stocks to Ride the Commodity Boom Into 2026 - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/3-mining-stocks-ride-commodity-120400375.html",
+        "entities": [
+          "Central Banks",
+          "NEM",
+          "Copper",
+          "Gold",
+          "Fed"
+        ],
+        "score": 70.6,
+        "sentiment": 0.47
+      },
+      {
+        "title": "Infographic Interactive: BRICs vs the West – the gold divide - Mining.com",
+        "url": "https://www.mining.com/infographic-interactive-brics-vs-the-west-the-gold-divide/",
+        "entities": [
+          "Central Banks",
+          "Western Nations",
+          "Gold",
+          "US Dollar",
+          "BRICS"
+        ],
+        "score": 63,
+        "sentiment": 0.1
+      },
+      {
+        "title": "South Africa’s low-cost high-value rare earths heading for 2026 global market entry - Engineering News",
+        "url": "https://www.engineeringnews.co.za/article/south-africas-low-cost-high-value-rare-earths-heading-for-2026-global-market-entry-2025-12-10",
+        "entities": [
+          "Praseodymium",
+          "Rare Earths",
+          "Permanent Magnet Market",
+          "Rainbow Rare Earths",
+          "Neodymium"
+        ],
+        "score": 70.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "Congo miners urge urgent talks to clear cobalt export backlog - KITCO",
+        "url": "https://www.kitco.com/news/off-the-wire/2025-12-08/congo-miners-urge-urgent-talks-clear-cobalt-export-backlog",
+        "entities": [
+          "EV Supply Chain",
+          "China",
+          "Tesla",
+          "Cobalt",
+          "Battery Manufacturers"
+        ],
+        "score": 65.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "China’s Exports Rebound in November - The Wall Street Journal",
+        "url": "https://www.wsj.com/economy/trade/chinas-exports-rebound-in-november-97f24e06?gaa_at=eafs&gaa_n=AWEtsqeMAzzWW0bEeXxvvrNjsqbSi7OQHbTAZqDLlxNw7T3KCKFS58-F0LBn&gaa_ts=69365148&gaa_sig=pvi-goLpVgsqrTKSQRpAaJu2kMqYig60vQs7oAvKs6H7NqRsl9o7qAhScUhEaNLP7WIqVeqAO674H3knaLpkgg%3D%3D",
+        "entities": [
+          "General Administration of Customs",
+          "China",
+          "U.S. Tariffs",
+          "Exports",
+          "Global Economy"
+        ],
+        "score": 58.48,
+        "sentiment": 0.3
+      },
+      {
+        "title": "China Trade Surplus Tops $1 Trillion On Non-US Growth - Marine Link",
+        "url": "https://www.marinelink.com/news/china-trade-surplus-tops-trillion-nonus-533254",
+        "entities": [
+          "Trade Surplus",
+          "European Union",
+          "China",
+          "Tariffs",
+          "Southeast Asia"
+        ],
+        "score": 55.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Morgan Stanley upgrades MP Materials stock rating to Overweight on rare earth supply chain - Investing.com",
+        "url": "https://m.investing.com/news/analyst-ratings/morgan-stanley-upgrades-mp-materials-stock-rating-to-overweight-on-rare-earth-supply-chain-93CH-4392533?ampMode=1",
+        "entities": [
+          "BMO Capital",
+          "MP Materials",
+          "Rare Earth Market",
+          "Morgan Stanley",
+          "Goldman Sachs"
+        ],
+        "score": 70.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "USA Rare Earth Subsidiary LCM Partners with Arnold Magnetic Technologies to Secure Rare Earth Metals Supply - The Manila Times",
+        "url": "https://www.manilatimes.net/2025/12/04/tmt-newswire/globenewswire/usa-rare-earth-subsidiary-lcm-partners-with-arnold-magnetic-technologies-to-secure-rare-earth-metals-supply/2236997",
+        "entities": [
+          "NdFeB",
+          "Arnold Magnetic Technologies",
+          "rare-earth materials",
+          "Oklahoma",
+          "USA Rare Earth"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "ASM ‘deepens’ Noveon link as it looks to develop US operations - Australian Mining",
+        "url": "https://www.australianmining.com.au/asm-deepens-noveon-link-as-it-looks-to-develop-us-operations/",
+        "entities": [
+          "Noveon Magnetics",
+          "Electric Vehicles",
+          "Neodymium Iron Boron",
+          "Defence Sector"
+        ],
+        "score": 73,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Morningstar starts coverage on Australia's Lynas, sees shares overpriced - TradingView",
+        "url": "https://www.tradingview.com/news/reuters.com,2025:newsml_L6N3XD04V:0-morningstar-starts-coverage-on-australia-s-lynas-sees-shares-overpriced/",
+        "entities": [
+          "Neodymium-Praseodymium",
+          "Rare Earths",
+          "Australia",
+          "EVs",
+          "Lynas"
+        ],
+        "score": 65.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "The Critical Minerals Report (12.07.2025): How Washington, Brussels, London, and Beijing Are Rewiring the Critical Minerals Supply Chains - InvestorNews",
+        "url": "https://investornews.com/critical-minerals-rare-earths/the-critical-minerals-report-12-07-2025-how-washington-brussels-london-and-beijing-are-rewiring-the-critical-minerals-supply-chains/",
+        "entities": [
+          "DOE",
+          "Rare Earth Elements",
+          "Washington",
+          "Lobito Corridor",
+          "UK Government"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "US minerals projects seek ‘industrial vision’ from Washington to compete with China - KITCO",
+        "url": "https://www.kitco.com/news/off-the-wire/2025-12-05/us-minerals-projects-seek-industrial-vision-washington-compete-china",
+        "entities": [
+          "Nickel",
+          "China",
+          "London Metal Exchange",
+          "Wyoming",
+          "Perpetua Resources",
+          "American Rare Earths",
+          "Export-Import Bank"
+        ],
+        "score": 70.8,
+        "sentiment": 0.15
+      }
+    ],
+    "node_count": 19
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Elon Musk Sets Self-Driving Tesla Robotaxi Countdown To Three Weeks - Investor's Business Daily",
+        "url": "https://www.investors.com/news/tesla-stock-elon-musk-self-driving-robotaxi-countdown/",
+        "entities": [
+          "Model Y",
+          "Elon Musk",
+          "Robotaxi",
+          "Autonomous Driving"
+        ],
+        "score": 73.16,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Analyst Downgrade Puts Tesla Stock's Risk In Focus - Forbes",
+        "url": "https://www.forbes.com/sites/greatspeculations/2025/12/10/analyst-downgrade-puts-tesla-stocks-risk-in-focus/",
+        "entities": [
+          "Traditional Automakers",
+          "EV Market",
+          "Autonomy",
+          "Morgan Stanley"
+        ],
+        "score": 76.4,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Rivian's CEO said there's a 'shocking lack of choice' for EV buyers in the US - Business Insider",
+        "url": "https://www.businessinsider.com/rivian-ceo-rj-scaringe-electric-vehicles-us-lack-choice-2025-12",
+        "entities": [
+          "Rivian",
+          "Ford",
+          "General Motors",
+          "BYD"
+        ],
+        "score": 60.28,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Musk’s Fortune Would More Than Double on $1.5 Trillion SpaceX - Bloomberg.com",
+        "url": "https://www.bloomberg.com/news/articles/2025-12-10/musk-s-fortune-would-more-than-double-on-1-5-trillion-spacex",
+        "entities": [
+          "Billionaires Index",
+          "Public Offering",
+          "Tesla Inc.",
+          "Elon Musk",
+          "SpaceX"
+        ],
+        "score": 63.48,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Rivian turns to AI, autonomy to woo investors as EV sales stall - CNBC",
+        "url": "https://www.cnbc.com/2025/12/10/rivian-rivn-ai-day-avs-evs.html",
+        "entities": [
+          "Autonomy",
+          "Electric Vehicles",
+          "Artificial Intelligence",
+          "Cybersecurity",
+          "Rivian"
+        ],
+        "score": 51.4,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Tesla Makes Top 10 In ‘Consumer Reports’ 2026 Automotive Brand Ranking - Forbes",
+        "url": "https://www.forbes.com/sites/sashalekach/2025/12/04/tesla-makes-top-10-in-consumer-reports-2026-automotive-brand-ranking/",
+        "entities": [
+          "Model Y",
+          "Consumer Reports",
+          "EV Reliability",
+          "Automotive Sector"
+        ],
+        "score": 66.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Breaks Into Consumer Reports’ Reliability Top 10 After Years Near the Bottom - HT Auto",
+        "url": "https://auto.hindustantimes.com/auto/electric-vehicles/tesla-consumer-reports-reliability-top-10-after-years-near-the-bottom-41764901865011.html",
+        "entities": [
+          "Consumer Reports",
+          "Electric Vehicles",
+          "EV Market",
+          "Automotive Reliability"
+        ],
+        "score": 60.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Tesla announces 2025 holiday update with a few cool features - Electrek",
+        "url": "https://electrek.co/2025/12/05/tesla-2025-holiday-update-few-cool-features/",
+        "entities": [
+          "Dog Mode",
+          "Apple Podcasts",
+          "Steam",
+          "Grok"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "American Automakers Have Terrible Long-Term Reliability, And Tesla Is The Worst, Consumer Reports Says - Jalopnik",
+        "url": "https://www.jalopnik.com/2046819/consumer-reports-american-automakers-terrible-reliability/",
+        "entities": [
+          "Electric Vehicles",
+          "Consumer Reports",
+          "American Automakers",
+          "Toyota",
+          "Lexus"
+        ],
+        "score": 50.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "2026 Tesla Model Y review: Spending one week with the new Model Y - Forbes",
+        "url": "https://www.forbes.com/sites/matthewmacconnell/2025/12/08/test-driving-the-2026-tesla-model-y/",
+        "entities": [
+          "Model Y",
+          "Electric Vehicles",
+          "App-Based Features",
+          "Automotive Market"
+        ],
+        "score": 66.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla Zooms Up Reliability Rankings: Consumer Reports Crowns Model 3 and Model Y Champs - OpenTools",
+        "url": "https://opentools.ai/news/tesla-zooms-up-reliability-rankings-consumer-reports-crowns-model-3-and-model-y-champs",
+        "entities": [
+          "Model Y",
+          "Electric Vehicles",
+          "Model 3",
+          "Consumer Reports"
+        ],
+        "score": 65.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "Tesla launches low-cost Model 3 variant in Europe - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/tesla-launches-low-cost-model-3-variant-europe-2025-12-05/",
+        "entities": [
+          "Model Y",
+          "Electric Vehicles",
+          "Model 3",
+          "Elon Musk"
+        ],
+        "score": 73.48,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Old Teslas Are Falling Apart as They Age - Futurism",
+        "url": "https://futurism.com/advanced-transport/old-teslas-falling-apart",
+        "entities": [
+          "Model Y",
+          "Consumer Reports",
+          "Used Cars",
+          "Automotive Industry"
+        ],
+        "score": 60.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Tesla 'Full Self Driving' Blew Me Away. I Still Wouldn't Buy It - InsideEVs",
+        "url": "https://insideevs.com/reviews/781325/tesla-full-self-driving-review/",
+        "entities": [
+          "Tesla Model Y",
+          "Full Self Driving",
+          "Driver Assistance Systems"
+        ],
+        "score": 50.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Tesla Cracks Consumer Reports Top 10 For First Time As Aging Lineup Boosts Reliability - evxl.co",
+        "url": "https://evxl.co/2025/12/07/tesla-cracks-consumer-reports-top-10/",
+        "entities": [
+          "Consumer Reports",
+          "Cybertruck",
+          "Electric Vehicles",
+          "BYD"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Stock Today (TSLA): What to Know Before the Market Opens on December 8, 2025 - ts2.tech",
+        "url": "https://ts2.tech/en/tesla-stock-today-tsla-what-to-know-before-the-market-opens-on-december-8-2025/",
+        "entities": [
+          "Full Self-Driving",
+          "Model 3",
+          "Cybertruck",
+          "European Demand"
+        ],
+        "score": 70.8,
+        "sentiment": -0.5
+      }
+    ],
+    "node_count": 16
+  }
+]

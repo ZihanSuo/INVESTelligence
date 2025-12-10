@@ -36,7 +36,7 @@ with st.sidebar:
 def load_daily_data(folder_path):
     # Defining paths to specific files in the date folder
     # Assuming 'alpha.csv' contains the top ranked news
-    news_path = os.path.join(folder_path, 'alpha.csv')
+    news_path = os.path.join(folder_path, 'scores.csv')
     # Assuming 'sentiment_statistics.csv' contains aggregate metrics
     metrics_path = os.path.join(folder_path, 'sentiment_statistics.csv')
     

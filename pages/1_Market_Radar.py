@@ -34,6 +34,15 @@ from streamlit.components.v1 import html
 import glob
 import plotly.graph_objects as go
 
+st.subheader("Plotly Test — Simple Scatter")
+
+fig_test = px.scatter(
+    x=[1,2,3,4],
+    y=[10,20,5,15],
+    title="If you cannot see this, Plotly is broken."
+)
+
+st.plotly_chart(fig_test, use_container_width=True)
 
 # ---------------------------------------------------------
 # 1. Page Configuration

@@ -399,12 +399,7 @@ else:
         )
 
         # Make the layout more compact and readable
-        net.barnes_hut(
-            gravitational_constant=-8000,
-            central_gravity=0.3,
-            spring_length=120,
-            spring_strength=0.05,
-        )
+        net.barnes_hut()
 
         # Center node: keyword
         net.add_node(

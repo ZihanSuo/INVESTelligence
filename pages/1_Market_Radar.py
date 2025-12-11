@@ -471,3 +471,7 @@ else:
                     with st.expander(f"{key.title()} Entity Network", expanded=False):
                         with open(file_path, "r", encoding="utf-8") as f:
                             html(f.read(), height=600)
+                            
+st.write("entities_file:", entities_file)
+st.write("entities_data exists?", os.path.exists(entities_file))
+st.write("entities_data preview:", entities_data[:2] if entities_data else "EMPTY")

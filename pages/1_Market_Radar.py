@@ -9,6 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import glob
 import plotly.graph_objects as go
+import colorsys
+import random
+from collections import defaultdict
+from pyvis.network import Network
+from streamlit.components.v1 import html
+import os
+import json
 
 
 # ---------------------------------------------------------
@@ -77,7 +84,7 @@ else:
 
 st.title("Market Radar")
 
-st.markdown("### A. The Snapshot (Daily Market Pulse)")
+st.markdown("### 1. The Snapshot (Daily Market Pulse)")
 
 # Total Articles
 total_articles = len(scores)
@@ -120,10 +127,13 @@ col2.metric("Market Sentiment", f"{weighted_senti:+.2f}", senti_label)
 col3.metric("Key Themes", key_themes_display)
 
 # -------------------------------------------------------
-# B. Alpha Matrix: Importance vs Sentiment
+# 2. Alpha Matrix: Core signals
 # -------------------------------------------------------
+st.markdown("### 2. Alpha Matrix (Core Signals)")
 
-st.markdown("### B. Alpha Matrix (Core Signals)")
+# -------------------------------------------------------
+# 2.1 Impact vs Market Sentiment"
+# -------------------------------------------------------
 
 # Merge pickup_count from alpha.csv if available
 if has_alpha:
@@ -148,7 +158,7 @@ fig_scatter = px.scatter(
     color="keyword",
     size="marker_size",
     hover_data=["title", "final_score", "sentiment_score", "url"],
-    title="Core Signals: Impact vs Market Sentiment"
+    title="2.1 Impact vs Market Sentiment"
 )
 
 # Horizontal line at sentiment = 0
@@ -164,10 +174,8 @@ fig_scatter.add_vline(
 st.plotly_chart(fig_scatter, use_container_width=True)
 
 # -------------------------------------------------------
-# B2. The Alpha Quadrant (Four Quadrant Analysis)
+# 2.2 The Alpha Quadrant (Four Quadrant Analysis)
 # -------------------------------------------------------
-
-st.markdown("### B2. The Alpha Quadrant (Source Credibility × Materiality)")
 
 alpha_file = os.path.join(data_path, "alpha.csv")
 alpha = pd.read_csv(alpha_file)
@@ -202,7 +210,7 @@ fig_q = px.scatter(
     color_continuous_scale=["red", "white", "green"],
     hover_data=["title", "keyword", "url"],
     size=[12] * len(df),
-    title="Alpha Quadrant: Credibility vs Materiality"
+    title="2.2 Alpha Quadrant: Credibility vs Materiality"
 )
 
 # Draw quadrant lines
@@ -217,44 +225,9 @@ fig_q.add_annotation(x=x_mid + 0.1, y=y_mid - 0.1, text="Q4: Market Noise", show
 
 st.plotly_chart(fig_q, use_container_width=True, key="alpha_quadrant")
 
-# --------------------------------------------------
-# PART B — Stacked Bar
-# --------------------------------------------------
-
-df_sent = pd.read_csv(sentiment_file)
-
-st.markdown('<div class="card">', unsafe_allow_html=True)
-st.subheader("B. Sentiment Distribution (100% Stacked)")
-
-categories = ["strong_neg", "weak_neg", "neutral", "weak_pos", "strong_pos"]
-df_plot = df_sent.sort_values("keyword")
-
-x = np.arange(len(df_plot["keyword"]))
-bottom = np.zeros(len(df_plot))
-
-fig_b, ax_b = plt.subplots(figsize=(10, 5))
-for cat in categories:
-    vals = df_plot[cat].astype(float)
-    ax_b.bar(x, vals, bottom=bottom, label=cat)
-    bottom += vals
-
-ax_b.set_xticks(x)
-ax_b.set_xticklabels(df_plot["keyword"], rotation=30, ha="right")
-ax_b.legend()
-
-st.pyplot(fig_b, use_container_width=True)
-st.markdown("</div>", unsafe_allow_html=True)
-
-
 # -------------------------------------------------------
-# C. Word Cloud (scalable for unlimited keywords)
+# 2.3 Word Cloud 
 # -------------------------------------------------------
-
-import colorsys
-import random
-from wordcloud import WordCloud
-
-st.markdown("### C. Keyword Word Cloud")
 
 wc = pd.read_csv(wordcount_file)
 
@@ -290,6 +263,7 @@ def make_palette(hex_color):
     return shades
 
 keyword_palettes = {kw: make_palette(base_colors[i]) for i, kw in enumerate(unique_keywords)}
+st.markdown("#### 2.3 Word Cloud")
 
 # ----- Render word clouds -----
 cols_per_row = 3
@@ -316,16 +290,40 @@ for i in range(0, len(unique_keywords), cols_per_row):
         col.markdown(f"**{kw.capitalize()}**")
         col.image(wc_img.to_array(), use_column_width=True)
 
+# --------------------------------------------------
+# 3. Sentiment Score
+# --------------------------------------------------
+
+df_sent = pd.read_csv(sentiment_file)
+
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.subheader("3. Sentiment Distribution") 
+#######check here
+
+categories = ["strong_neg", "weak_neg", "neutral", "weak_pos", "strong_pos"]
+df_plot = df_sent.sort_values("keyword")
+
+x = np.arange(len(df_plot["keyword"]))
+bottom = np.zeros(len(df_plot))
+
+fig_b, ax_b = plt.subplots(figsize=(10, 5))
+for cat in categories:
+    vals = df_plot[cat].astype(float)
+    ax_b.bar(x, vals, bottom=bottom, label=cat)
+    bottom += vals
+
+ax_b.set_xticks(x)
+ax_b.set_xticklabels(df_plot["keyword"], rotation=30, ha="right")
+ax_b.legend()
+
+st.pyplot(fig_b, use_container_width=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 # -------------------------------------------------------
-# D. Entity Co-occurrence Network
+# 4. Entity Co-occurrence Network
 # -------------------------------------------------------
 
-from collections import defaultdict
-from pyvis.network import Network
-from streamlit.components.v1 import html
-import os
-import json
 
 # 1. Load entities.json safely
 OUTPUT_DIR = "network_graphs"
@@ -337,9 +335,8 @@ if os.path.exists(entities_file):
 else:
     raw_entities = []
 
-# -------------------------------------------------------
+
 # 2. Helpers: color mapping & data shaping
-# -------------------------------------------------------
 
 def sentiment_to_color(s: float) -> str:
     """
@@ -416,10 +413,7 @@ def build_network_data(entry):
 
     return entity_freq, entity_sent_avg, cooccur
 
-
-# -------------------------------------------------------
 # 3. Graph generator (PyVis)
-# -------------------------------------------------------
 
 def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
     """
@@ -528,7 +522,7 @@ else:
 
 
 # -------------------------------------------------------
-# E. 📑 The "Must-Read" Ticker — Bloomberg Terminal Style
+# 4. "Must-Read" Ticker
 # -------------------------------------------------------
 
 import streamlit as st

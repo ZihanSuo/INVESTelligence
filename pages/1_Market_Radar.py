@@ -736,3 +736,7 @@ fig.update_layout(
 fig.update_yaxes(range=[-1, 1])  # 强制固定在 [-1, 1]，便于比较
 
 st.plotly_chart(fig, use_container_width=True)
+
+
+st.write("Pivot head:", pivot.head(10))
+

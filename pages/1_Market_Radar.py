@@ -35,25 +35,6 @@ from streamlit.components.v1 import html
 import glob
 import plotly.graph_objects as go
 
-st.markdown("""
-<style>
-    .card {
-        background-color: #F7F9FC;
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #E4E9F1;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
-    }
-    .metric-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-
 
 # ---------------------------------------------------------
 # 1. Page Configuration

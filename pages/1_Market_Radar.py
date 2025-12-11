@@ -285,6 +285,159 @@ for i in range(0, len(unique_keywords), cols_per_row):
         col.image(wc_img.to_array(), use_container_width=True)
 
 
+# -------------------------------------------------------
+# D. Entity Co-occurrence Network
+# -------------------------------------------------------
+
+from collections import defaultdict
+from pyvis.network import Network
+from streamlit.components.v1 import html
+
+
+# ---------------------------------------------------
+# 1. Helpers: sentiment color + data normalization
+# ---------------------------------------------------
+
+def sentiment_to_color(s: float) -> str:
+    """
+    Map sentiment score [-1,1] to a red–green color scale.
+    Higher |sentiment| -> deeper color.
+    """
+    s = max(-1.0, min(1.0, float(s)))
+    intensity = int(150 + abs(s) * 105)  # 150–255
+
+    if s >= 0:
+        return f"rgb(0,{intensity},0)"      # greenish
+    else:
+        return f"rgb({intensity},0,0)"      # reddish
+
+def normalize_entities(raw):
+    """
+    Ensure we always have a list of dicts:
+    [{"keyword": ..., "graph_data": [...]}, ...]
+    """
+    # Case 1: already a proper list
+    if isinstance(raw, list):
+        items = []
+        for e in raw:
+            if isinstance(e, dict) and "keyword" in e and "graph_data" in e:
+                items.append(e)
+        return items
+
+    # Case 2: dict keyed by keyword
+    if isinstance(raw, dict):
+        items = []
+        for k, v in raw.items():
+            # v may be dict with graph_data, or directly a list of articles
+            if isinstance(v, dict) and "graph_data" in v:
+                items.append({"keyword": k, "graph_data": v["graph_data"]})
+            elif isinstance(v, list):
+                items.append({"keyword": k, "graph_data": v})
+        return items
+
+    # Fallback
+    return []
+
+def build_network_data(entry):
+    """
+    Build entity frequency, avg sentiment and co-occurrence matrix
+    for a single keyword block.
+    """
+    articles = entry.get("graph_data", [])
+
+    entity_freq = defaultdict(int)
+    entity_sent_sum = defaultdict(float)
+    entity_sent_count = defaultdict(int)
+    cooccur = defaultdict(lambda: defaultdict(int))
+
+    for art in articles:
+        ents = art.get("entities", [])
+        sentiment = float(art.get("sentiment", 0))
+
+        # entity-level stats
+        for e in ents:
+            entity_freq[e] += 1
+            entity_sent_sum[e] += sentiment
+            entity_sent_count[e] += 1
+
+        # pairwise co-occurrence
+        for i in range(len(ents)):
+            for j in range(i + 1, len(ents)):
+                a, b = ents[i], ents[j]
+                cooccur[a][b] += 1
+                cooccur[b][a] += 1
+
+    entity_sent_avg = {
+        e: entity_sent_sum[e] / entity_sent_count[e]
+        for e in entity_freq
+    }
+
+    return entity_freq, entity_sent_avg, cooccur
+
+# ---------------------------------------------------
+# 2. Graph generator + Streamlit layout
+# ---------------------------------------------------
+
+def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
+    """
+    Create a PyVis graph for one keyword and save as HTML.
+    """
+    net = Network(
+        height="600px",
+        width="100%",
+        bgcolor="#FFFFFF",
+        font_color="#222",
+    )
+
+    # Make the layout more compact and readable
+    net.barnes_hut(
+        gravitational_constant=-8000,
+        central_gravity=0.3,
+        spring_length=120,
+        spring_strength=0.05,
+    )
+
+    # Center node: keyword
+    net.add_node(
+        keyword,
+        label=keyword,
+        size=55,
+        color="#4976f5",
+        font={"size": 20, "color": "#111"},
+        title=f"{keyword}\nTotal Entities: {len(entity_freq)}",
+    )
+
+    # Entity nodes
+    max_freq = max(entity_freq.values()) if entity_freq else 1
+
+    for ent, freq in entity_freq.items():
+        sentiment = entity_sent_avg.get(ent, 0.0)
+        size = 10 + (freq / max_freq) * 25  # medium scaling
+
+        net.add_node(
+            ent,
+            label=ent,
+            size=size,
+            color=sentiment_to_color(sentiment),
+            font={"size": 14},
+            title=f"{ent}\nCount: {freq}\nAvg Sentiment: {sentiment:.2f}",
+        )
+
+        net.add_edge(keyword, ent, color="#999999", width=1)
+
+    # Co-occurrence edges
+    for a in cooccur:
+        for b, count in cooccur[a].items():
+            if count > 0:
+                net.add_edge(
+                    a,
+                    b,
+                    width=1 + count * 0.7,
+                    color="#BBBBBB",
+                    title=f"Co-occurs: {count}",
+                )
+
+    file_path = os.path.join(OUTPUT_DIR, f"{keyword}_n_
 
 
 # -------------------------------------------------------

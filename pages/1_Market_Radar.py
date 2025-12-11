@@ -10,8 +10,6 @@ st.set_page_config(
 
 ########## Import Packages #############
 # 1. Global Setup & Data Loading
-
-
 import pandas as pd
 import os
 from datetime import datetime
@@ -43,16 +41,8 @@ from streamlit.components.v1 import html
 
 import glob
 import plotly.graph_objects as go
-
-st.subheader("Plotly Test")
-
-fig_test = px.scatter(x=[1,2,3], y=[3,1,4])
-st.plotly_chart(fig_test)
-
 import plotly.io as pio
-st.write("Plotly renderer:", pio.renderers.default)
-
-
+pio.renderers.default = "iframe"
 # -------------------------------------------------------
 # Load data from today's folder
 # -------------------------------------------------------

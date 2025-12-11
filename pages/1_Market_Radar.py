@@ -127,8 +127,12 @@ st.markdown("#### 2.1 Impact vs Market Sentiment")
 df = scores.copy()
 
 
-st.write("DEBUG — shape of df_imp:", df_imp.shape)
-st.write(df_imp.head())
+st.write("NaN count in final_score:", scores["final_score"].isna().sum())
+st.write("NaN count in sentiment_score:", scores["sentiment_score"].isna().sum())
+
+st.write("Rows with NaN in sentiment_score:")
+st.write(scores[scores["sentiment_score"].isna()].head())
+
 
 # 没有 keyword 的过滤掉
 df = df.dropna(subset=["keyword"])

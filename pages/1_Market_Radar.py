@@ -402,7 +402,7 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
                 )
 
     file_path = f"{OUTPUT_DIR}/{keyword}_network.html"
-    net.show(file_path)
+    net.write_html(file_path)
     return file_path
 
 # -------------------------

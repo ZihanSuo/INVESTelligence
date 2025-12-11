@@ -491,3 +491,62 @@ else:
                     with st.expander(f"{key.title()} Entity Network", expanded=False):
                         with open(file_path, "r", encoding="utf-8") as f:
                             html(f.read(), height=600)
+
+
+# -------------------------------------------------------
+# 5. The "Must-Read" Ticker
+# -------------------------------------------------------
+
+st.subheader("4. 📑 The 'Must-Read' Ticker
+
+if scores is None or len(scores) == 0:
+    st.info("No score data available.")
+else:
+
+    # ---- Prepare helper functions ----
+
+    def sentiment_dot(s):
+        """Return emoji dot based on sentiment score."""
+        if s > 0.1:
+            return "🟢"
+        elif s < -0.1:
+            return "🔴"
+        else:
+            return "⚪️"
+
+    def consensus_label(avg_senti):
+        """Return textual consensus."""
+        if avg_senti > 0.1:
+            return "Bullish Consensus"
+        elif avg_senti < -0.1:
+            return "Bearish Consensus"
+        else:
+            return "Mixed"
+
+    # ---- Group by keyword ----
+    grouped = scores.groupby("keyword")
+
+    for keyword, df in grouped:
+
+        # Determine consensus
+        avg_sent = df["sentiment_score"].mean()
+        consensus = consensus_label(avg_sent)
+
+        st.markdown(f"### **{keyword.title()} ({consensus})**")
+
+        # Top 3 by final_score
+        top3 = df.sort_values("final_score", ascending=False).head(3)
+
+        md = ""  # markdown buffer
+
+        for idx, row in top3.iterrows():
+            dot = sentiment_dot(row["sentiment_score"])
+            title = row["title"]
+            source = row["url"].split("/")[2].replace("www.", "")
+            score = int(row["final_score"])
+
+            md += f"{top3.index.get_loc(idx)+1}. {dot} **{source}**: {title} [Score: {score}]\n\n"
+            md += f"   • *Reason: High Scoring Article*\n\n"
+
+        st.markdown(md)
+

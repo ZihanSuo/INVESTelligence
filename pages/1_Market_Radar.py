@@ -474,4 +474,4 @@ else:
                             
 st.write("entities_file:", entities_file)
 st.write("entities_data exists?", os.path.exists(entities_file))
-st.write("entities_data preview:", entities_data[:2] if entities_data else "EMPTY")
+st.write("entities_data preview:", entities_file[:2] if entities_file else "EMPTY")

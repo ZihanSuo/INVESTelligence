@@ -43,43 +43,31 @@ st.markdown("""
     /* 4. Feature Card Styles */
     .feature-card {
         background-color: #ffffff;
-        padding: 24px;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0; /* Subtle border */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Soft shadow */
-        height: 100%;
-        transition: transform 0.2s;
-    }
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
-    .icon-box {
-        font-size: 2rem;
-        margin-bottom: 12px;
-        background-color: #F1F5F9;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-    }
-    .card-title {
-        font-weight: 700;
-        font-size: 1.1rem;
-        margin-bottom: 8px;
-        color: #0F172A;
-    }
-    .card-text {
-        font-size: 0.95rem;
-        color: #475569;
-        line-height: 1.6;
+        padding: 24px 24px 10px 24px; /* Reduced bottom padding for button integration */
+        border-radius: 12px 12px 0 0; /* Rounded top only */
+        border: 1px solid #E2E8F0;
+        border-bottom: none; /* Merge with button area */
+        height: 220px; /* Fixed height for alignment */
     }
     
     /* 5. Clean Sidebar */
     section[data-testid="stSidebar"] {
         background-color: #F8FAFC;
+    }
+    
+    /* Custom Button Styling to match cards */
+    .stButton button {
+        width: 100%;
+        border-radius: 0 0 12px 12px;
+        border: 1px solid #E2E8F0;
+        border-top: none;
+        background-color: #F1F5F9;
+        color: #1E3A8A;
+        font-weight: 600;
+    }
+    .stButton button:hover {
+        background-color: #E2E8F0;
+        color: #0F172A;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -95,63 +83,76 @@ st.markdown('<div class="sub-title">AI-Driven Financial Surveillance & Alpha Dis
 st.markdown("---")
 
 st.markdown("### 🗺️ System Modules")
-st.caption("Select a module from the sidebar to begin.")
+st.caption("Select a module to initiate analysis.")
 
 # Card Layout using Columns
 col1, col2, col3, col4 = st.columns(4)
 
+# --- Module 1: Market Radar ---
 with col1:
     st.markdown("""
     <div class="feature-card">
-        <div class="icon-box">🚀</div>
-        <div class="card-title">Market Radar</div>
-        <div class="card-text">
+        <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">🚀</div>
+        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: #0F172A;">Market Radar</div>
+        <div style="font-size: 0.95rem; color: #475569; line-height: 1.6;">
             <strong>The Daily Visualization.</strong><br>
             Visualize market sentiment, spot anomalies, and identify high-materiality events using the Alpha Quadrant.
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Launch Radar ➜", key="btn_radar"):
+        st.switch_page("pages/01_Market_Radar.py")
 
+# --- Module 2: Time Machine ---
 with col2:
     st.markdown("""
     <div class="feature-card">
-        <div class="icon-box">🕰️</div>
-        <div class="card-title">Time Machine</div>
-        <div class="card-text">
+        <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">🕰️</div>
+        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: #0F172A;">Time Machine</div>
+        <div style="font-size: 0.95rem; color: #475569; line-height: 1.6;">
             <strong>Historical Analysis.</strong><br>
-            <em>(In Development)</em><br>
             Search past trends and replay market sentiment evolution for specific assets.
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Access History ➜", key="btn_time"):
+        st.toast("Time Machine module is currently syncing with historical database.", icon="⏳")
 
+# --- Module 3: Briefing Archive ---
 with col3:
     st.markdown("""
     <div class="feature-card">
-        <div class="icon-box">📰</div>
-        <div class="card-title">Briefing Archive</div>
-        <div class="card-text">
+        <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">📰</div>
+        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: #0F172A;">Briefing Archive</div>
+        <div style="font-size: 0.95rem; color: #475569; line-height: 1.6;">
             <strong>Executive Reports.</strong><br>
-            <em>(In Development)</em><br>
             Access the curated, AI-generated HTML newsletters delivered daily.
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("View Archive ➜", key="btn_archive"):
+        st.switch_page("pages/02_Briefing_Archive.py")
 
+# --- Module 4: Methodology ---
 with col4:
     st.markdown("""
     <div class="feature-card">
-        <div class="icon-box">🧠</div>
-        <div class="card-title">Methodology</div>
-        <div class="card-text">
+        <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">🧠</div>
+        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: #0F172A;">Methodology</div>
+        <div style="font-size: 0.95rem; color: #475569; line-height: 1.6;">
             <strong>Transparent AI.</strong><br>
-            <em>(In Development)</em><br>
             Understand the scoring algorithms, source weighting, and n8n pipelines.
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("Learn More ➜", key="btn_method"):
+        st.toast("Documentation is being updated.", icon="📚")
 
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 # Footer
-st.info("Zihan Suo, Dec 2025**")
+st.info("Designed by Zihan Suo, Dec 2025")

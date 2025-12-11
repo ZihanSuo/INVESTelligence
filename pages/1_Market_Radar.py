@@ -655,7 +655,7 @@ latest_files = [p[0] for p in file_date_pairs[:7]]
 
 
 df_list = []
-for f in sent_files:
+for f in files:
     try:
         df = pd.read_csv(f)
         day = f.split("/")[-2]      # folder name = date

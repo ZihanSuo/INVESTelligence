@@ -1,7 +1,17 @@
+import streamlit as st
+# ---------------------------------------------------------
+# 1. Page Configuration
+# ---------------------------------------------------------
+st.set_page_config(
+    page_title="AI Financial News Agent",
+    page_icon="📈",
+    layout="wide"
+)
+
 ########## Import Packages #############
 # 1. Global Setup & Data Loading
 
-import streamlit as st
+
 import pandas as pd
 import os
 from datetime import datetime
@@ -33,25 +43,6 @@ from streamlit.components.v1 import html
 
 import glob
 import plotly.graph_objects as go
-
-st.subheader("Plotly Test — Simple Scatter")
-
-fig_test = px.scatter(
-    x=[1,2,3,4],
-    y=[10,20,5,15],
-    title="If you cannot see this, Plotly is broken."
-)
-
-st.plotly_chart(fig_test, use_container_width=True)
-
-# ---------------------------------------------------------
-# 1. Page Configuration
-# ---------------------------------------------------------
-st.set_page_config(
-    page_title="AI Financial News Agent",
-    page_icon="📈",
-    layout="wide"
-)
 
 # -------------------------------------------------------
 # Load data from today's folder

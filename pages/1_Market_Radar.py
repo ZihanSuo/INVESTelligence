@@ -35,8 +35,6 @@ import glob
 import plotly.graph_objects as go
 import plotly.io as pio
 
-fig = go.Figure(data=go.Scatter(x=[1,2,3], y=[1,4,9]))
-st.plotly_chart(fig)
 
 # -------------------------------------------------------
 # Load data from today's folder
@@ -121,9 +119,16 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 # -------------------------------------------------------
 # 2.1 Impact vs Market Sentiment (graph_objects)
 # -------------------------------------------------------
+
+
+
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
 df = scores.copy()
+
+
+st.write("DEBUG — shape of df_imp:", df_imp.shape)
+st.write(df_imp.head())
 
 # 没有 keyword 的过滤掉
 df = df.dropna(subset=["keyword"])

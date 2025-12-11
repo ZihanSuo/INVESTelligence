@@ -494,59 +494,92 @@ else:
 
 
 # -------------------------------------------------------
-# 5. The "Must-Read" Ticker
+# E. 📑 The "Must-Read" Ticker — Bloomberg Terminal Style
 # -------------------------------------------------------
 
-st.subheader("4. 📑 The 'Must-Read' Ticker")
+import streamlit as st
+
+st.subheader("E. 📑 The 'Must-Read' Ticker")
 
 if scores is None or len(scores) == 0:
     st.info("No score data available.")
 else:
 
-    # ---- Prepare helper functions ----
-
+    # ---------- Helper Functions ----------
     def sentiment_dot(s):
-        """Return emoji dot based on sentiment score."""
-        if s > 0.1:
+        if s > 0.15:
             return "🟢"
-        elif s < -0.1:
+        elif s < -0.15:
             return "🔴"
         else:
             return "⚪️"
 
     def consensus_label(avg_senti):
-        """Return textual consensus."""
-        if avg_senti > 0.1:
+        if avg_senti > 0.15:
             return "Bullish Consensus"
-        elif avg_senti < -0.1:
+        elif avg_senti < -0.15:
             return "Bearish Consensus"
         else:
             return "Mixed"
 
-    # ---- Group by keyword ----
+    def extract_domain(url):
+        try:
+            return url.split("//")[1].split("/")[0].replace("www.", "")
+        except:
+            return ""
+
     grouped = scores.groupby("keyword")
 
+    # ---------- Render Each Keyword as a Card ----------
     for keyword, df in grouped:
 
-        # Determine consensus
         avg_sent = df["sentiment_score"].mean()
         consensus = consensus_label(avg_sent)
 
-        st.markdown(f"### **{keyword.title()} ({consensus})**")
+        # Card container
+        with st.container():
+            st.markdown(
+                f"""
+                <div style="
+                    padding: 20px 25px;
+                    background-color: #F7F9FC;
+                    border-radius: 12px;
+                    border: 1px solid #E4E9F1;
+                    margin-bottom: 22px;
+                ">
+                    <h3 style="margin-top:0; color:#1A1D27;">
+                        {keyword.title()} 
+                        <span style="font-size:16px; font-weight:400; color:#6A7280;">
+                            ({consensus})
+                        </span>
+                    </h3>
+                """,
+                unsafe_allow_html=True,
+            )
 
-        # Top 3 by final_score
-        top3 = df.sort_values("final_score", ascending=False).head(3)
+            # Top 3 articles
+            top3 = df.sort_values("final_score", ascending=False).head(3)
 
-        md = ""  # markdown buffer
+            for rank, (_, row) in enumerate(top3.iterrows(), start=1):
+                dot = sentiment_dot(row["sentiment_score"])
+                title = row["title"]
+                score = int(row["final_score"])
+                url = row["url"]
+                domain = extract_domain(url)
 
-        for idx, row in top3.iterrows():
-            dot = sentiment_dot(row["sentiment_score"])
-            title = row["title"]
-            source = row["url"].split("/")[2].replace("www.", "")
-            score = int(row["final_score"])
+                st.markdown(
+                    f"""
+                    <div style="margin-bottom:18px;">
+                        <div style="font-size:17px;">
+                            <b>{rank}. {dot} <a href="{url}" target="_blank" style="text-decoration:none; color:#1A73E8;">
+                            {title}</a></b>
+                        </div>
+                        <div style="font-size:14px; color:#68707C; margin-left: 26px;">
+                            {domain} • Score: {score}
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
-            md += f"{top3.index.get_loc(idx)+1}. {dot} **{source}**: {title} [Score: {score}]\n\n"
-            md += f"   • *Reason: High Scoring Article*\n\n"
-
-        st.markdown(md)
-
+            st.markdown("</div>", unsafe_allow_html=True)

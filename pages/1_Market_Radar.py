@@ -68,16 +68,6 @@ if has_alpha:
 else:
     alpha = None
 
-# -------------------------------------------------------
-# Merge pickup_count (if alpha exists)
-# -------------------------------------------------------
-if has_alpha:
-    scores = scores.merge(
-        alpha[["title", "pickup_count"]],
-        on="title",
-        how="left"
-    )
-
 
 # -------------------------------------------------------
 # 1. Snapshot

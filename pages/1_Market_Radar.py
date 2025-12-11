@@ -36,8 +36,10 @@ if has_alpha:
 else:
     alpha = None
 
+
+
 # -------------------------------------------------------
-# Prepare marker size for scatter plot
+# Prepare marker size
 # If alpha.csv exists → use pickup_count
 # Else → use constant marker size
 # -------------------------------------------------------
@@ -61,6 +63,46 @@ else:
     # Fall back to constant
     scores["marker_size"] = 12
 
+# -------------------------------------------------------
+# Page title and Level 1: The Snapshot
+# -------------------------------------------------------
+
+st.title("Market Radar")
+
+st.markdown("### A. The Snapshot (Daily Market Pulse)")
+
+# Total Articles
+total_articles = len(scores)
+
+# Weighted market sentiment using final_score as weight
+if "final_score" in scores.columns:
+    weighted_senti = (
+        (scores["sentiment_score"] * scores["final_score"]).sum()
+        / scores["final_score"].sum()
+    )
+else:
+    weighted_senti = scores["sentiment_score"].mean()
+
+# Label for sentiment direction
+if weighted_senti > 0.05:
+    senti_label = "Bullish"
+elif weighted_senti < -0.05:
+    senti_label = "Bearish"
+else:
+    senti_label = "Neutral"
+
+# Top keyword by article count
+top_keyword = (
+    scores["keyword"].value_counts().idxmax()
+    if "keyword" in scores.columns
+    else "N/A"
+)
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("Total Articles", total_articles)
+col2.metric("Market Sentiment", f"{weighted_senti:+.2f}", senti_label)
+col3.metric("Key Theme", top_keyword)
 
 # -------------------------------------------------------
 # Alpha Matrix Scatter Plot

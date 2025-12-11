@@ -4,6 +4,8 @@ import plotly.express as px
 import os
 import json
 from datetime import datetime
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 
 # ---------------------------------------------------------
 # 1. Page Configuration

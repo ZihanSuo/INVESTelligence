@@ -136,7 +136,6 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 # 2.1 Impact vs Market Sentiment"
 # -------------------------------------------------------
 
-、
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
 # --- Make a safe copy (never modify `scores` globally) ---

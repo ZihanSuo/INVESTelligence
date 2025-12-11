@@ -695,14 +695,19 @@ def get_sentiment(row):
     ) / 100.0
 
 df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
-df_all["keyword"] = df_all["keyword"].str.replace(" ", "_")
+
 
 # -----------------------------
 # Pivot to wide table
 # -----------------------------
 full_dates = pd.date_range(df_all["date"].min(), df_all["date"].max(), freq="D")
 
-pivot = df_all.pivot(index="date", columns="keyword", values="sent_index")
+pivot = df_all.pivot_table(
+    index="date",
+    columns="keyword",
+    values="sent_index",
+    aggfunc="mean"
+)
 pivot = pivot.reindex(full_dates)
 pivot = pivot.fillna(method="ffill")
 pivot = pivot.fillna(0)
@@ -742,3 +747,5 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 
+st.write("pivot sample:")
+st.write(pivot.head())

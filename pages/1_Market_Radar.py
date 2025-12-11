@@ -667,3 +667,159 @@ else:
 
             st.markdown("</div>", unsafe_allow_html=True)
 
+
+
+            st.markdown("### 🔍 诊断模式")
+
+# Step 1: 检查 scores 数据
+st.write("**Step 1: 检查 scores 数据**")
+st.write(f"scores 的形状: {scores.shape}")
+st.write(f"scores 的列: {scores.columns.tolist()}")
+
+# 检查是否有重复列
+duplicate_cols = scores.columns[scores.columns.duplicated()].tolist()
+if duplicate_cols:
+    st.error(f"❌ scores 有重复列: {duplicate_cols}")
+else:
+    st.success("✅ scores 没有重复列")
+
+# Step 2: 显示前5行数据
+st.write("**Step 2: scores 前5行数据**")
+st.dataframe(scores[['keyword', 'title', 'final_score', 'sentiment_score']].head())
+
+# Step 3: 检查数据统计
+st.write("**Step 3: 数据统计**")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("总行数", len(scores))
+    st.metric("final_score 非空", scores['final_score'].notna().sum())
+    st.metric("final_score 有无穷大", scores['final_score'].isin([float('inf'), float('-inf')]).sum())
+
+with col2:
+    st.metric("sentiment_score 非空", scores['sentiment_score'].notna().sum())
+    st.metric("sentiment_score 有无穷大", scores['sentiment_score'].isin([float('inf'), float('-inf')]).sum())
+    st.metric("keyword 非空", scores['keyword'].notna().sum())
+
+with col3:
+    st.metric("final_score 范围", f"{scores['final_score'].min():.1f} ~ {scores['final_score'].max():.1f}")
+    st.metric("sentiment_score 范围", f"{scores['sentiment_score'].min():.2f} ~ {scores['sentiment_score'].max():.2f}")
+
+# Step 4: 创建副本并清理
+st.write("**Step 4: 创建干净副本**")
+df_viz = scores.copy()
+
+# 移除重复列（如果有）
+if df_viz.columns.duplicated().any():
+    st.warning("移除重复列...")
+    df_viz = df_viz.loc[:, ~df_viz.columns.duplicated()]
+
+# 重置索引
+df_viz = df_viz.reset_index(drop=True)
+
+st.write(f"清理后的形状: {df_viz.shape}")
+st.write(f"清理后的列: {df_viz.columns.tolist()}")
+
+# Step 5: 检查必需列
+required_cols = ['final_score', 'sentiment_score', 'keyword']
+missing = [col for col in required_cols if col not in df_viz.columns]
+
+if missing:
+    st.error(f"❌ 缺少必需列: {missing}")
+    st.stop()
+else:
+    st.success("✅ 所有必需列存在")
+
+# Step 6: 清理数据
+st.write("**Step 6: 数据清理**")
+before_count = len(df_viz)
+
+# 移除 NaN
+df_viz = df_viz.dropna(subset=['final_score', 'sentiment_score', 'keyword'])
+after_nan = len(df_viz)
+
+# 移除无穷大
+df_viz = df_viz[~df_viz['final_score'].isin([float('inf'), float('-inf')])]
+df_viz = df_viz[~df_viz['sentiment_score'].isin([float('inf'), float('-inf')])]
+after_inf = len(df_viz)
+
+st.write(f"原始行数: {before_count}")
+st.write(f"移除 NaN 后: {after_nan} (移除了 {before_count - after_nan} 行)")
+st.write(f"移除无穷大后: {after_inf} (移除了 {after_nan - after_inf} 行)")
+
+if len(df_viz) == 0:
+    st.error("❌ 清理后没有数据了！")
+    st.stop()
+else:
+    st.success(f"✅ 清理后还有 {len(df_viz)} 行数据")
+
+# Step 7: 显示清理后的数据
+st.write("**Step 7: 清理后的数据样本**")
+st.dataframe(df_viz[['keyword', 'title', 'final_score', 'sentiment_score']].head(10))
+
+# Step 8: 准备 marker_size
+st.write("**Step 8: 准备 marker_size**")
+if "pickup_count" in df_viz.columns:
+    pc = df_viz["pickup_count"].fillna(0)
+    st.write(f"pickup_count 范围: {pc.min()} ~ {pc.max()}")
+    
+    if pc.max() > pc.min():
+        df_viz["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+    else:
+        df_viz["marker_size"] = 14
+else:
+    df_viz["marker_size"] = 14
+    st.info("没有 pickup_count 列，使用固定大小")
+
+st.write(f"marker_size 范围: {df_viz['marker_size'].min()} ~ {df_viz['marker_size'].max()}")
+
+# Step 9: 尝试创建最简单的图
+st.write("**Step 9: 测试 Plotly 散点图**")
+
+try:
+    fig_test = px.scatter(
+        df_viz,
+        x="final_score",
+        y="sentiment_score",
+        color="keyword",
+        size="marker_size",
+        hover_data=["title"],
+        title="Test Scatter Plot"
+    )
+    
+    fig_test.update_layout(height=500)
+    st.plotly_chart(fig_test, use_container_width=True)
+    
+    st.success("✅ Plotly 图表创建成功")
+    
+except Exception as e:
+    st.error(f"❌ 创建图表时出错: {str(e)}")
+    import traceback
+    st.code(traceback.format_exc())
+
+# Step 10: 尝试用 matplotlib
+st.write("**Step 10: 备用方案 - Matplotlib**")
+
+try:
+    import matplotlib.pyplot as plt
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    for kw in df_viz['keyword'].unique():
+        subset = df_viz[df_viz['keyword'] == kw]
+        ax.scatter(subset['final_score'], subset['sentiment_score'], 
+                  label=kw, s=100, alpha=0.6, edgecolors='black')
+    
+    ax.axhline(y=0, color='gray', linestyle='--')
+    ax.axvline(x=df_viz['final_score'].median(), color='gray', linestyle='--')
+    ax.set_xlabel('Final Score')
+    ax.set_ylabel('Sentiment Score')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+    
+    st.pyplot(fig)
+    st.success("✅ Matplotlib 图表创建成功")
+    
+except Exception as e:
+    st.error(f"❌ Matplotlib 出错: {str(e)}")
+

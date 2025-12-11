@@ -35,11 +35,12 @@ import glob
 import plotly.graph_objects as go
 import plotly.io as pio
 
+fig = go.Figure(data=go.Scatter(x=[1,2,3], y=[1,4,9]))
+st.plotly_chart(fig)
 
 # -------------------------------------------------------
 # Load data from today's folder
 # -------------------------------------------------------
-
 
 
 # Auto-detect today's folder

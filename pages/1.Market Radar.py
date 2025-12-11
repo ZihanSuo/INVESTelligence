@@ -20,7 +20,7 @@ st.set_page_config(
 
 # Auto-detect today's folder
 today = datetime.today().strftime("%Y-%m-%d")
-data_path = f"data/{today}"
+data_path = f"data/2025-12-10"  #####################################################3
 
 # Load main files
 scores_file = os.path.join(data_path, "scores.csv")

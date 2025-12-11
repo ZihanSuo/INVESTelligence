@@ -14,8 +14,7 @@ import random
 from collections import defaultdict
 from pyvis.network import Network
 from streamlit.components.v1 import html
-import os
-import json
+
 
 
 # ---------------------------------------------------------
@@ -134,7 +133,7 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 # -------------------------------------------------------
 # 2.1 Impact vs Market Sentiment"
 # -------------------------------------------------------
-
+st.markdown("#### 2.1 Impact vs Market Sentiment")
 # Merge pickup_count from alpha.csv if available
 if has_alpha:
     scores = scores.merge(
@@ -157,8 +156,7 @@ fig_scatter = px.scatter(
     y="sentiment_score",
     color="keyword",
     size="marker_size",
-    hover_data=["title", "final_score", "sentiment_score", "url"],
-    title="2.1 Impact vs Market Sentiment"
+    hover_data=["title", "final_score", "sentiment_score", "url"]
 )
 
 # Horizontal line at sentiment = 0
@@ -176,7 +174,7 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 # -------------------------------------------------------
 # 2.2 The Alpha Quadrant (Four Quadrant Analysis)
 # -------------------------------------------------------
-
+st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
 alpha_file = os.path.join(data_path, "alpha.csv")
 alpha = pd.read_csv(alpha_file)
 
@@ -209,8 +207,7 @@ fig_q = px.scatter(
     color="sentiment_norm",
     color_continuous_scale=["red", "white", "green"],
     hover_data=["title", "keyword", "url"],
-    size=[12] * len(df),
-    title="2.2 Alpha Quadrant: Credibility vs Materiality"
+    size=[12] * len(df)
 )
 
 # Draw quadrant lines
@@ -502,7 +499,7 @@ else:
         html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
         network_files[keyword] = html_file
 
-    st.subheader("D. Entity Co-occurrence Network")
+    st.subheader("4. Entity Co-occurrence Network")
 
     keywords = list(network_files.keys())
 
@@ -522,12 +519,11 @@ else:
 
 
 # -------------------------------------------------------
-# 4. "Must-Read" Ticker
+# 5. "Must-Read" Ticker
 # -------------------------------------------------------
 
-import streamlit as st
 
-st.subheader("E. 📑 The 'Must-Read' Ticker")
+st.subheader("5. The 'Must-Read' Ticker")
 
 if scores is None or len(scores) == 0:
     st.info("No score data available.")

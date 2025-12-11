@@ -282,7 +282,7 @@ for i in range(0, len(unique_keywords), cols_per_row):
 
         wc_img = wc_img.recolor(color_func=color_func)
         col.markdown(f"**{kw.capitalize()}**")
-        col.image(wc_img.to_array(), use_container_width=True)
+        col.image(wc_img.to_array(), use_column_width=True)
 
 
 # -------------------------------------------------------

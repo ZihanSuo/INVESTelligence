@@ -1,136 +1,215 @@
 import streamlit as st
 import pandas as pd
-import os
-import glob
+import plotly.express as px
+import numpy as np
+import json
 
+# ---------------------------------------------------------
 # 1. Page Configuration
-st.set_page_config(page_title="AI Market Radar", layout="wide")
+# ---------------------------------------------------------
+st.set_page_config(
+    page_title="AI Financial News Agent",
+    page_icon="📈",
+    layout="wide"
+)
 
-# 2. Date Selection System (Handling the new folder structure)
-def get_available_dates():
-    # Looking for folders inside 'data' directory
-    data_dir = "data"
-    if not os.path.exists(data_dir):
-        return []
-    # Get all subdirectories that look like dates
-    dates = [d for d in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, d))]
-    # Sort descending (newest first)
-    dates.sort(reverse=True)
-    return dates
+DATA_ROOT = "./data"  # Assuming your folder structure starts here
 
-# Sidebar for navigation
-with st.sidebar:
-    st.header("🗄️ Archive Navigation")
-    available_dates = get_available_dates()
-    
-    if available_dates:
-        selected_date = st.selectbox("Select Analysis Date", available_dates)
-        # Construct dynamic path: data/2025-12-10/
-        current_path = os.path.join("data", selected_date)
-    else:
-        st.error("No data folders found in /data/")
-        st.stop()
-
-# 3. Load Data Function (Updated for new CSVs)
 @st.cache_data
-def load_daily_data(folder_path):
-    # Defining paths to specific files in the date folder
-    # Assuming 'alpha.csv' contains the top ranked news
-    news_path = os.path.join(folder_path, 'scores.csv')
-    # Assuming 'sentiment_statistics.csv' contains aggregate metrics
-    metrics_path = os.path.join(folder_path, 'sentiment_statistics.csv')
+def load_all_data(target_date=None):
+    """
+    Loads all DataFrames from the specified date folder (or the latest one).
+    Also aggregates historical data for trend analysis.
+    """
     
-    news_df = None
-    metrics_df = None
+    # 1. Find the target folder (Default: Latest Date)
+    # -----------------------------------------------------
+    all_dates = sorted([d for d in os.listdir(DATA_ROOT) if os.path.isdir(os.path.join(DATA_ROOT, d))])
+    
+    if not all_dates:
+        st.error("No data folders found in ./data!")
+        return None, None, None, None, None, None
 
-    if os.path.exists(news_path):
-        news_df = pd.read_csv(news_path)
+    # Use the latest date if none specified
+    current_date = target_date if target_date else all_dates[-1]
+    day_folder = os.path.join(DATA_ROOT, current_date)
     
-    if os.path.exists(metrics_path):
-        metrics_df = pd.read_csv(metrics_path)
+    # 2. Load Daily DataFrames (Exactly matching your filenames)
+    # -----------------------------------------------------
+    try:
+        # A. alpha.csv -> High priority signals (Level 2 Scatter)
+        alpha_df = pd.read_csv(os.path.join(day_folder, "alpha.csv"))
         
-    return news_df, metrics_df
+        # B. dedupted_news.csv -> Full raw news list (Level 5 Table)
+        news_df = pd.read_csv(os.path.join(day_folder, "dedupted_news.csv"))
+        
+        # C. scores.csv -> Detailed scoring breakdown (Maybe useful for deep dive)
+        scores_df = pd.read_csv(os.path.join(day_folder, "scores.csv"))
+        
+        # D. word_count.csv -> Keyword distribution (Level 2 Treemap)
+        word_count_df = pd.read_csv(os.path.join(day_folder, "word_count.csv"))
+        
+        # E. sentiment_statistics.csv -> Daily metrics (Level 1 Pulse)
+        stats_df = pd.read_csv(os.path.join(day_folder, "sentiment_statistics.csv"))
+        
+        # F. entities.json -> Knowledge Graph (Level 4 Network)
+        # Note: Using json.load because graph data is often nested, not tabular
+        with open(os.path.join(day_folder, "entities.json")) as f:
+            entities_data = json.load(f)
 
-# Load data for the selected date
-news_df, metrics_df = load_daily_data(current_path)
-
-# 4. Main Dashboard Layout
-st.title(f"AI Market Radar | {selected_date}")
-
-if news_df is not None:
+    except FileNotFoundError as e:
+        st.error(f"Missing critical file in {day_folder}: {e}")
+        return None
+        
+    # 3. Load History (Loop through previous folders for Level 3)
+    # -----------------------------------------------------
+    history_list = []
+    for d in all_dates:
+        stat_path = os.path.join(DATA_ROOT, d, "sentiment_statistics.csv")
+        if os.path.exists(stat_path):
+            try:
+                # Assuming this CSV has columns like [date, avg_sentiment, total_articles]
+                daily_stat = pd.read_csv(stat_path)
+                daily_stat['date'] = d # Ensure date column exists
+                history_list.append(daily_stat)
+            except:
+                continue
     
-    # --- SECTION A: KPI METRICS ---
-    # Try to extract metrics from sentiment_statistics.csv or calculate from news_df
-    st.markdown("### 1. Daily Market Pulse")
-    kpi1, kpi2, kpi3 = st.columns(3)
-    
-    # KPI 1: Total Volume
-    total_articles = len(news_df)
-    kpi1.metric("Total Alpha Signals", total_articles)
-    
-    # KPI 2 & 3: Sentiment (If metrics file exists, use it, else calculate)
-    avg_score = 0
-    if metrics_df is not None and not metrics_df.empty:
-        # Assuming column 0 is the label and column 1 is value, adjust as needed
-        # Example logic:
-        avg_score = metrics_df.iloc[0, 1] if len(metrics_df.columns) > 1 else 0
-    elif 'score' in news_df.columns:
-        avg_score = news_df['score'].mean()
-
-    kpi2.metric("Market Sentiment Score", f"{avg_score:.2f}")
-    kpi3.metric("Data Freshness", "Verified") # Placeholder or check timestamp
-
-    st.divider()
-
-    # --- SECTION B: IMPACT ANALYSIS (Removed Source Stats) ---
-    st.markdown("### 2. Impact Sector Analysis")
-    
-    # If you have an 'industry' or 'category' column, we visualize that
-    # Mapping likely columns based on common naming conventions
-    cat_col = next((col for col in ['category', 'industry', 'sector', 'tag'] if col in news_df.columns), None)
-    
-    if cat_col:
-        # Use full width since we removed the Source Pie Chart
-        impact_counts = news_df[cat_col].value_counts()
-        st.bar_chart(impact_counts)
+    if history_list:
+        history_df = pd.concat(history_list, ignore_index=True)
     else:
-        st.info("No category/industry column found for visualization.")
+        history_df = pd.DataFrame() # Empty fallback
 
-    st.divider()
+    # Return everything as a dictionary or individual variables
+    return {
+        "current_date": current_date,
+        "alpha_df": alpha_df,
+        "news_df": news_df,
+        "scores_df": scores_df,
+        "word_count_df": word_count_df,
+        "stats_df": stats_df,
+        "entities_data": entities_data,
+        "history_df": history_df
+    }
 
-    # --- SECTION C: RANKED NEWS TABLE ---
-    st.markdown("### 3. Alpha News List")
-    
-    # select columns to display (adjust based on your actual CSV headers)
-    # Trying to be smart about picking columns that likely exist
-    all_cols = news_df.columns.tolist()
-    target_cols = ['title', 'summary', 'score', 'url', 'reasoning']
-    display_cols = [c for c in target_cols if c in all_cols]
-    
-    # If specific columns aren't found, just show the first 5 columns
-    if not display_cols:
-        display_cols = all_cols[:5]
+# Execution
+data_pack = load_all_data()
+# ---------------------------------------------------------
+# Level 1: Macro Snapshot (The Dashboard Header)
+# ---------------------------------------------------------
+st.title("💰 AI Financial News Dashboard")
+st.markdown("---")
 
-    st.dataframe(
-        news_df[display_cols].head(15),
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "url": st.column_config.LinkColumn("Source Link")
-        }
+# CSS to style the metric containers slightly for better readability
+st.markdown("""
+<style>
+div[data-testid="metric-container"] {
+    background-color: #f0f2f6;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Layout: Three columns for key metrics
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.metric(
+        label="Total Articles Analyzed",
+        value=metrics['total_articles'],
+        delta="12 New"  # Example: Change since last run
     )
 
-    # --- SECTION D: AI EXPLAINABILITY ---
-    # Only show if a reasoning column exists
-    reason_col = next((col for col in ['reason_trace', 'reasoning', 'explanation'] if col in news_df.columns), None)
-    
-    if reason_col:
-        st.markdown("### 4. AI Deep Dive")
-        with st.expander("View Top Analysis Logic", expanded=True):
-            top_news = news_df.head(3)
-            for i, row in top_news.iterrows():
-                st.markdown(f"**Signal:** {row.get('title', 'N/A')}")
-                st.info(f"**Logic:** {row[reason_col]}")
+with c2:
+    sentiment_val = metrics['avg_sentiment']
+    # Dynamic coloring: Inverse usually means Red=Negative, Green=Positive
+    delta_color = "normal" if abs(sentiment_val) < 0.1 else ("inverse" if sentiment_val < 0 else "normal") 
+    st.metric(
+        label="Market Sentiment Pulse",
+        value=f"{sentiment_val:+.2f}",
+        delta="Bullish" if sentiment_val > 0.2 else ("Bearish" if sentiment_val < -0.2 else "Neutral"),
+        delta_color=delta_color
+    )
 
-else:
-    st.warning(f"No 'alpha.csv' found in {current_path}. Please check the data generation pipeline.")
+with c3:
+    st.metric(
+        label="Top Trending Theme",
+        value=metrics['top_keyword'],
+        delta="High Conviction"
+    )
+
+st.markdown("---")
+
+# ---------------------------------------------------------
+# Level 2: Core Signal Discovery (The Alpha Layer)
+# ---------------------------------------------------------
+st.subheader("🎯 Alpha Discovery Layer")
+
+# Layout: Left 2/3 (Scatter Plot), Right 1/3 (Treemap)
+col_left, col_right = st.columns([2, 1])
+
+# --- Left Column: The Alpha Matrix (Scatter Plot) ---
+with col_left:
+    st.markdown("#### 1. Signal-to-Noise Matrix (Alpha Quadrant)")
+    st.caption("X-Axis: Importance (Score) | Y-Axis: Sentiment (Direction)")
+    
+    # Construct Custom Hover Text
+    df["hover_text"] = (
+        "<b>" + df["title"] + "</b><br>" +
+        "Source: " + df["source"] + "<br>" +
+        "Score: " + df["final_score"].astype(str)
+    )
+
+    # Plotly Scatter Plot
+    fig_scatter = px.scatter(
+        df,
+        x="final_score",
+        y="sentiment_score",
+        color="keyword",
+        size="word_count",   # Bubble size represents article length/depth
+        hover_name="title",
+        custom_data=["source", "final_score"], # Data available for hover template
+        color_discrete_sequence=px.colors.qualitative.G10,
+        height=500
+    )
+
+    # Add Reference Lines for Decision Making
+    # Horizontal line at 0 (Neutral Sentiment)
+    fig_scatter.add_hline(y=0, line_width=1, line_dash="dash", line_color="gray", opacity=0.5)
+    # Vertical line at 75 (High Importance Threshold)
+    fig_scatter.add_vline(x=75, line_width=1, line_dash="dash", line_color="red", opacity=0.5, annotation_text="High Priority")
+
+    # Optimize Axes
+    fig_scatter.update_layout(
+        xaxis_title="Relevance / Materiality Score",
+        yaxis_title="Sentiment Score (-1 to +1)",
+        xaxis=dict(range=[40, 105]), # Focusing on mid-to-high relevance
+        yaxis=dict(range=[-1.1, 1.1]),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+    
+    st.plotly_chart(fig_scatter, use_container_width=True)
+
+# --- Right Column: Market Attention Map (Treemap) ---
+with col_right:
+    st.markdown("#### 2. Market Attention Map")
+    st.caption("Size: Content Volume | Color: Sentiment")
+
+    # Plotly Treemap
+    fig_tree = px.treemap(
+        df,
+        path=[px.Constant("Market"), 'keyword', 'title'], # Hierarchy: All -> Keyword -> Article
+        values='word_count',      # Tile Area = Information Depth
+        color='sentiment_score',  # Tile Color = Sentiment
+        color_continuous_scale='RdBu', # Red-Blue Diverging Scale
+        color_continuous_midpoint=0,
+        height=500
+    )
+    
+    # Clean up UI for the Treemap
+    fig_tree.update_layout(margin=dict(t=0, l=0, r=0, b=0))
+    fig_tree.data[0].textinfo = 'label+text' # Show text labels
+    
+    st.plotly_chart(fig_tree, use_container_width=True)

@@ -743,157 +743,269 @@ else:
 
 
 
-            st.markdown("### 🔍 诊断模式")
 
-# Step 1: 检查 scores 数据
-st.write("**Step 1: 检查 scores 数据**")
-st.write(f"scores 的形状: {scores.shape}")
-st.write(f"scores 的列: {scores.columns.tolist()}")
+# ==========================================
+# Plotly 完整诊断 - 找出问题根源
+# ==========================================
 
-# 检查是否有重复列
-duplicate_cols = scores.columns[scores.columns.duplicated()].tolist()
-if duplicate_cols:
-    st.error(f"❌ scores 有重复列: {duplicate_cols}")
-else:
-    st.success("✅ scores 没有重复列")
+st.title("🔍 Plotly 诊断中心")
 
-# Step 2: 显示前5行数据
-st.write("**Step 2: scores 前5行数据**")
-st.dataframe(scores[['keyword', 'title', 'final_score', 'sentiment_score']].head())
+# ==========================================
+# 1. 检查版本和环境
+# ==========================================
+st.header("1. 版本检查")
 
-# Step 3: 检查数据统计
-st.write("**Step 3: 数据统计**")
-col1, col2, col3 = st.columns(3)
+import plotly
+import streamlit as st
+import pandas as pd
 
+col1, col2 = st.columns(2)
 with col1:
-    st.metric("总行数", len(scores))
-    st.metric("final_score 非空", scores['final_score'].notna().sum())
-    st.metric("final_score 有无穷大", scores['final_score'].isin([float('inf'), float('-inf')]).sum())
-
+    st.metric("Streamlit 版本", st.__version__)
+    st.metric("Plotly 版本", plotly.__version__)
 with col2:
-    st.metric("sentiment_score 非空", scores['sentiment_score'].notna().sum())
-    st.metric("sentiment_score 有无穷大", scores['sentiment_score'].isin([float('inf'), float('-inf')]).sum())
-    st.metric("keyword 非空", scores['keyword'].notna().sum())
+    st.metric("Pandas 版本", pd.__version__)
 
-with col3:
-    st.metric("final_score 范围", f"{scores['final_score'].min():.1f} ~ {scores['final_score'].max():.1f}")
-    st.metric("sentiment_score 范围", f"{scores['sentiment_score'].min():.2f} ~ {scores['sentiment_score'].max():.2f}")
+# ==========================================
+# 2. 测试 1: 最基础的 Plotly 图表
+# ==========================================
+st.header("2. 测试 1: 基础 Plotly")
 
-# Step 4: 创建副本并清理
-st.write("**Step 4: 创建干净副本**")
-df_viz = scores.copy()
+st.code("""
+import plotly.graph_objects as go
 
-# 移除重复列（如果有）
-if df_viz.columns.duplicated().any():
-    st.warning("移除重复列...")
-    df_viz = df_viz.loc[:, ~df_viz.columns.duplicated()]
-
-# 重置索引
-df_viz = df_viz.reset_index(drop=True)
-
-st.write(f"清理后的形状: {df_viz.shape}")
-st.write(f"清理后的列: {df_viz.columns.tolist()}")
-
-# Step 5: 检查必需列
-required_cols = ['final_score', 'sentiment_score', 'keyword']
-missing = [col for col in required_cols if col not in df_viz.columns]
-
-if missing:
-    st.error(f"❌ 缺少必需列: {missing}")
-    st.stop()
-else:
-    st.success("✅ 所有必需列存在")
-
-# Step 6: 清理数据
-st.write("**Step 6: 数据清理**")
-before_count = len(df_viz)
-
-# 移除 NaN
-df_viz = df_viz.dropna(subset=['final_score', 'sentiment_score', 'keyword'])
-after_nan = len(df_viz)
-
-# 移除无穷大
-df_viz = df_viz[~df_viz['final_score'].isin([float('inf'), float('-inf')])]
-df_viz = df_viz[~df_viz['sentiment_score'].isin([float('inf'), float('-inf')])]
-after_inf = len(df_viz)
-
-st.write(f"原始行数: {before_count}")
-st.write(f"移除 NaN 后: {after_nan} (移除了 {before_count - after_nan} 行)")
-st.write(f"移除无穷大后: {after_inf} (移除了 {after_nan - after_inf} 行)")
-
-if len(df_viz) == 0:
-    st.error("❌ 清理后没有数据了！")
-    st.stop()
-else:
-    st.success(f"✅ 清理后还有 {len(df_viz)} 行数据")
-
-# Step 7: 显示清理后的数据
-st.write("**Step 7: 清理后的数据样本**")
-st.dataframe(df_viz[['keyword', 'title', 'final_score', 'sentiment_score']].head(10))
-
-# Step 8: 准备 marker_size
-st.write("**Step 8: 准备 marker_size**")
-if "pickup_count" in df_viz.columns:
-    pc = df_viz["pickup_count"].fillna(0)
-    st.write(f"pickup_count 范围: {pc.min()} ~ {pc.max()}")
-    
-    if pc.max() > pc.min():
-        df_viz["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
-    else:
-        df_viz["marker_size"] = 14
-else:
-    df_viz["marker_size"] = 14
-    st.info("没有 pickup_count 列，使用固定大小")
-
-st.write(f"marker_size 范围: {df_viz['marker_size'].min()} ~ {df_viz['marker_size'].max()}")
-
-# Step 9: 尝试创建最简单的图
-st.write("**Step 9: 测试 Plotly 散点图**")
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 1, 4], mode='markers'))
+st.plotly_chart(fig, use_container_width=True)
+""")
 
 try:
-    fig_test = px.scatter(
-        df_viz,
-        x="final_score",
-        y="sentiment_score",
-        color="keyword",
-        size="marker_size",
-        hover_data=["title"],
-        title="Test Scatter Plot"
+    import plotly.graph_objects as go
+    
+    fig1 = go.Figure()
+    fig1.add_trace(go.Scatter(
+        x=[1, 2, 3, 4, 5],
+        y=[3, 1, 4, 2, 5],
+        mode='markers',
+        marker=dict(size=15, color='red')
+    ))
+    fig1.update_layout(
+        title="Test 1: graph_objects",
+        height=400
     )
     
-    fig_test.update_layout(height=500)
-    st.plotly_chart(fig_test, use_container_width=True)
-    
-    st.success("✅ Plotly 图表创建成功")
+    st.plotly_chart(fig1, use_container_width=True)
+    st.success("✅ Test 1 通过 - graph_objects 工作正常")
     
 except Exception as e:
-    st.error(f"❌ 创建图表时出错: {str(e)}")
-    import traceback
-    st.code(traceback.format_exc())
+    st.error(f"❌ Test 1 失败: {str(e)}")
 
-# Step 10: 尝试用 matplotlib
-st.write("**Step 10: 备用方案 - Matplotlib**")
+# ==========================================
+# 3. 测试 2: Plotly Express
+# ==========================================
+st.header("3. 测试 2: Plotly Express")
+
+st.code("""
+import plotly.express as px
+
+fig = px.scatter(x=[1, 2, 3], y=[3, 1, 4])
+st.plotly_chart(fig, use_container_width=True)
+""")
 
 try:
-    import matplotlib.pyplot as plt
+    import plotly.express as px
     
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig2 = px.scatter(
+        x=[1, 2, 3, 4, 5],
+        y=[3, 1, 4, 2, 5],
+        title="Test 2: plotly.express"
+    )
+    fig2.update_traces(marker=dict(size=15, color='blue'))
+    fig2.update_layout(height=400)
     
-    for kw in df_viz['keyword'].unique():
-        subset = df_viz[df_viz['keyword'] == kw]
-        ax.scatter(subset['final_score'], subset['sentiment_score'], 
-                  label=kw, s=100, alpha=0.6, edgecolors='black')
-    
-    ax.axhline(y=0, color='gray', linestyle='--')
-    ax.axvline(x=df_viz['final_score'].median(), color='gray', linestyle='--')
-    ax.set_xlabel('Final Score')
-    ax.set_ylabel('Sentiment Score')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-    
-    st.pyplot(fig)
-    st.success("✅ Matplotlib 图表创建成功")
+    st.plotly_chart(fig2, use_container_width=True)
+    st.success("✅ Test 2 通过 - plotly.express 工作正常")
     
 except Exception as e:
-    st.error(f"❌ Matplotlib 出错: {str(e)}")
+    st.error(f"❌ Test 2 失败: {str(e)}")
+
+# ==========================================
+# 4. 测试 3: 使用 DataFrame
+# ==========================================
+st.header("4. 测试 3: DataFrame 数据源")
+
+st.code("""
+df = pd.DataFrame({'x': [1, 2, 3], 'y': [3, 1, 4]})
+fig = px.scatter(df, x='x', y='y')
+st.plotly_chart(fig, use_container_width=True)
+""")
+
+try:
+    df_test = pd.DataFrame({
+        'x': [1, 2, 3, 4, 5],
+        'y': [3, 1, 4, 2, 5],
+        'category': ['A', 'B', 'A', 'B', 'A']
+    })
+    
+    fig3 = px.scatter(
+        df_test,
+        x='x',
+        y='y',
+        color='category',
+        title="Test 3: DataFrame source"
+    )
+    fig3.update_traces(marker=dict(size=15))
+    fig3.update_layout(height=400)
+    
+    st.plotly_chart(fig3, use_container_width=True)
+    st.success("✅ Test 3 通过 - DataFrame 数据源工作正常")
+    
+except Exception as e:
+    st.error(f"❌ Test 3 失败: {str(e)}")
+
+# ==========================================
+# 5. 测试 4: 显式设置范围
+# ==========================================
+st.header("5. 测试 4: 显式设置坐标轴范围")
+
+st.code("""
+fig = px.scatter(x=[1, 2, 3], y=[3, 1, 4])
+fig.update_xaxes(range=[0, 4])
+fig.update_yaxes(range=[0, 5])
+st.plotly_chart(fig, use_container_width=True)
+""")
+
+try:
+    fig4 = px.scatter(
+        x=[1, 2, 3, 4, 5],
+        y=[3, 1, 4, 2, 5],
+        title="Test 4: 显式坐标轴范围"
+    )
+    fig4.update_xaxes(range=[0, 6])
+    fig4.update_yaxes(range=[0, 6])
+    fig4.update_traces(marker=dict(size=15, color='green'))
+    fig4.update_layout(height=400)
+    
+    st.plotly_chart(fig4, use_container_width=True)
+    st.success("✅ Test 4 通过 - 显式范围工作正常")
+    
+except Exception as e:
+    st.error(f"❌ Test 4 失败: {str(e)}")
+
+# ==========================================
+# 6. 测试 5: 不同渲染模式
+# ==========================================
+st.header("6. 测试 5: 不同渲染模式")
+
+try:
+    fig5 = px.scatter(
+        x=[1, 2, 3, 4, 5],
+        y=[3, 1, 4, 2, 5],
+        title="Test 5: 不同渲染器"
+    )
+    fig5.update_traces(marker=dict(size=15, color='purple'))
+    fig5.update_layout(height=400)
+    
+    # 尝试不同的参数
+    st.subheader("5a. 默认渲染")
+    st.plotly_chart(fig5, use_container_width=True)
+    
+    st.subheader("5b. 禁用 use_container_width")
+    st.plotly_chart(fig5, use_container_width=False)
+    
+    st.subheader("5c. 指定高度")
+    st.plotly_chart(fig5, height=400)
+    
+    st.success("✅ Test 5 完成")
+    
+except Exception as e:
+    st.error(f"❌ Test 5 失败: {str(e)}")
+
+# ==========================================
+# 7. 浏览器控制台检查
+# ==========================================
+st.header("7. 浏览器检查建议")
+
+st.info("""
+**如果上面的测试都显示空白，请检查：**
+
+1. **浏览器控制台** (F12 → Console)
+   - 查找 JavaScript 错误
+   - 查找 Plotly 相关错误
+   
+2. **网络面板** (F12 → Network)
+   - 检查是否有资源加载失败
+   - 特别注意 plotly.js 相关资源
+   
+3. **尝试以下操作：**
+   - 清除浏览器缓存 (Ctrl+Shift+Delete)
+   - 使用隐身模式打开
+   - 尝试不同浏览器 (Chrome/Firefox/Edge)
+   - 重启 Streamlit 应用
+""")
+
+# ==========================================
+# 8. 可能的修复方案
+# ==========================================
+st.header("8. 可能的修复方案")
+
+st.markdown("""
+### 方案 1: 重装 Plotly
+```bash
+pip uninstall plotly
+pip install plotly==5.18.0
+```
+
+### 方案 2: 重装 Streamlit
+```bash
+pip uninstall streamlit
+pip install streamlit
+```
+
+### 方案 3: 清除缓存
+```bash
+streamlit cache clear
+```
+
+### 方案 4: 检查 requirements.txt
+确保包含：
+```
+streamlit>=1.28.0
+plotly>=5.18.0
+pandas>=2.0.0
+```
+
+### 方案 5: 使用备用渲染器
+在代码开头添加：
+```python
+import plotly.io as pio
+pio.renderers.default = "browser"
+```
+""")
+
+# ==========================================
+# 9. 生成诊断报告
+# ==========================================
+st.header("9. 诊断报告")
+
+report = f"""
+**环境信息：**
+- Streamlit: {st.__version__}
+- Plotly: {plotly.__version__}
+- Pandas: {pd.__version__}
+
+**测试结果：**
+请查看上方各项测试的结果
+"""
+
+st.text_area("诊断报告", report, height=200)
+
+st.download_button(
+    label="下载诊断报告",
+    data=report,
+    file_name="plotly_diagnostic_report.txt",
+    mime="text/plain"
+)
+
+
 

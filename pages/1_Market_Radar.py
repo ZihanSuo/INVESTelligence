@@ -27,7 +27,8 @@ data_path = f"data/{today}"
 # Load main files
 scores_file = os.path.join(data_path, "scores.csv")
 alpha_file = os.path.join(data_path, "alpha.csv")
-entities_file == os.path.join(data_path, "entities.json")
+entities_file = os.path.join(data_path, "entities.json")
+wordcount_file = os.path.join(data_path, "word_count.csv")
 
 # Read scores.csv
 scores = pd.read_csv(scores_file)
@@ -223,8 +224,7 @@ from wordcloud import WordCloud
 
 st.markdown("### C. Keyword Word Cloud")
 
-word_count_file = os.path.join(data_path, "word_count.csv")
-wc = pd.read_csv(word_count_file)
+wc = pd.read_csv(wordcount_file)
 
 unique_keywords = wc["keyword"].unique()
 k = len(unique_keywords)

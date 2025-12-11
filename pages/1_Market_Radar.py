@@ -405,15 +405,15 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
 
     # Slightly more compact layout (JS-level options)
     net.set_options("""
-    var options = {
-      physics: {
-        barnesHut: {
-          gravitationalConstant: -3000,
-          centralGravity: 0.25,
-          springLength: 90,
-          springConstant: 0.04
+    {
+      "physics": {
+        "barnesHut": {
+          "gravitationalConstant": -3000,
+          "centralGravity": 0.25,
+          "springLength": 90,
+          "springConstant": 0.04
         },
-        minVelocity: 0.75
+        "minVelocity": 0.75
       }
     }
     """)

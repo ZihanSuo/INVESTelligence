@@ -159,46 +159,46 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Keyword Word Cloud
+# C. Keyword Word Cloud (simple single-color per keyword)
 # -------------------------------------------------------
 
-st.markdown("### C. Keyword Word Cloud (per theme)")
+st.markdown("### C. Keyword Word Cloud")
 
-import numpy as np
 from wordcloud import WordCloud
+import numpy as np
 
-# Load today's word_count file
 word_count_file = os.path.join(data_path, "word_count.csv")
-wc = pd.read_csv(word_count_file)   # expected columns: keyword, word, count
+wc = pd.read_csv(word_count_file)
 
-# Get all unique keywords
+# get scatter plot colors
+scatter_color_map = {trace.name: trace.marker.color for trace in fig_scatter.data}
+
 unique_keywords = wc["keyword"].unique()
-cols_per_row = 3  # 3 wordclouds per row
+cols_per_row = 3
 
 for i in range(0, len(unique_keywords), cols_per_row):
-    row_keywords = unique_keywords[i:i + cols_per_row]
+    row_keywords = unique_keywords[i:i+cols_per_row]
     cols = st.columns(len(row_keywords))
 
     for col, kw in zip(cols, row_keywords):
         subset = wc[wc["keyword"] == kw]
-
-        # Frequency dictionary: {word: count}
         freq = dict(zip(subset["word"], subset["count"]))
 
-        # Generate WordCloud (default color settings)
+        base_color = scatter_color_map.get(kw, "#444444")
+
+        # simple solid-color text function
+        def color_func(*args, **kwargs):
+            return base_color
+
         wc_img = WordCloud(
             width=500,
             height=350,
             background_color="white",
-            collocations=False
+            collocations=False,
+            color_func=color_func
         ).generate_from_frequencies(freq)
 
-        # Convert to array for Streamlit
-        wc_array = wc_img.to_array()
-
-        # Display
         col.markdown(f"**{kw.capitalize()}**")
-        col.image(wc_array, use_container_width=True)
-
+        col.image(wc_img.to_array(), use_container_width=True)
 
 

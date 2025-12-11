@@ -159,30 +159,52 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Keyword Word Cloud
+# Auto-Color Word Cloud (scalable for unlimited keywords)
 # -------------------------------------------------------
 
-st.markdown("### C. Keyword Word Cloud")
-
-from wordcloud import WordCloud
-import numpy as np
+import colorsys
 import random
+from wordcloud import WordCloud
+
+st.markdown("### C. Keyword Word Cloud")
 
 word_count_file = os.path.join(data_path, "word_count.csv")
 wc = pd.read_csv(word_count_file)
 
-# --- Professional color palettes ---
-palette_blue = ["#0B3C5D", "#1D65A6", "#3E92CC", "#7BB6E0", "#BBDDEE"]
-palette_green = ["#007F5F", "#2B9348", "#55A630", "#80B918", "#AACC00", "#D4D700"]
-palette_red = ["#9B2226", "#C73E3A", "#E76F51", "#F4A261", "#F6BD60"]
-
-keyword_palettes = {
-    "bitcoin": palette_blue,
-    "rare earth": palette_green,
-    "tesla": palette_red
-}
-
 unique_keywords = wc["keyword"].unique()
+k = len(unique_keywords)
+
+# ----- Step 1: generate base colors evenly across the hue wheel -----
+def generate_base_colors(num):
+    colors = []
+    for i in range(num):
+        h = i / num                     # evenly spaced hues [0,1)
+        s = 0.55                         # moderate saturation
+        l = 0.55                         # mid lightness
+        r, g, b = colorsys.hls_to_rgb(h, l, s)
+        colors.append('#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)))
+    return colors
+
+base_colors = generate_base_colors(k)
+
+# ----- Step 2: generate 5-shade harmonious palettes from base color -----
+def make_palette(hex_color):
+    hex_color = hex_color.lstrip('#')
+    r = int(hex_color[0:2], 16) / 255
+    g = int(hex_color[2:4], 16) / 255
+    b = int(hex_color[4:6], 16) / 255
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+
+    shades = []
+    for factor in [0.6, 0.75, 0.9, 1.05, 1.2]:
+        new_l = min(1, max(0, l * factor))
+        rr, gg, bb = colorsys.hls_to_rgb(h, new_l, s)
+        shades.append('#%02x%02x%02x' % (int(rr*255), int(gg*255), int(bb*255)))
+    return shades
+
+keyword_palettes = {kw: make_palette(base_colors[i]) for i, kw in enumerate(unique_keywords)}
+
+# ----- Render word clouds -----
 cols_per_row = 3
 
 for i in range(0, len(unique_keywords), cols_per_row):
@@ -193,20 +215,16 @@ for i in range(0, len(unique_keywords), cols_per_row):
         subset = wc[wc["keyword"] == kw]
         freq = dict(zip(subset["word"], subset["count"]))
 
-        palette = keyword_palettes.get(kw, palette_blue)
+        palette = keyword_palettes[kw]
 
-        def color_func(word, *args, **kwargs):
+        def color_func(*args, **kwargs):
             return random.choice(palette)
 
         wc_img = WordCloud(
-            width=500,
-            height=350,
-            background_color="white",
-            collocations=False,
-            prefer_horizontal=1
+            width=500, height=350, background_color="white",
+            collocations=False
         ).generate_from_frequencies(freq)
 
         wc_img = wc_img.recolor(color_func=color_func)
-
         col.markdown(f"**{kw.capitalize()}**")
         col.image(wc_img.to_array(), use_container_width=True)

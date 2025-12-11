@@ -282,3 +282,126 @@ for i in range(0, len(unique_keywords), cols_per_row):
         wc_img = wc_img.recolor(color_func=color_func)
         col.markdown(f"**{kw.capitalize()}**")
         col.image(wc_img.to_array(), use_container_width=True)
+
+
+
+
+#----------------------ENTITIES
+
+KEYWORD_COLORS = {
+    "bitcoin":  {"main": "#4976f5", "light": "#AFC7FA"},
+    "rare earth": {"main": "#2CB67D", "light": "#7FDDB1"},
+    "tesla": {"main": "#D84D4D", "light": "#F2A7A7"},
+}
+import json
+from collections import defaultdict
+
+# -------------------------
+# Load entity-level graph data
+# -------------------------
+with open("data/2025-12-10/entities.json", "r") as f:
+    entities_data = json.load(f)
+
+# [
+#   {
+#     "keyword": "...",
+#     "graph_data": [
+#         {"title": "...", "entities": [...], "sentiment": 0.3, ...}
+#     ]
+#   }
+# ]
+def build_network_data(entry):
+    keyword = entry["keyword"]
+    articles = entry["graph_data"]
+
+    # 实体出现次数
+    entity_freq = defaultdict(int)
+    # 实体 sentiment 统计
+    entity_sent_sum = defaultdict(float)
+    entity_sent_count = defaultdict(int)
+
+    # 共现关系计数
+    cooccur = defaultdict(lambda: defaultdict(int))
+
+    for art in articles:
+        ents = art.get("entities", [])
+        sentiment = art.get("sentiment", 0)
+
+        # 统计实体出现频率 & sentiment
+        for e in ents:
+            entity_freq[e] += 1
+            entity_sent_sum[e] += sentiment
+            entity_sent_count[e] += 1
+
+        # 构建共现对（entity pair）
+        for i in range(len(ents)):
+            for j in range(i + 1, len(ents)):
+                a, b = ents[i], ents[j]
+                cooccur[a][b] += 1
+                cooccur[b][a] += 1
+
+    # 计算实体平均 sentiment
+    entity_sent_avg = {e: entity_sent_sum[e] / entity_sent_count[e] for e in entity_freq}
+
+    return entity_freq, entity_sent_avg, cooccur
+from pyvis.network import Network
+import os
+
+OUTPUT_DIR = "network_graphs"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
+    net = Network(height="550px", width="100%", bgcolor="#FFFFFF", font_color="#1D1D1F")
+    net.barnes_hut()
+
+    colors = KEYWORD_COLORS.get(keyword, {"main": "#666", "light": "#CCC"})
+
+    # -----------------------
+    # 添加 Keyword 中心节点
+    # -----------------------
+    net.add_node(
+        keyword,
+        label=keyword,
+        size=45,  
+        color=colors["main"],
+        title=f"<b>{keyword}</b><br>Total Entities: {len(entity_freq)}"
+    )
+
+    # -----------------------
+    # 添加实体节点
+    # -----------------------
+    max_freq = max(entity_freq.values()) if entity_freq else 1
+
+    for ent, freq in entity_freq.items():
+        size = 10 + (freq / max_freq) * 25   # 中等大小（最小10 → 最大35）
+
+        sentiment = entity_sent_avg.get(ent, 0)
+
+        net.add_node(
+            ent,
+            label=ent,
+            size=size,
+            color=colors["light"],
+            title=f"{ent}<br>Count: {freq}<br>Avg Sentiment: {sentiment:.2f}"
+        )
+
+        # keyword → entity
+        net.add_edge(keyword, ent, color="#999", width=1)
+
+    # -----------------------
+    # 添加实体共现边
+    # -----------------------
+    for a in cooccur:
+        for b, count in cooccur[a].items():
+            if count > 0:
+                net.add_edge(
+                    a, b,
+                    color="#666",
+                    width=1 + count * 0.5,  # 共现次数越高 → 边越粗
+                    title=f"Co-occurs {count} times"
+                )
+
+    file_path = f"{OUTPUT_DIR}/{keyword}_network.html"
+    net.show(file_path)
+    return file_path
+

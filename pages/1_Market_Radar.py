@@ -620,108 +620,121 @@ else:
 
 
 # -------------------------------------------------------
-# C. Sentiment Trend (Interactive, Bloomberg style)
+# C. Sentiment Trend (Weighted by final_score)
 # -------------------------------------------------------
 
 import glob
-import pandas as pd
 import plotly.graph_objs as go
 
 st.subheader("C. Sentiment Trend (Sparklines)")
 
+# Bloomberg-style palette
 BLOOMBERG_COLORS = [
     "#5DA5DA", "#FAA43A", "#F17CB0", "#60BD68", "#B2912F",
     "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8"
 ]
 
-# -------------------------------------------------------
-# Load latest <= 7 days sentiment_statistics.csv
-# -------------------------------------------------------
+# -----------------------------
+# Load latest <= 7 days scores
+# -----------------------------
+score_files = sorted(glob.glob("data/*/scores.csv"))
 
-files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
-
-def extract_date(path):
-    folder = path.split("/")[-2]
+def extract_date(path: str):
+    folder = path.split("/")[-2]          # e.g. "2025-12-11"
     return pd.to_datetime(folder, errors="coerce")
 
-# keep only dated folders
-file_date_pairs = [(f, extract_date(f)) for f in files]
-file_date_pairs = [(f, d) for f, d in file_date_pairs if pd.notna(d)]
+file_date_pairs = []
+for f in score_files:
+    dt = extract_date(f)
+    if pd.notna(dt):
+        file_date_pairs.append((f, dt))
 
-# sort newest → oldest
+# sort by date desc and keep last 7 days
 file_date_pairs.sort(key=lambda x: x[1], reverse=True)
-
-# keep ≤ 7 days
 latest_files = [f for f, d in file_date_pairs[:7]]
 
-# -------------------------------------------------------
-# Read & merge
-# -------------------------------------------------------
 df_list = []
 for f in latest_files:
     try:
         df = pd.read_csv(f)
-        df = df.copy()
-        df["date"] = extract_date(f)
-
-        # Ensure numeric columns
-        for col in ["strong_neg","weak_neg","neutral","weak_pos","strong_pos"]:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-
-        # Compute sentiment index
-        df["sent_index"] = (
-            -2 * df["strong_neg"]
-            -1 * df["weak_neg"]
-            +1 * df["weak_pos"]
-            +2 * df["strong_pos"]
-        ) / 100.0
-
+        date_str = f.split("/")[-2]
+        df["date"] = pd.to_datetime(date_str)
         df_list.append(df)
-
-    except Exception as e:
-        st.write("Error reading:", f, e)
+    except Exception:
+        pass
 
 if len(df_list) == 0:
-    st.info("No historical sentiment data.")
+    st.info("Not enough score history to plot sentiment trend.")
     st.stop()
 
 df_all = pd.concat(df_list, ignore_index=True)
 df_all = df_all.sort_values("date")
 
-# -------------------------------------------------------
-# Pivot to wide table
-# -------------------------------------------------------
-pivot = df_all.pivot(index="date", columns="keyword", values="sent_index")
+# --------------------------------------------------
+# Compute weighted sentiment per date & keyword
+# sent_index = sum(final_score * sentiment_score) / sum(final_score)
+# --------------------------------------------------
+# ensure numeric
+df_all["final_score"] = pd.to_numeric(df_all["final_score"], errors="coerce")
+df_all["sentiment_score"] = pd.to_numeric(df_all["sentiment_score"], errors="coerce")
 
-# Expand missing days
+df_all["weighted_prod"] = df_all["final_score"] * df_all["sentiment_score"]
+
+agg = (
+    df_all
+    .groupby(["date", "keyword"], as_index=False)
+    .agg(
+        num=("weighted_prod", "sum"),
+        denom=("final_score", "sum"),
+    )
+)
+
+# avoid division by zero
+agg["sent_index"] = agg["num"] / agg["denom"].replace(0, np.nan)
+agg["sent_index"] = agg["sent_index"].fillna(0)
+
+# wide table: rows = date, columns = keyword
+pivot = agg.pivot(index="date", columns="keyword", values="sent_index")
+pivot = pivot.sort_index()
+
+# optional: ensure continuous daily index
 full_dates = pd.date_range(pivot.index.min(), pivot.index.max(), freq="D")
 pivot = pivot.reindex(full_dates)
+pivot.index.name = "date"
+pivot = pivot.fillna(method="ffill").fillna(0)
 
-# Forward fill only REAL data, do NOT create fake trend
-pivot = pivot.fillna(method="ffill")
-
-# -------------------------------------------------------
-# Plot multi-line sparkline
-# -------------------------------------------------------
-
+# --------------------------------------------------
+# Plot combined interactive chart
+# --------------------------------------------------
 fig = go.Figure()
 
 for i, kw in enumerate(pivot.columns):
-    fig.add_trace(go.Scatter(
-        x=pivot.index,
-        y=pivot[kw],
-        mode="lines+markers",
-        name=kw,
-        line=dict(color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)], width=2)
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=pivot.index,
+            y=pivot[kw],
+            mode="lines+markers",
+            name=kw,
+            line=dict(color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)], width=2),
+            marker=dict(size=6),
+            hovertemplate=(
+                f"<b>{kw}</b><br>"
+                "Date: %{x|%Y-%m-%d}<br>"
+                "Weighted Sentiment: %{y:.3f}<extra></extra>"
+            ),
+        )
+    )
 
 fig.update_layout(
-    title="Sentiment Trend (Latest 7 Days)",
-    yaxis_title="Sentiment Index",
+    title="Sentiment Trend (Last 7 Days, weighted by final_score)",
     xaxis_title="Date",
-    height=450,
+    yaxis_title="Weighted Sentiment Index",
     template="plotly_white",
+    height=420,
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
 )
 
-st.plotly_chart(fig, use_container_width=True)
+# keep y-axis in a reasonable range; adjust if your sentiment_score range is different
+fig.update_yaxes(range=[-1, 1])
 
+st.plotly_chart(fig, use_container_width=True)

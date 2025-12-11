@@ -1,11 +1,10 @@
-streamlit
+streamlit==1.32.2
 pandas
-plotly
 numpy
+plotly
 networkx
 streamlit-agraph
 requests
 wordcloud
 matplotlib
-pyvis
-collections
+pyvis==0.2.1  

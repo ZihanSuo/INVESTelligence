@@ -42,16 +42,12 @@ from streamlit.components.v1 import html
 import glob
 import plotly.graph_objects as go
 import plotly.io as pio
-pio.renderers.default = "plotly_mimetype"
 
 
 # -------------------------------------------------------
 # Load data from today's folder
 # -------------------------------------------------------
-st.subheader("Plotly Test")
 
-fig_test = px.scatter(x=[1,2,3], y=[3,1,4])
-st.plotly_chart(fig_test, use_container_width=True)
 
 
 # Auto-detect today's folder
@@ -125,12 +121,12 @@ col3.metric("Key Themes", key_themes_display)
 
 
 # -------------------------------------------------------
-# 2. Alpha Matrix: Core signals
+# 2. Alpha Matrix: Core signals (graph_objects 版本)
 # -------------------------------------------------------
 st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 # -------------------------------------------------------
-# 2.1 Impact vs Market Sentiment - FINAL FIX
+# 2.1 Impact vs Market Sentiment - graph_objects 版
 # -------------------------------------------------------
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
@@ -138,92 +134,114 @@ st.markdown("#### 2.1 Impact vs Market Sentiment")
 # 创建干净副本
 df_viz = scores.copy()
 
-# 移除重复列（如果有）
+# 移除重复列
 if df_viz.columns.duplicated().any():
     df_viz = df_viz.loc[:, ~df_viz.columns.duplicated()]
 
-# 重置索引
+# 重置索引并清理
 df_viz = df_viz.reset_index(drop=True)
-
-# 清理数据
 df_viz = df_viz.dropna(subset=['final_score', 'sentiment_score', 'keyword'])
 
-# 准备 marker size
-if "pickup_count" in df_viz.columns:
-    pc = df_viz["pickup_count"].fillna(0)
-    if pc.max() > pc.min():
-        df_viz["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+if len(df_viz) == 0:
+    st.warning("No valid data to display")
+else:
+    # 准备 marker size
+    if "pickup_count" in df_viz.columns:
+        pc = df_viz["pickup_count"].fillna(0)
+        if pc.max() > pc.min():
+            df_viz["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+        else:
+            df_viz["marker_size"] = 14
     else:
         df_viz["marker_size"] = 14
-else:
-    df_viz["marker_size"] = 14
-
-# 创建散点图
-fig_scatter = px.scatter(
-    df_viz,
-    x="final_score",
-    y="sentiment_score",
-    color="keyword",
-    size="marker_size",
-    hover_data=["title", "final_score", "sentiment_score", "url"],
-    color_discrete_sequence=px.colors.qualitative.Set2
-)
-
-# 🔧 关键修复：手动设置坐标轴范围
-x_min = df_viz['final_score'].min()
-x_max = df_viz['final_score'].max()
-x_padding = (x_max - x_min) * 0.1  # 10% padding
-
-y_min = df_viz['sentiment_score'].min()
-y_max = df_viz['sentiment_score'].max()
-y_padding = (y_max - y_min) * 0.1
-
-fig_scatter.update_xaxes(
-    range=[x_min - x_padding, x_max + x_padding],
-    title="Impact Score (final_score)"
-)
-
-fig_scatter.update_yaxes(
-    range=[y_min - y_padding, y_max + y_padding],
-    title="Market Sentiment"
-)
-
-# 添加参考线
-fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray", line_width=1.5)
-fig_scatter.add_vline(
-    x=df_viz["final_score"].median(), 
-    line_dash="dash", 
-    line_color="gray",
-    line_width=1.5
-)
-
-# 优化布局
-fig_scatter.update_layout(
-    height=500,
-    showlegend=True,
-    hovermode='closest',
-    legend=dict(
-        title="Keywords",
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        x=0.01
+    
+    # 创建图表 - 使用 graph_objects
+    import plotly.graph_objects as go
+    
+    fig = go.Figure()
+    
+    # 为每个 keyword 添加一个 trace
+    keywords = df_viz['keyword'].unique()
+    colors = ['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f']
+    
+    for i, kw in enumerate(keywords):
+        subset = df_viz[df_viz['keyword'] == kw]
+        
+        # 构建 hover text
+        hover_text = []
+        for _, row in subset.iterrows():
+            text = f"<b>{row['title']}</b><br>"
+            text += f"Impact: {row['final_score']:.1f}<br>"
+            text += f"Sentiment: {row['sentiment_score']:.2f}<br>"
+            text += f"URL: {row['url']}"
+            hover_text.append(text)
+        
+        fig.add_trace(go.Scatter(
+            x=subset['final_score'],
+            y=subset['sentiment_score'],
+            mode='markers',
+            name=kw.title(),
+            marker=dict(
+                size=subset['marker_size'],
+                color=colors[i % len(colors)],
+                line=dict(width=1, color='white'),
+                opacity=0.8
+            ),
+            text=hover_text,
+            hovertemplate='%{text}<extra></extra>'
+        ))
+    
+    # 添加参考线
+    fig.add_hline(
+        y=0, 
+        line_dash="dash", 
+        line_color="gray", 
+        line_width=1.5,
+        annotation_text="Neutral",
+        annotation_position="right"
     )
-)
-
-# 更新点的样式
-fig_scatter.update_traces(
-    marker=dict(
-        line=dict(width=1, color='white'),
-        opacity=0.8
+    
+    fig.add_vline(
+        x=df_viz['final_score'].median(),
+        line_dash="dash",
+        line_color="gray",
+        line_width=1.5,
+        annotation_text="Median",
+        annotation_position="top"
     )
-)
-
-st.plotly_chart(fig_scatter, use_container_width=True)
+    
+    # 更新布局
+    fig.update_layout(
+        title="Impact vs Market Sentiment",
+        xaxis_title="Impact Score (final_score)",
+        yaxis_title="Market Sentiment",
+        height=500,
+        hovermode='closest',
+        showlegend=True,
+        legend=dict(
+            title="Keywords",
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.01
+        ),
+        plot_bgcolor='rgba(240, 240, 240, 0.5)'
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # 统计信息
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Total Articles", len(df_viz))
+    with col2:
+        st.metric("Avg Impact", f"{df_viz['final_score'].mean():.1f}")
+    with col3:
+        st.metric("Avg Sentiment", f"{df_viz['sentiment_score'].mean():.2f}")
 
 
 # -------------------------------------------------------
-# 2.2 Alpha Quadrant - FINAL FIX
+# 2.2 Alpha Quadrant - graph_objects 版
 # -------------------------------------------------------
 
 st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
@@ -231,130 +249,174 @@ st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
 if not os.path.exists(alpha_file):
     st.info("No alpha.csv for today.")
 else:
-    # 重新读取 alpha.csv
+    # 读取数据
     df_alpha = pd.read_csv(alpha_file)
     
-    # 移除重复列
+    # 清理
     if df_alpha.columns.duplicated().any():
         df_alpha = df_alpha.loc[:, ~df_alpha.columns.duplicated()]
     
-    # 重置索引
     df_alpha = df_alpha.reset_index(drop=True)
-    
-    # 清理数据
     df_alpha = df_alpha.dropna(subset=['source_credibility', 'materiality_score', 'sentiment_score'])
     
     if len(df_alpha) == 0:
         st.warning("No valid data in alpha.csv")
     else:
-        # 标准化 sentiment
-        df_alpha["sentiment_norm"] = df_alpha["sentiment_score"].clip(-1, 1)
-        
         # 计算中位数
         x_mid = df_alpha["source_credibility"].median()
         y_mid = df_alpha["materiality_score"].median()
         
-        # 象限分类
-        def get_quadrant(row):
-            if row["source_credibility"] >= x_mid and row["materiality_score"] >= y_mid:
-                return "Critical Movers (Q1)"
-            elif row["source_credibility"] < x_mid and row["materiality_score"] >= y_mid:
-                return "Rumor Mill (Q2)"
-            elif row["source_credibility"] < x_mid and row["materiality_score"] < y_mid:
-                return "Low Value (Q3)"
-            else:
-                return "Market Noise (Q4)"
+        # 标准化 sentiment
+        sentiment_norm = df_alpha["sentiment_score"].clip(-1, 1)
         
-        df_alpha["quadrant"] = df_alpha.apply(get_quadrant, axis=1)
+        # 创建颜色映射 (红→黄→绿)
+        def sentiment_to_color(s):
+            # s 范围 [-1, 1]
+            # 红(负) → 黄(0) → 绿(正)
+            if s < 0:
+                # 红色到黄色
+                r = 255
+                g = int(255 * (1 + s))  # -1→0, 0→255
+                b = 0
+            else:
+                # 黄色到绿色
+                r = int(255 * (1 - s))  # 0→255, 1→0
+                g = 255
+                b = 0
+            return f'rgb({r},{g},{b})'
+        
+        colors = [sentiment_to_color(s) for s in sentiment_norm]
+        
+        # 构建 hover text
+        hover_text = []
+        for _, row in df_alpha.iterrows():
+            text = f"<b>{row['title']}</b><br>"
+            text += f"Keyword: {row['keyword']}<br>"
+            text += f"Credibility: {row['source_credibility']:.2f}<br>"
+            text += f"Materiality: {row['materiality_score']:.2f}<br>"
+            text += f"Sentiment: {row['sentiment_score']:.2f}<br>"
+            text += f"URL: {row['url']}"
+            hover_text.append(text)
         
         # 创建散点图
-        fig_q = px.scatter(
-            df_alpha,
-            x="source_credibility",
-            y="materiality_score",
-            color="sentiment_norm",
-            color_continuous_scale="RdYlGn",
-            color_continuous_midpoint=0,
-            hover_data=["title", "keyword", "url"],
-            size=[14] * len(df_alpha)
-        )
+        fig2 = go.Figure()
         
-        # 🔧 手动设置坐标轴范围
-        x_min_q = df_alpha['source_credibility'].min()
-        x_max_q = df_alpha['source_credibility'].max()
-        x_pad_q = (x_max_q - x_min_q) * 0.1
-        
-        y_min_q = df_alpha['materiality_score'].min()
-        y_max_q = df_alpha['materiality_score'].max()
-        y_pad_q = (y_max_q - y_min_q) * 0.1
-        
-        fig_q.update_xaxes(
-            range=[x_min_q - x_pad_q, x_max_q + x_pad_q],
-            title="Source Credibility"
-        )
-        
-        fig_q.update_yaxes(
-            range=[y_min_q - y_pad_q, y_max_q + y_pad_q],
-            title="Materiality Score"
-        )
+        fig2.add_trace(go.Scatter(
+            x=df_alpha['source_credibility'],
+            y=df_alpha['materiality_score'],
+            mode='markers',
+            marker=dict(
+                size=14,
+                color=colors,
+                line=dict(width=1, color='white'),
+                opacity=0.8
+            ),
+            text=hover_text,
+            hovertemplate='%{text}<extra></extra>'
+        ))
         
         # 添加参考线
-        fig_q.add_vline(x=x_mid, line_dash="dash", line_color="gray", line_width=2)
-        fig_q.add_hline(y=y_mid, line_dash="dash", line_color="gray", line_width=2)
+        fig2.add_vline(
+            x=x_mid,
+            line_dash="dash",
+            line_color="gray",
+            line_width=2
+        )
+        
+        fig2.add_hline(
+            y=y_mid,
+            line_dash="dash",
+            line_color="gray",
+            line_width=2
+        )
+        
+        # 计算偏移量用于标签
+        x_range = df_alpha['source_credibility'].max() - df_alpha['source_credibility'].min()
+        y_range = df_alpha['materiality_score'].max() - df_alpha['materiality_score'].min()
+        offset_x = x_range * 0.05
+        offset_y = y_range * 0.05
         
         # 添加象限标签
-        offset_x = (x_max_q - x_min_q) * 0.05
-        offset_y = (y_max_q - y_min_q) * 0.05
-        
-        fig_q.add_annotation(
-            x=x_mid + offset_x, y=y_mid + offset_y, 
-            text="<b>Q1: Critical Movers</b>", 
-            showarrow=False, 
-            font=dict(size=11, color="green")
+        fig2.add_annotation(
+            x=x_mid + offset_x, 
+            y=y_mid + offset_y,
+            text="<b>Q1: Critical Movers</b><br>(High Cred + High Impact)",
+            showarrow=False,
+            font=dict(size=10, color="green"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=4
         )
-        fig_q.add_annotation(
-            x=x_mid - offset_x, y=y_mid + offset_y, 
-            text="<b>Q2: Rumor Mill</b>", 
-            showarrow=False, 
-            font=dict(size=11, color="orange"), 
+        
+        fig2.add_annotation(
+            x=x_mid - offset_x,
+            y=y_mid + offset_y,
+            text="<b>Q2: Rumor Mill</b><br>(Low Cred + High Impact)",
+            showarrow=False,
+            font=dict(size=10, color="orange"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=4,
             xanchor="right"
         )
-        fig_q.add_annotation(
-            x=x_mid - offset_x, y=y_mid - offset_y, 
-            text="<b>Q3: Low Value</b>", 
-            showarrow=False, 
-            font=dict(size=11, color="gray"), 
-            xanchor="right", 
+        
+        fig2.add_annotation(
+            x=x_mid - offset_x,
+            y=y_mid - offset_y,
+            text="<b>Q3: Low Value</b><br>(Low Cred + Low Impact)",
+            showarrow=False,
+            font=dict(size=10, color="gray"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=4,
+            xanchor="right",
             yanchor="top"
         )
-        fig_q.add_annotation(
-            x=x_mid + offset_x, y=y_mid - offset_y, 
-            text="<b>Q4: Market Noise</b>", 
-            showarrow=False, 
-            font=dict(size=11, color="blue"), 
+        
+        fig2.add_annotation(
+            x=x_mid + offset_x,
+            y=y_mid - offset_y,
+            text="<b>Q4: Market Noise</b><br>(High Cred + Low Impact)",
+            showarrow=False,
+            font=dict(size=10, color="blue"),
+            bgcolor="rgba(255,255,255,0.8)",
+            borderpad=4,
             yanchor="top"
         )
         
         # 更新布局
-        fig_q.update_layout(
-            height=500,
-            coloraxis_colorbar=dict(
-                title="Sentiment",
-                tickvals=[-1, -0.5, 0, 0.5, 1],
-                ticktext=["Bearish", "-0.5", "Neutral", "+0.5", "Bullish"]
-            ),
-            hovermode='closest'
+        fig2.update_layout(
+            title="Alpha Quadrant: Credibility vs Materiality",
+            xaxis_title="Source Credibility",
+            yaxis_title="Materiality Score",
+            height=550,
+            hovermode='closest',
+            showlegend=False,
+            plot_bgcolor='rgba(245, 245, 245, 0.5)'
         )
         
-        # 更新点的样式
-        fig_q.update_traces(
-            marker=dict(
-                line=dict(width=1, color='white'),
-                opacity=0.8
-            )
-        )
+        st.plotly_chart(fig2, use_container_width=True)
         
-        st.plotly_chart(fig_q, use_container_width=True)
+        # 象限统计
+        def get_quadrant(row):
+            if row["source_credibility"] >= x_mid and row["materiality_score"] >= y_mid:
+                return "Q1: Critical Movers"
+            elif row["source_credibility"] < x_mid and row["materiality_score"] >= y_mid:
+                return "Q2: Rumor Mill"
+            elif row["source_credibility"] < x_mid and row["materiality_score"] < y_mid:
+                return "Q3: Low Value"
+            else:
+                return "Q4: Market Noise"
+        
+        df_alpha["quadrant"] = df_alpha.apply(get_quadrant, axis=1)
+        
+        st.markdown("##### Quadrant Distribution")
+        quad_counts = df_alpha["quadrant"].value_counts()
+        
+        cols = st.columns(4)
+        quadrants = ["Q1: Critical Movers", "Q2: Rumor Mill", "Q3: Low Value", "Q4: Market Noise"]
+        for i, quad in enumerate(quadrants):
+            with cols[i]:
+                count = quad_counts.get(quad, 0)
+                st.metric(quad, count)
+                
 # -------------------------------------------------------
 # 2.3 Word Cloud 
 # -------------------------------------------------------

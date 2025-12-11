@@ -294,7 +294,7 @@ from pyvis.network import Network
 from streamlit.components.v1 import html
 
 # 如果 entities_data 为空，直接跳过这一块，给一点友好提示
-if not entities_data:
+if not entities_file:
     st.subheader("D. Entity Co-occurrence Network")
     st.info("No entity data available for this date.")
 else:

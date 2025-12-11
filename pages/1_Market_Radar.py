@@ -621,100 +621,117 @@ else:
             st.markdown("</div>", unsafe_allow_html=True)
 
 
-
 # -------------------------------------------------------
-# C. Sentiment Trend (Interactive)
+# C. Sentiment Trend (Interactive Sparklines)
 # -------------------------------------------------------
 
+import glob
+import pandas as pd
+import plotly.graph_objects as go
 
 st.subheader("C. Sentiment Trend (Sparklines)")
 
-# Bloomberg-style multi-color palette
-BLOOMBERG_COLORS = [
+# Bloomberg-like multi-line palette
+BLOOM_COLORS = [
     "#5DA5DA", "#FAA43A", "#F17CB0", "#60BD68", "#B2912F",
-    "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8"
+    "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8",
+    "#1F77B4", "#FF7F0E", "#2CA02C"  # 再补一些，防止 keyword 多
 ]
 
-# ------------ Load all sentiment_statistics.csv (past 7 days) ------------
-
+# -----------------------------
+# Load latest <= 7 days data
+# -----------------------------
 files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
 
-# Only keep latest 7 days (if less available → also OK)
 def extract_date(path):
     folder = path.split("/")[-2]
     return pd.to_datetime(folder, errors="coerce")
 
-
-file_date_pairs = [(f, extract_date(f)) for f in files]
-file_date_pairs = [p for p in file_date_pairs if p[1] is not pd.NaT]
-
-
-file_date_pairs.sort(key=lambda x: x[1], reverse=True)
-
-latest_files = [p[0] for p in file_date_pairs[:7]]
-
-
-df_list = []
+# 绑定日期
+file_date_pairs = []
 for f in files:
+    dt = extract_date(f)
+    if pd.notna(dt):
+        file_date_pairs.append((f, dt))
+
+# 按日期倒序取最新 7 天
+file_date_pairs.sort(key=lambda x: x[1], reverse=True)
+latest_files = [f for f, d in file_date_pairs[:7]]
+
+# -----------------------------
+# Read & Merge
+# -----------------------------
+df_list = []
+for f in latest_files:
     try:
         df = pd.read_csv(f)
-        day = f.split("/")[-2]      # folder name = date
-        df["date"] = pd.to_datetime(day)
+        date_str = f.split("/")[-2]
+        df["date"] = pd.to_datetime(date_str)
         df_list.append(df)
     except:
         pass
 
 if len(df_list) == 0:
-    st.info("Not enough historical sentiment data.")
+    st.info("Not enough sentiment history to plot trend.")
     st.stop()
 
 df_all = pd.concat(df_list, ignore_index=True)
-
-# ensure date sorted
 df_all = df_all.sort_values("date")
 
-# get full x-axis (missing days filled)
-full_dates = pd.date_range(df_all["date"].min(), df_all["date"].max(), freq="D")
+# 全 keyword
+all_keywords = sorted(df_all["keyword"].unique())
 
-keywords = sorted(df_all["keyword"].unique())
-
-# pivot: rows = date, columns = keyword, values = sentiment index
-# sentiment index = weighted average sentiment
-def compute_sentiment(row):
+# -----------------------------
+# Compute sentiment index
+# -----------------------------
+def get_sentiment(row):
     return (
         -2 * row["strong_neg"]
-        + -1 * row["weak_neg"]
-        + 0 * row["neutral"]
-        + 1 * row["weak_pos"]
-        + 2 * row["strong_pos"]
-    ) / 100.0   # normalize to [-1,1]
+        -1 * row["weak_neg"]
+        +0 * row["neutral"]
+        +1 * row["weak_pos"]
+        +2 * row["strong_pos"]
+    ) / 100.0
 
-df_all["sent_index"] = df_all.apply(compute_sentiment, axis=1)
+df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
+
+# -----------------------------
+# Pivot to wide table
+# -----------------------------
+full_dates = pd.date_range(df_all["date"].min(), df_all["date"].max(), freq="D")
 
 pivot = df_all.pivot(index="date", columns="keyword", values="sent_index")
-pivot = pivot.reindex(full_dates)        # fill missing days
-pivot = pivot.fillna(method="ffill")     # forward fill
-pivot = pivot.fillna(0)                  # still empty → 0
+pivot = pivot.reindex(full_dates)      # fill missing dates
+pivot = pivot.fillna(method="ffill")   # forward fill
+pivot = pivot.fillna(0)                # still NaN → 0
 
-# ---------------- Main combined figure ----------------
+pivot.index.name = "date"
+
+# -----------------------------
+# Plot combined sparkline chart
+# -----------------------------
 fig = go.Figure()
 
-for kw in pivot.columns:
+for i, kw in enumerate(pivot.columns):
     fig.add_trace(go.Scatter(
         x=pivot.index,
         y=pivot[kw],
         mode="lines+markers",
         name=kw,
+        line=dict(color=BLOOM_COLORS[i % len(BLOOM_COLORS)], width=2),
+        marker=dict(size=5)
     ))
 
 fig.update_layout(
-    title="Sentiment Trend (Last 7 days)",
+    title="Sentiment Trend (Latest 7 Days)",
     yaxis_title="Sentiment Index",
     xaxis_title="Date",
     template="plotly_white",
-    height=450,
+    hovermode="x unified",
+    height=420,
+    showlegend=True
 )
 
+fig.update_yaxes(range=[-1, 1])  # 强制固定在 [-1, 1]，便于比较
 
-
-
+st.plotly_chart(fig, use_container_width=True)

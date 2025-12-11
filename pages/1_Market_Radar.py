@@ -547,7 +547,7 @@ else:
                     border: 1px solid #E4E9F1;
                     margin-bottom: 22px;
                 ">
-                    <h3 style="margin-top:0; color:#1A1D27;">
+                    <h3 style="margin-top:0; color:#1A1D27; font-size:22px;">
                         {keyword.title()} 
                         <span style="font-size:16px; font-weight:400; color:#6A7280;">
                             ({consensus})

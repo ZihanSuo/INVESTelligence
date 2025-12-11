@@ -84,25 +84,32 @@ else:
     weighted_senti = scores["sentiment_score"].mean()
 
 # Label for sentiment direction
-if weighted_senti > 0.05:
+if weighted_senti > 0.1:
     senti_label = "Bullish"
-elif weighted_senti < -0.05:
+elif weighted_senti < -0.1:
     senti_label = "Bearish"
 else:
     senti_label = "Neutral"
 
 # Top keyword by article count
-top_keyword = (
-    scores["keyword"].value_counts().idxmax()
-    if "keyword" in scores.columns
-    else "N/A"
-)
+if "keyword" in scores.columns:
+    unique_keywords = (
+        scores["keyword"]
+        .dropna()
+        .astype(str)
+        .unique()
+        .tolist()
+    )
+    # Join all keywords into one display string
+    key_themes_display = ", ".join(sorted(unique_keywords))
+else:
+    key_themes_display = "N/A"
 
 col1, col2, col3 = st.columns(3)
 
 col1.metric("Total Articles", total_articles)
 col2.metric("Market Sentiment", f"{weighted_senti:+.2f}", senti_label)
-col3.metric("Key Theme", top_keyword)
+col3.metric("Key Themes", key_themes_display)
 
 # -------------------------------------------------------
 # Alpha Matrix Scatter Plot

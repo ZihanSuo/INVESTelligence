@@ -157,59 +157,60 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Word Cloud (Color-matched to Scatter Plot)
+# C. Word Cloud per Keyword (color matched to scatter)
 # -------------------------------------------------------
 
-st.markdown("### C. Keyword Word Cloud")
+st.markdown("### C. Keyword Word Cloud (per theme)")
 
-# Load word count file
+# Load today's word_count file
 word_count_file = os.path.join(data_path, "word_count.csv")
-word_df = pd.read_csv(word_count_file)
+wc = pd.read_csv(word_count_file)   # expected columns: keyword, word, count
 
-# -------- Step 1: Extract color mapping from Scatter --------
+# -------- Step 1: Extract keyword-color mapping from Scatter --------
 color_map = {}
 for trace in fig_scatter.data:
-    if "marker" in trace and "color" in trace.marker:
-        kw = trace.name
+    kw = trace.name
+    # Plotly sometimes stores category colors as arrays, sometimes as strings
+    if hasattr(trace.marker, "color"):
         color_map[kw] = trace.marker.color
+    else:
+        color_map[kw] = "#888888"  # fallback
 
-# -------- Step 2: Build a single frequency dict --------
-# expected columns: keyword, word, word_count
-freq_dict = {}
+# -------- Step 2: Build word clouds per keyword --------
+unique_keywords = wc["keyword"].unique()
 
-if "word" in word_df.columns:
-    # Use actual words
-    for _, row in word_df.iterrows():
-        key = f"{row['keyword']}_{row['word']}"
-        freq_dict[key] = row["word_count"]
-else:
-    # If no 'word' column, use keyword repeated as 'fake words'
-    for _, row in word_df.iterrows():
-        freq_dict[row["keyword"]] = row["word_count"]
+# Layout: 3 images per row
+cols_per_row = 3
 
-# -------- Step 3: Custom color function --------
-def keyword_color_func(word, font_size, position, orientation, font_path, random_state):
-    # Extract keyword part before '_' (if exists)
-    kw = word.split("_")[0]
-    return color_map.get(kw, "#999999")  # fallback gray
+for i in range(0, len(unique_keywords), cols_per_row):
+    row_keywords = unique_keywords[i:i + cols_per_row]
+    cols = st.columns(len(row_keywords))
 
-# -------- Step 4: Generate Word Cloud --------
-wc = WordCloud(
-    width=1200,
-    height=600,
-    background_color="white",
-    prefer_horizontal=0.9,
-    collocations=False
-).generate_from_frequencies(freq_dict)
+    for col, kw in zip(cols, row_keywords):
+        subset = wc[wc["keyword"] == kw]
 
-# Apply color mapping
-colored_wc = wc.recolor(color_func=keyword_color_func)
+        # Build frequency dict: {word: count}
+        freq = dict(zip(subset["word"], subset["count"]))
 
-# -------- Step 5: Display in Streamlit --------
-fig, ax = plt.subplots(figsize=(12, 6))
-ax.imshow(colored_wc, interpolation="bilinear")
-ax.axis("off")
+        # Custom color function for this keyword
+        def color_func(word, *args, **kwargs):
+            return color_map.get(kw, "#999999")
 
-st.pyplot(fig, use_container_width=True, key="wordcloud_chart")
+        # Generate word cloud
+        wc_img = WordCloud(
+            width=500,
+            height=350,
+            background_color="white",
+            collocations=False
+        ).generate_from_frequencies(freq)
+
+        wc_img = wc_img.recolor(color_func=color_func)
+
+        # Plot into Streamlit
+        fig, ax = plt.subplots(figsize=(5, 3))
+        ax.imshow(wc_img, interpolation='bilinear')
+        ax.axis("off")
+        col.markdown(f"**{kw.capitalize()}**")
+        col.pyplot(fig, use_container_width=True, key=f"wc_{kw}")
 
 

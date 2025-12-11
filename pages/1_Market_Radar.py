@@ -124,59 +124,28 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
-df = scores.copy()
+df_imp = scores.copy()
 
+fig_scatter = go.Figure()
 
-st.write("NaN count in final_score:", scores["final_score"].isna().sum())
-st.write("NaN count in sentiment_score:", scores["sentiment_score"].isna().sum())
+fig_scatter.add_trace(go.Scatter(
+    x=df_imp["final_score"],
+    y=df_imp["sentiment_score"],
+    mode="markers",  # <<<< VERY IMPORTANT
+    marker=dict(
+        size=10,
+        color=df_imp["sentiment_score"], 
+        colorscale="RdYlGn",
+        showscale=True
+    ),
+    text=df_imp["keyword"],
+    hovertemplate="<b>%{text}</b><br>Impact: %{x}<br>Sentiment: %{y}<extra></extra>"
+))
 
-st.write("Rows with NaN in sentiment_score:")
-st.write(scores[scores["sentiment_score"].isna()].head())
-
-
-# 没有 keyword 的过滤掉
-df = df.dropna(subset=["keyword"])
-
-fig = go.Figure()
-
-# 为每个 keyword 添加一个 trace（散点）
-for kw, sub in df.groupby("keyword"):
-    fig.add_trace(
-        go.Scatter(
-            x=sub["final_score"],
-            y=sub["sentiment_score"],
-            mode="markers",
-            name=kw,
-            text=sub["title"],               # hover 显示 title
-            hovertemplate="<b>%{text}</b><br>" +
-                          "Impact Score: %{x:.2f}<br>" +
-                          "Sentiment: %{y:.2f}<extra></extra>",
-            marker=dict(size=10)
-        )
-    )
-    ##调试
-st.write("DEBUG — number of rows in scores:", len(scores))
-st.write(scores.head())
-st.write(scores.dtypes)
-
-# 添加横线 sentiment = 0
-fig.add_hline(y=0, line_dash="dash", line_color="gray")
-
-# 添加竖线 final_score 的中位数
-median_final = df["final_score"].median()
-fig.add_vline(x=median_final, line_dash="dash", line_color="gray")
-
-fig.update_layout(
-    height=450,
-    xaxis_title="Impact Score (final_score)",
-    yaxis_title="Market Sentiment (sentiment_score)",
-    legend_title="Keyword",
-    template="simple_white"
+fig_scatter.update_layout(
+    height=500,
+    xaxis_title="final_score",
+    yaxis_title="sentiment_score",
 )
 
-st.plotly_chart(fig, use_container_width=True)
-
-
-
-
-
+st.plotly_chart(fig_scatter, use_container_width=True)

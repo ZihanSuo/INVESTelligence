@@ -157,24 +157,59 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Market Attention Map (Treemap)
+# C. Word Cloud (Color-matched to Scatter Plot)
 # -------------------------------------------------------
 
-st.markdown("### C. Market Attention Map")
+st.markdown("### C. Keyword Word Cloud")
 
-tree_df = scores.groupby("keyword").agg(
-    article_count=("title", "count"),
-    avg_sentiment=("sentiment_score", "mean")
-).reset_index()
+# Load word count file
+word_count_file = os.path.join(data_path, "word_count.csv")
+word_df = pd.read_csv(word_count_file)
 
-fig_tree = px.treemap(
-    tree_df,
-    path=["keyword"],
-    values="article_count",
-    color="avg_sentiment",
-    color_continuous_scale="RdYlGn",
-    title="Theme Heatmap: Information Density & Sentiment"
-)
+# -------- Step 1: Extract color mapping from Scatter --------
+color_map = {}
+for trace in fig_scatter.data:
+    if "marker" in trace and "color" in trace.marker:
+        kw = trace.name
+        color_map[kw] = trace.marker.color
 
-st.plotly_chart(fig_tree, use_container_width=True)
+# -------- Step 2: Build a single frequency dict --------
+# expected columns: keyword, word, word_count
+freq_dict = {}
+
+if "word" in word_df.columns:
+    # Use actual words
+    for _, row in word_df.iterrows():
+        key = f"{row['keyword']}_{row['word']}"
+        freq_dict[key] = row["word_count"]
+else:
+    # If no 'word' column, use keyword repeated as 'fake words'
+    for _, row in word_df.iterrows():
+        freq_dict[row["keyword"]] = row["word_count"]
+
+# -------- Step 3: Custom color function --------
+def keyword_color_func(word, font_size, position, orientation, font_path, random_state):
+    # Extract keyword part before '_' (if exists)
+    kw = word.split("_")[0]
+    return color_map.get(kw, "#999999")  # fallback gray
+
+# -------- Step 4: Generate Word Cloud --------
+wc = WordCloud(
+    width=1200,
+    height=600,
+    background_color="white",
+    prefer_horizontal=0.9,
+    collocations=False
+).generate_from_frequencies(freq_dict)
+
+# Apply color mapping
+colored_wc = wc.recolor(color_func=keyword_color_func)
+
+# -------- Step 5: Display in Streamlit --------
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.imshow(colored_wc, interpolation="bilinear")
+ax.axis("off")
+
+st.pyplot(fig, use_container_width=True, key="wordcloud_chart")
+
 

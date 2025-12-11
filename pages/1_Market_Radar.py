@@ -700,7 +700,12 @@ df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
 # -----------------------------
 # Pivot to wide table
 # -----------------------------
-full_dates = pd.date_range(df_all["date"].min(), df_all["date"].max(), freq="D")
+if df_all.empty:
+    st.warning("No data available to plot.")
+    st.stop()
+
+# 确保日期范围覆盖完整
+full_dates = pd.date_range(start_date, max_date, freq="D")
 
 pivot = df_all.pivot_table(
     index="date",
@@ -708,15 +713,27 @@ pivot = df_all.pivot_table(
     values="sent_index",
     aggfunc="mean"
 )
+
+# Reindex 引入空日期，但不要急着填 0
 pivot = pivot.reindex(full_dates)
-pivot = pivot.fillna(method="ffill")
-pivot = pivot.fillna(0)
+
+# 【关键修改】使用插值(Interpolate)代替填0，这样线条是平滑过渡的，而不是死板的直角
+# limit_direction='both' 确保开头和结尾的空值也能被填上(如果有相邻数据)
+pivot = pivot.interpolate(method='linear', limit_direction='both')
+
+# 如果实在全是空值(比如某些keyword只有某一天有数据)，再用 ffill/bfill 兜底，最后才填0
+pivot = pivot.fillna(method='bfill').fillna(method='ffill').fillna(0)
 
 pivot.index.name = "date"
+
+# Debug: 再次确认 pivot 数据不全是 0
+# st.write("Debug Pivot:", pivot.tail(7)) 
 
 # -----------------------------
 # Plot combined sparkline chart
 # -----------------------------
+import plotly.graph_objects as go
+
 fig = go.Figure()
 
 for i, kw in enumerate(pivot.columns):
@@ -725,24 +742,32 @@ for i, kw in enumerate(pivot.columns):
         y=pivot[kw],
         mode="lines+markers",
         name=kw,
-        line=dict(color=BLOOM_COLORS[i % len(BLOOM_COLORS)], width=2),
-        marker=dict(size=5)
+        line=dict(color=BLOOM_COLORS[i % len(BLOOM_COLORS)], width=3),
+        marker=dict(size=6),
+        connectgaps=True # 【关键参数】如果中间还有断点，自动连线
     ))
 
 fig.update_layout(
-    title="Sentiment Trend (Latest 7 Days)",
-    yaxis_title="Sentiment Index",
+    title="Sentiment Trend (7-Day View)",
+    yaxis_title="Sentiment Index (-1 to +1)",
     xaxis_title="Date",
     template="plotly_white",
     hovermode="x unified",
-    height=420,
-    showlegend=True
+    height=400,
+    showlegend=True,
+    margin=dict(l=20, r=20, t=50, b=20),
+    legend=dict(
+        orientation="h", 
+        yanchor="bottom", 
+        y=1.02, 
+        xanchor="right", 
+        x=1
+    )
 )
 
-fig.update_yaxes(range=[-1, 1])  # 强制固定在 [-1, 1]，便于比较
+fig.update_yaxes(range=[-1.1, 1.1], zeroline=True, zerolinewidth=1, zerolinecolor='lightgray')
 
 st.plotly_chart(fig, use_container_width=True)
-
 
 
 

@@ -124,15 +124,25 @@ col3.metric("Key Themes", key_themes_display)
 st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 # -------------------------------------------------------
-# 2.1 Impact vs Market Sentiment - FIXED
+# 2.1 Impact vs Market Sentiment - FINAL FIX
 # -------------------------------------------------------
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
-# 🔧 创建一个干净的副本，避免修改全局 scores
+# 创建干净副本
 df_viz = scores.copy()
 
-# 确保 pickup_count 存在（已经在前面 merge 过了）
+# 移除重复列（如果有）
+if df_viz.columns.duplicated().any():
+    df_viz = df_viz.loc[:, ~df_viz.columns.duplicated()]
+
+# 重置索引
+df_viz = df_viz.reset_index(drop=True)
+
+# 清理数据
+df_viz = df_viz.dropna(subset=['final_score', 'sentiment_score', 'keyword'])
+
+# 准备 marker size
 if "pickup_count" in df_viz.columns:
     pc = df_viz["pickup_count"].fillna(0)
     if pc.max() > pc.min():
@@ -153,6 +163,25 @@ fig_scatter = px.scatter(
     color_discrete_sequence=px.colors.qualitative.Set2
 )
 
+# 🔧 关键修复：手动设置坐标轴范围
+x_min = df_viz['final_score'].min()
+x_max = df_viz['final_score'].max()
+x_padding = (x_max - x_min) * 0.1  # 10% padding
+
+y_min = df_viz['sentiment_score'].min()
+y_max = df_viz['sentiment_score'].max()
+y_padding = (y_max - y_min) * 0.1
+
+fig_scatter.update_xaxes(
+    range=[x_min - x_padding, x_max + x_padding],
+    title="Impact Score (final_score)"
+)
+
+fig_scatter.update_yaxes(
+    range=[y_min - y_padding, y_max + y_padding],
+    title="Market Sentiment"
+)
+
 # 添加参考线
 fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray", line_width=1.5)
 fig_scatter.add_vline(
@@ -165,10 +194,15 @@ fig_scatter.add_vline(
 # 优化布局
 fig_scatter.update_layout(
     height=500,
-    xaxis_title="Impact Score (final_score)",
-    yaxis_title="Market Sentiment",
     showlegend=True,
-    hovermode='closest'
+    hovermode='closest',
+    legend=dict(
+        title="Keywords",
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    )
 )
 
 # 更新点的样式
@@ -183,7 +217,7 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# 2.2 Alpha Quadrant - FIXED
+# 2.2 Alpha Quadrant - FINAL FIX
 # -------------------------------------------------------
 
 st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
@@ -191,8 +225,15 @@ st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
 if not os.path.exists(alpha_file):
     st.info("No alpha.csv for today.")
 else:
-    # 🔧 重新读取 alpha.csv，不使用之前的变量
+    # 重新读取 alpha.csv
     df_alpha = pd.read_csv(alpha_file)
+    
+    # 移除重复列
+    if df_alpha.columns.duplicated().any():
+        df_alpha = df_alpha.loc[:, ~df_alpha.columns.duplicated()]
+    
+    # 重置索引
+    df_alpha = df_alpha.reset_index(drop=True)
     
     # 清理数据
     df_alpha = df_alpha.dropna(subset=['source_credibility', 'materiality_score', 'sentiment_score'])
@@ -232,33 +273,71 @@ else:
             size=[14] * len(df_alpha)
         )
         
+        # 🔧 手动设置坐标轴范围
+        x_min_q = df_alpha['source_credibility'].min()
+        x_max_q = df_alpha['source_credibility'].max()
+        x_pad_q = (x_max_q - x_min_q) * 0.1
+        
+        y_min_q = df_alpha['materiality_score'].min()
+        y_max_q = df_alpha['materiality_score'].max()
+        y_pad_q = (y_max_q - y_min_q) * 0.1
+        
+        fig_q.update_xaxes(
+            range=[x_min_q - x_pad_q, x_max_q + x_pad_q],
+            title="Source Credibility"
+        )
+        
+        fig_q.update_yaxes(
+            range=[y_min_q - y_pad_q, y_max_q + y_pad_q],
+            title="Materiality Score"
+        )
+        
         # 添加参考线
         fig_q.add_vline(x=x_mid, line_dash="dash", line_color="gray", line_width=2)
         fig_q.add_hline(y=y_mid, line_dash="dash", line_color="gray", line_width=2)
         
         # 添加象限标签
-        fig_q.add_annotation(x=x_mid + 0.05, y=y_mid + 0.05, 
-                            text="Q1: Critical Movers", showarrow=False, 
-                            font=dict(size=11, color="green"))
-        fig_q.add_annotation(x=x_mid - 0.05, y=y_mid + 0.05, 
-                            text="Q2: Rumor Mill", showarrow=False, 
-                            font=dict(size=11, color="orange"), xanchor="right")
-        fig_q.add_annotation(x=x_mid - 0.05, y=y_mid - 0.05, 
-                            text="Q3: Low Value", showarrow=False, 
-                            font=dict(size=11, color="gray"), 
-                            xanchor="right", yanchor="top")
-        fig_q.add_annotation(x=x_mid + 0.05, y=y_mid - 0.05, 
-                            text="Q4: Market Noise", showarrow=False, 
-                            font=dict(size=11, color="blue"), yanchor="top")
+        offset_x = (x_max_q - x_min_q) * 0.05
+        offset_y = (y_max_q - y_min_q) * 0.05
+        
+        fig_q.add_annotation(
+            x=x_mid + offset_x, y=y_mid + offset_y, 
+            text="<b>Q1: Critical Movers</b>", 
+            showarrow=False, 
+            font=dict(size=11, color="green")
+        )
+        fig_q.add_annotation(
+            x=x_mid - offset_x, y=y_mid + offset_y, 
+            text="<b>Q2: Rumor Mill</b>", 
+            showarrow=False, 
+            font=dict(size=11, color="orange"), 
+            xanchor="right"
+        )
+        fig_q.add_annotation(
+            x=x_mid - offset_x, y=y_mid - offset_y, 
+            text="<b>Q3: Low Value</b>", 
+            showarrow=False, 
+            font=dict(size=11, color="gray"), 
+            xanchor="right", 
+            yanchor="top"
+        )
+        fig_q.add_annotation(
+            x=x_mid + offset_x, y=y_mid - offset_y, 
+            text="<b>Q4: Market Noise</b>", 
+            showarrow=False, 
+            font=dict(size=11, color="blue"), 
+            yanchor="top"
+        )
         
         # 更新布局
         fig_q.update_layout(
             height=500,
             coloraxis_colorbar=dict(
                 title="Sentiment",
-                tickvals=[-1, 0, 1],
-                ticktext=["Bearish", "Neutral", "Bullish"]
-            )
+                tickvals=[-1, -0.5, 0, 0.5, 1],
+                ticktext=["Bearish", "-0.5", "Neutral", "+0.5", "Bullish"]
+            ),
+            hovermode='closest'
         )
         
         # 更新点的样式
@@ -270,7 +349,6 @@ else:
         )
         
         st.plotly_chart(fig_q, use_container_width=True)
-
 # -------------------------------------------------------
 # 2.3 Word Cloud 
 # -------------------------------------------------------

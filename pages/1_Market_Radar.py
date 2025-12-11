@@ -120,32 +120,61 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 # 2.1 Impact vs Market Sentiment (graph_objects)
 # -------------------------------------------------------
 
-
-
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
 df_imp = scores.copy()
 
-fig_scatter = go.Figure()
+# ----- keyword 专属颜色 -----
+unique_keywords = sorted(df_imp["keyword"].unique())
+palette = px.colors.qualitative.D3  # 可扩展
+color_map = {kw: palette[i % len(palette)] for i, kw in enumerate(unique_keywords)}
 
-fig_scatter.add_trace(go.Scatter(
-    x=df_imp["final_score"],
-    y=df_imp["sentiment_score"],
-    mode="markers",  # <<<< VERY IMPORTANT
-    marker=dict(
-        size=10,
-        color=df_imp["sentiment_score"], 
-        colorscale="RdYlGn",
-        showscale=True
-    ),
-    text=df_imp["keyword"],
-    hovertemplate="<b>%{text}</b><br>Impact: %{x}<br>Sentiment: %{y}<extra></extra>"
-))
+# ----- 固定 marker 大小 -----
+marker_size = 14
 
-fig_scatter.update_layout(
-    height=500,
-    xaxis_title="final_score",
-    yaxis_title="sentiment_score",
+# ----- Build Scatter Figure -----
+fig_imp = go.Figure()
+
+for kw in unique_keywords:
+    sub = df_imp[df_imp["keyword"] == kw]
+
+    fig_imp.add_trace(
+        go.Scatter(
+            x=sub["final_score"],
+            y=sub["sentiment_score"],
+            mode="markers",
+            name=kw,
+            marker=dict(
+                size=marker_size,
+                color=color_map[kw],
+                opacity=0.85,
+                line=dict(width=0.5, color="black")
+            ),
+            text=sub["title"],
+            hovertemplate="<b>%{text}</b><br>"
+                          "Impact: %{x}<br>"
+                          "Sentiment: %{y}<extra></extra>",
+        )
+    )
+
+# ----- 中线 -----
+fig_imp.add_vline(
+    x=df_imp["final_score"].median(),
+    line_dash="dash", line_color="gray"
+)
+fig_imp.add_hline(
+    y=0,
+    line_dash="dash", line_color="gray"
 )
 
-st.plotly_chart(fig_scatter, use_container_width=True)
+# ----- Layout -----
+fig_imp.update_layout(
+    height=500,
+    template="plotly_white",
+    xaxis_title="Impact Score (final_score)",
+    yaxis_title="Market Sentiment (sentiment_score)",
+    legend_title="Keyword",
+)
+
+st.plotly_chart(fig_imp, use_container_width=True)
+

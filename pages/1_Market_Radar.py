@@ -152,6 +152,10 @@ for kw, sub in df.groupby("keyword"):
             marker=dict(size=10)
         )
     )
+    ##调试
+st.write("DEBUG — number of rows in scores:", len(scores))
+st.write(scores.head())
+st.write(scores.dtypes)
 
 # 添加横线 sentiment = 0
 fig.add_hline(y=0, line_dash="dash", line_color="gray")

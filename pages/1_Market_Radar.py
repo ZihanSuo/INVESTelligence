@@ -43,9 +43,15 @@ import glob
 import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default = "iframe"
+
+
 # -------------------------------------------------------
 # Load data from today's folder
 # -------------------------------------------------------
+st.subheader("Plotly Test")
+
+fig_test = px.scatter(x=[1,2,3], y=[3,1,4])
+st.plotly_chart(fig_test, use_container_width=True)
 
 
 # Auto-detect today's folder

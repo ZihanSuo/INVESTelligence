@@ -627,3 +627,41 @@ else:
                 )
 
             st.markdown("</div>", unsafe_allow_html=True)
+
+# Merge pickup_count from alpha.csv if available
+if has_alpha:
+    scores = scores.merge(
+        alpha[["title", "pickup_count"]],
+        on="title",
+        how="left",
+        suffixes=("", "_alpha")
+    )
+
+# Prepare marker size
+if "pickup_count" in scores.columns and scores["pickup_count"].fillna(0).max() > 0:
+    pc = scores["pickup_count"].fillna(0)
+    scores["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+else:
+    scores["marker_size"] = 14  # constant size if no pickup_count
+
+fig_scatter = px.scatter(
+    scores,
+    x="final_score",
+    y="sentiment_score",
+    color="keyword",
+    size="marker_size",
+    hover_data=["title", "final_score", "sentiment_score", "url"],
+    title="Core Signals: Impact vs Market Sentiment"
+)
+
+# Horizontal line at sentiment = 0
+fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
+
+# Vertical line at median final_score (can be changed to a fixed threshold)
+fig_scatter.add_vline(
+    x=scores["final_score"].median(),
+    line_dash="dash",
+    line_color="gray"
+)
+
+st.plotly_chart(fig_scatter, use_container_width=True)

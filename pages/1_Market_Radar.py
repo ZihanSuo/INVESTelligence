@@ -525,9 +525,7 @@ else:
                             html(f.read(), height=600)
 
 
-# -------------------------------------------------------
-# E. 📑 Longitudinal
-# -------------------------------------------------------
+
 
 # -------------------------------------------------------
 # E. 📑 The "Must-Read" Ticker — Bloomberg Terminal Style
@@ -625,10 +623,6 @@ else:
 # C. Sentiment Trend (Interactive Sparklines)
 # -------------------------------------------------------
 
-import glob
-import pandas as pd
-import plotly.graph_objects as go
-
 st.subheader("C. Sentiment Trend (Sparklines)")
 
 # Bloomberg-like multi-line palette
@@ -647,16 +641,23 @@ def extract_date(path):
     folder = path.split("/")[-2]
     return pd.to_datetime(folder, errors="coerce")
 
-# 绑定日期
 file_date_pairs = []
 for f in files:
     dt = extract_date(f)
     if pd.notna(dt):
         file_date_pairs.append((f, dt))
 
-# 按日期倒序取最新 7 天
-file_date_pairs.sort(key=lambda x: x[1], reverse=True)
-latest_files = [f for f, d in file_date_pairs[:7]]
+
+max_date = max(d for _, d in file_date_pairs)
+start_date = max_date - pd.Timedelta(days=6)
+
+latest_files = [
+    f for f, d in file_date_pairs
+    if start_date <= d <= max_date
+]
+
+latest_files = sorted(latest_files, key=lambda f: extract_date(f))
+
 
 # -----------------------------
 # Read & Merge

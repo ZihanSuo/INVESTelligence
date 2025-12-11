@@ -22,7 +22,7 @@ st.set_page_config(
 
 # Auto-detect today's folder
 today = datetime.today().strftime("%Y-%m-%d")
-data_path = f"data/2025-12-10"  #####################################################3
+data_path = f"data/{today}"
 
 # Load main files
 scores_file = os.path.join(data_path, "scores.csv")
@@ -159,20 +159,27 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Keyword Word Cloud (stable color version)
+# C. Keyword Word Cloud
 # -------------------------------------------------------
 
 st.markdown("### C. Keyword Word Cloud")
 
 from wordcloud import WordCloud
+import numpy as np
+import random
 
 word_count_file = os.path.join(data_path, "word_count.csv")
 wc = pd.read_csv(word_count_file)
 
-keyword_colors = {
-    "bitcoin": "#1f77b4",
-    "rare earth": "#17becf",
-    "tesla": "#d62728"
+# --- Professional color palettes ---
+palette_blue = ["#0B3C5D", "#1D65A6", "#3E92CC", "#7BB6E0", "#BBDDEE"]
+palette_green = ["#007F5F", "#2B9348", "#55A630", "#80B918", "#AACC00", "#D4D700"]
+palette_red = ["#9B2226", "#C73E3A", "#E76F51", "#F4A261", "#F6BD60"]
+
+keyword_palettes = {
+    "bitcoin": palette_blue,
+    "rare earth": palette_green,
+    "tesla": palette_red
 }
 
 unique_keywords = wc["keyword"].unique()
@@ -186,20 +193,20 @@ for i in range(0, len(unique_keywords), cols_per_row):
         subset = wc[wc["keyword"] == kw]
         freq = dict(zip(subset["word"], subset["count"]))
 
-        base_color = keyword_colors.get(kw, "#444444")
+        palette = keyword_palettes.get(kw, palette_blue)
 
-        def color_func(*args, **kwargs):
-            return base_color
+        def color_func(word, *args, **kwargs):
+            return random.choice(palette)
 
         wc_img = WordCloud(
             width=500,
             height=350,
             background_color="white",
             collocations=False,
-            color_func=color_func
+            prefer_horizontal=1
         ).generate_from_frequencies(freq)
+
+        wc_img = wc_img.recolor(color_func=color_func)
 
         col.markdown(f"**{kw.capitalize()}**")
         col.image(wc_img.to_array(), use_container_width=True)
-
-

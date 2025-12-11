@@ -619,6 +619,26 @@ else:
             st.markdown("</div>", unsafe_allow_html=True)
 
 
+理解了。既然你希望严格基于现有数据，不要通过算法（插值或填充）去“无中生有”创造中间日期的数值，那么我们应该只保留 reindex 来固定 X 轴的时间范围（确保显示过去7天），但让缺失的数据保持为 NaN（空值）。
+
+在绘图时，利用 Plotly 的 connectgaps=True 来连接存在的点（视觉连线），或者直接接受断点（如果那天没数据就是空的）。
+
+以下是重写后的代码：
+
+保留你的文件读取和 Sentiment 计算逻辑。
+
+修改 Pivot 部分：只做 reindex 确保日期轴完整，坚决不使用 fillna 或 interpolate。
+
+修改 Plotly 部分：处理空值情况。
+
+Python
+
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+import glob
+import os
+
 # -------------------------------------------------------
 # C. Sentiment Trend (Interactive Sparklines)
 # -------------------------------------------------------
@@ -629,17 +649,22 @@ st.subheader("C. Sentiment Trend (Sparklines)")
 BLOOM_COLORS = [
     "#5DA5DA", "#FAA43A", "#F17CB0", "#60BD68", "#B2912F",
     "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8",
-    "#1F77B4", "#FF7F0E", "#2CA02C"  # 再补一些，防止 keyword 多
+    "#1F77B4", "#FF7F0E", "#2CA02C"
 ]
 
 # -----------------------------
-# Load latest <= 7 days data
+# 1. Load latest <= 7 days data
 # -----------------------------
+# Use glob to find all sentiment statistics files
 files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
 
 def extract_date(path):
-    folder = path.split("/")[-2]
-    return pd.to_datetime(folder, errors="coerce")
+    # Assumes folder structure: data/YYYY-MM-DD/filename.csv
+    try:
+        folder = path.split("/")[-2]
+        return pd.to_datetime(folder, errors="coerce")
+    except:
+        return pd.NaT
 
 file_date_pairs = []
 for f in files:
@@ -647,10 +672,15 @@ for f in files:
     if pd.notna(dt):
         file_date_pairs.append((f, dt))
 
+if not file_date_pairs:
+    st.info("No sentiment data found.")
+    st.stop()
 
+# Determine the date range (Anchor to the latest available date)
 max_date = max(d for _, d in file_date_pairs)
-start_date = max_date - pd.Timedelta(days=6)
+start_date = max_date - pd.Timedelta(days=6) # 7 days window including max_date
 
+# Filter files within the 7-day window
 latest_files = [
     f for f, d in file_date_pairs
     if start_date <= d <= max_date
@@ -658,9 +688,8 @@ latest_files = [
 
 latest_files = sorted(latest_files, key=lambda f: extract_date(f))
 
-
 # -----------------------------
-# Read & Merge
+# 2. Read & Merge
 # -----------------------------
 df_list = []
 for f in latest_files:
@@ -669,7 +698,8 @@ for f in latest_files:
         date_str = f.split("/")[-2]
         df["date"] = pd.to_datetime(date_str)
         df_list.append(df)
-    except:
+    except Exception as e:
+        # print(f"Error reading {f}: {e}")
         pass
 
 if len(df_list) == 0:
@@ -679,33 +709,28 @@ if len(df_list) == 0:
 df_all = pd.concat(df_list, ignore_index=True)
 df_all = df_all.sort_values("date")
 
-# 全 keyword
-all_keywords = sorted(df_all["keyword"].unique())
-
 # -----------------------------
-# Compute sentiment index
+# 3. Compute sentiment index
 # -----------------------------
 def get_sentiment(row):
+    # Weighted sentiment score calculation
     return (
-        -2 * row["strong_neg"]
-        -1 * row["weak_neg"]
-        +0 * row["neutral"]
-        +1 * row["weak_pos"]
-        +2 * row["strong_pos"]
+        -2 * row.get("strong_neg", 0)
+        -1 * row.get("weak_neg", 0)
+        +0 * row.get("neutral", 0)
+        +1 * row.get("weak_pos", 0)
+        +2 * row.get("strong_pos", 0)
     ) / 100.0
 
-df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
-
+# Apply calculation
+if "sent_index" not in df_all.columns:
+    df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
 
 # -----------------------------
-# Pivot to wide table
+# 4. Pivot & Reindex (Strict No-Fabrication Logic)
 # -----------------------------
-if df_all.empty:
-    st.warning("No data available to plot.")
-    st.stop()
-
-# 确保日期范围覆盖完整
-full_dates = pd.date_range(start_date, max_date, freq="D")
+# Create the full 7-day timeline based on the max_date
+full_dates = pd.date_range(start=start_date, end=max_date, freq="D")
 
 pivot = df_all.pivot_table(
     index="date",
@@ -714,48 +739,46 @@ pivot = df_all.pivot_table(
     aggfunc="mean"
 )
 
-# Reindex 引入空日期，但不要急着填 0
+# Reindex to force the X-axis to show all 7 days.
+# Important: We DO NOT use fillna() here. 
+# Dates without data will remain NaN (empty) to avoid fake data points.
 pivot = pivot.reindex(full_dates)
-
-# 【关键修改】使用插值(Interpolate)代替填0，这样线条是平滑过渡的，而不是死板的直角
-# limit_direction='both' 确保开头和结尾的空值也能被填上(如果有相邻数据)
-pivot = pivot.interpolate(method='linear', limit_direction='both')
-
-# 如果实在全是空值(比如某些keyword只有某一天有数据)，再用 ffill/bfill 兜底，最后才填0
-pivot = pivot.fillna(method='bfill').fillna(method='ffill').fillna(0)
-
 pivot.index.name = "date"
 
-# Debug: 再次确认 pivot 数据不全是 0
-# st.write("Debug Pivot:", pivot.tail(7)) 
-
 # -----------------------------
-# Plot combined sparkline chart
+# 5. Plot combined sparkline chart
 # -----------------------------
-import plotly.graph_objects as go
-
 fig = go.Figure()
 
+# Iterate through each keyword (column)
 for i, kw in enumerate(pivot.columns):
-    fig.add_trace(go.Scatter(
-        x=pivot.index,
-        y=pivot[kw],
-        mode="lines+markers",
-        name=kw,
-        line=dict(color=BLOOM_COLORS[i % len(BLOOM_COLORS)], width=3),
-        marker=dict(size=6),
-        connectgaps=True # 【关键参数】如果中间还有断点，自动连线
-    ))
+    # Get series and drop NaNs ONLY for the line drawing (optional) 
+    # OR pass NaNs to Plotly (Plotly handles NaNs by creating gaps)
+    series = pivot[kw]
+    
+    # Check if the keyword has ANY data in this window
+    if series.notna().sum() > 0:
+        fig.add_trace(go.Scatter(
+            x=pivot.index,
+            y=series,
+            mode="lines+markers",
+            name=kw,
+            line=dict(color=BLOOM_COLORS[i % len(BLOOM_COLORS)], width=2),
+            marker=dict(size=6),
+            # connectgaps=True: Connects points visually if intermediate days are missing.
+            # connectgaps=False: Leaves a gap in the line. 
+            # Set to True if you want to see the trend between Day 1 and Day 3.
+            connectgaps=True 
+        ))
 
 fig.update_layout(
-    title="Sentiment Trend (7-Day View)",
-    yaxis_title="Sentiment Index (-1 to +1)",
+    title=f"Sentiment Trend (Last 7 Days: {start_date.strftime('%m-%d')} to {max_date.strftime('%m-%d')})",
+    yaxis_title="Sentiment Index",
     xaxis_title="Date",
     template="plotly_white",
     hovermode="x unified",
-    height=400,
+    height=420,
     showlegend=True,
-    margin=dict(l=20, r=20, t=50, b=20),
     legend=dict(
         orientation="h", 
         yanchor="bottom", 
@@ -765,12 +788,7 @@ fig.update_layout(
     )
 )
 
+# Fix Y-axis range for consistent comparison
 fig.update_yaxes(range=[-1.1, 1.1], zeroline=True, zerolinewidth=1, zerolinecolor='lightgray')
 
-st.plotly_chart(fig, use_container_width=True)
-
-
-
-
-st.write("pivot sample:")
-st.write(pivot.head())
+st.plotly_chart(fig, use_container_width=True) # or use_column_width=True for older Streamlit

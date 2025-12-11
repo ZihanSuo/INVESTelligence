@@ -159,19 +159,21 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Keyword Word Cloud (simple single-color per keyword)
+# C. Keyword Word Cloud (stable color version)
 # -------------------------------------------------------
 
 st.markdown("### C. Keyword Word Cloud")
 
 from wordcloud import WordCloud
-import numpy as np
 
 word_count_file = os.path.join(data_path, "word_count.csv")
 wc = pd.read_csv(word_count_file)
 
-# get scatter plot colors
-scatter_color_map = {trace.name: trace.marker.color for trace in fig_scatter.data}
+keyword_colors = {
+    "bitcoin": "#1f77b4",
+    "rare earth": "#17becf",
+    "tesla": "#d62728"
+}
 
 unique_keywords = wc["keyword"].unique()
 cols_per_row = 3
@@ -184,9 +186,8 @@ for i in range(0, len(unique_keywords), cols_per_row):
         subset = wc[wc["keyword"] == kw]
         freq = dict(zip(subset["word"], subset["count"]))
 
-        base_color = scatter_color_map.get(kw, "#444444")
+        base_color = keyword_colors.get(kw, "#444444")
 
-        # simple solid-color text function
         def color_func(*args, **kwargs):
             return base_color
 

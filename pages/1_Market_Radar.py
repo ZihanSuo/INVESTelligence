@@ -133,59 +133,109 @@ col3.metric("Key Themes", key_themes_display)
 st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 # -------------------------------------------------------
-# 2.1 Impact vs Market Sentiment"
+# 2.1 Impact vs Market Sentiment (FIXED VERSION)
 # -------------------------------------------------------
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
-# --- Make a safe copy (never modify `scores` globally) ---
-df_imp = scores.copy()
-
-# 🔍 DEBUG: 检查数据
-st.write("Debug Info:")
-st.write(f"Total rows in df_imp: {len(df_imp)}")
-st.write(f"Columns: {df_imp.columns.tolist()}")
-st.write(f"Non-null final_score: {df_imp['final_score'].notna().sum()}")
-st.write(f"Non-null sentiment_score: {df_imp['sentiment_score'].notna().sum()}")
-st.write(f"Non-null keyword: {df_imp['keyword'].notna().sum()}")
-
-# 检查是否有无穷大或NaN
-st.write(f"Has inf in final_score: {np.isinf(df_imp['final_score']).any()}")
-st.write(f"Has inf in sentiment_score: {np.isinf(df_imp['sentiment_score']).any()}")
-
-# 显示前几行数据
-st.write("First few rows:")
-st.dataframe(df_imp[['title', 'final_score', 'sentiment_score', 'keyword']].head())
-
-
-##############3
-
-# Prepare marker size
-if "pickup_count" in df_imp.columns and df_imp["pickup_count"].fillna(0).max() > 0:
-    pc = df_imp["pickup_count"].fillna(0)
-    df_imp["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+# 读取 alpha.csv（包含所有需要的字段）
+if not os.path.exists(alpha_file):
+    st.warning("alpha.csv not found for visualization")
 else:
-    df_imp["marker_size"] = 14
-
-# Build scatter plot
-fig_scatter = px.scatter(
-    df_imp,
-    x="final_score",
-    y="sentiment_score",
-    color="keyword",
-    size="marker_size",
-    hover_data=["title", "final_score", "sentiment_score", "url"],
-)
-
-# Add horizontal and vertical lines
-fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
-fig_scatter.add_vline(x=df_imp["final_score"].median(), line_dash="dash", line_color="gray")
-
-fig_scatter.update_layout(height=450)
-
-st.plotly_chart(fig_scatter, use_container_width=True)
-
-
+    # 使用 alpha.csv 作为数据源
+    df_viz = pd.read_csv(alpha_file).copy()
+    
+    # 数据验证
+    st.write(f"📊 Total articles: {len(df_viz)}")
+    st.write(f"📌 Keywords: {df_viz['keyword'].unique().tolist()}")
+    
+    # 清理数据
+    required_cols = ['final_score', 'sentiment_score', 'keyword', 'title', 'url']
+    df_viz = df_viz.dropna(subset=required_cols)
+    
+    if len(df_viz) == 0:
+        st.error("No valid data after cleaning")
+    else:
+        # 计算 marker size（基于 pickup_count）
+        if "pickup_count" in df_viz.columns:
+            pc = df_viz["pickup_count"].fillna(0)
+            pc_max = pc.max()
+            pc_min = pc.min()
+            
+            if pc_max > pc_min:
+                df_viz["marker_size"] = 15 + 25 * (pc - pc_min) / (pc_max - pc_min)
+            else:
+                df_viz["marker_size"] = 20
+        else:
+            df_viz["marker_size"] = 20
+        
+        # 创建散点图
+        fig_scatter = px.scatter(
+            df_viz,
+            x="final_score",
+            y="sentiment_score",
+            color="keyword",
+            size="marker_size",
+            hover_data={
+                "title": True,
+                "final_score": ":.2f",
+                "sentiment_score": ":.2f",
+                "url": True,
+                "marker_size": False  # 隐藏 marker_size
+            },
+            color_discrete_sequence=px.colors.qualitative.Set2,
+            labels={
+                "final_score": "Impact Score",
+                "sentiment_score": "Market Sentiment",
+                "keyword": "Theme"
+            }
+        )
+        
+        # 添加参考线
+        fig_scatter.add_hline(
+            y=0, 
+            line_dash="dash", 
+            line_color="rgba(100, 100, 100, 0.5)",
+            line_width=1.5,
+            annotation_text="Neutral Sentiment",
+            annotation_position="right"
+        )
+        
+        fig_scatter.add_vline(
+            x=df_viz["final_score"].median(),
+            line_dash="dash",
+            line_color="rgba(100, 100, 100, 0.5)",
+            line_width=1.5,
+            annotation_text="Median Impact",
+            annotation_position="top"
+        )
+        
+        # 更新布局
+        fig_scatter.update_layout(
+            height=500,
+            showlegend=True,
+            legend=dict(
+                title="Keywords",
+                orientation="v",
+                yanchor="top",
+                y=1,
+                xanchor="left",
+                x=1.02
+            ),
+            hovermode='closest',
+            plot_bgcolor='rgba(240, 240, 240, 0.3)',
+        )
+        
+        # 更新点的样式
+        fig_scatter.update_traces(
+            marker=dict(
+                line=dict(width=1, color='white'),
+                opacity=0.8,
+                sizemin=10
+            )
+        )
+        
+        st.plotly_chart(fig_scatter, use_container_width=True)
 # -------------------------------------------------------
 # 2.2 The Alpha Quadrant (Four Quadrant Analysis)
 # -------------------------------------------------------

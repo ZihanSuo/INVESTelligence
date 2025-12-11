@@ -286,18 +286,84 @@ for i in range(0, len(unique_keywords), cols_per_row):
 
 
 
-#----------------------ENTITIES
+# -------------------------------------------------------
+# D. Entity Co-occurrence Network Visualization
+# -------------------------------------------------------
+
+import json
+import os
+from collections import defaultdict
+from pyvis.network import Network
+import streamlit as st
+from streamlit.components.v1 import html
+
+OUTPUT_DIR = "network_graphs"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+
+# 1. Color mapping by sentiment
 
 def sentiment_to_color(s):
-    s = max(-1, min(1, s))  
-    intensity = int(150 + abs(s) * 105)  # 150–255
-    if s >= 0:
-        return f"rgb(0,{intensity},0)"    # greenish
-    else:
-        return f"rgb({intensity},0,0)"    # reddish
+    """
+    Map sentiment score [-1,1] to a red–green color scale.
+    Higher |sentiment| → deeper color.
+    """
+    s = max(-1, min(1, s))
+    intensity = int(150 + abs(s) * 105)  # range 150–255
 
+    if s >= 0:
+        return f"rgb(0,{intensity},0)"     # green-ish
+    else:
+        return f"rgb({intensity},0,0)"     # red-ish
+
+
+# 2. Build co-occurrence structure from entities.json
+
+def build_network_data(entry):
+    """
+    Extract entity frequency, co-occurrence pairs, and sentiment stats.
+    """
+    articles = entry["graph_data"]
+
+    entity_freq = defaultdict(int)
+    entity_sent_sum = defaultdict(float)
+    entity_sent_count = defaultdict(int)
+
+    cooccur = defaultdict(lambda: defaultdict(int))
+
+    for art in articles:
+        ents = art.get("entities", [])
+        sentiment = art.get("sentiment", 0)
+
+        # Count entity appearances + sentiment
+        for e in ents:
+            entity_freq[e] += 1
+            entity_sent_sum[e] += sentiment
+            entity_sent_count[e] += 1
+
+        # Count pairwise co-occurrence
+        for i in range(len(ents)):
+            for j in range(i + 1, len(ents)):
+                a, b = ents[i], ents[j]
+                cooccur[a][b] += 1
+                cooccur[b][a] += 1
+
+    # Compute average sentiment per entity
+    entity_sent_avg = {
+        e: entity_sent_sum[e] / entity_sent_count[e]
+        for e in entity_freq
+    }
+
+    return entity_freq, entity_sent_avg, cooccur
+
+
+
+# 3. PyVis graph generator
 
 def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
+    """
+    Create a PyVis graph for one keyword and save as HTML.
+    """
     net = Network(
         height="600px",
         width="100%",
@@ -305,7 +371,7 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
         font_color="#222"
     )
 
-    # 更紧凑的图形结构
+    # More compact physics settings
     net.barnes_hut(
         gravitational_constant=-8000,
         central_gravity=0.3,
@@ -313,46 +379,35 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
         spring_strength=0.05
     )
 
-    # ----------------------
-    # Keyword 节点（中心）
-    # ----------------------
+    # ---- Add keyword center node ----
     net.add_node(
         keyword,
         label=keyword,
         size=55,
         color="#4976f5",
-        font={"size": 20, "color": "#1F1F1F"},
-        title=f"{keyword}\nEntities: {len(entity_freq)}"
+        font={"size": 20, "color": "#111"},
+        title=f"{keyword}\nTotal Entities: {len(entity_freq)}"
     )
 
-    # ----------------------
-    # 实体节点
-    # ----------------------
+    # ---- Add entity nodes ----
     max_freq = max(entity_freq.values()) if entity_freq else 1
 
     for ent, freq in entity_freq.items():
         sentiment = entity_sent_avg.get(ent, 0)
-
-        size = 10 + (freq / max_freq) * 25
-
-        # sentiment → 颜色
-        node_color = sentiment_to_color(sentiment)
+        size = 10 + (freq / max_freq) * 25  # medium scale
 
         net.add_node(
             ent,
             label=ent,
             size=size,
-            color=node_color,
-            shape="dot",
+            color=sentiment_to_color(sentiment),
             font={"size": 14},
             title=f"{ent}\nCount: {freq}\nAvg Sentiment: {sentiment:.2f}"
         )
 
-        net.add_edge(keyword, ent, color="#888", width=1)
+        net.add_edge(keyword, ent, color="#999", width=1)
 
-    # ----------------------
-    # 共现边
-    # ----------------------
+    # ---- Add co-occurrence edges ----
     for a in cooccur:
         for b, count in cooccur[a].items():
             if count > 0:
@@ -368,17 +423,27 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
     return file_path
 
 
-# -------------------------
-# Streamlit 展示部分（缺了这个你就永远看不到图）
-# -------------------------
-import streamlit as st
-from streamlit.components.v1 import html
+# 4. Load data & generate graphs
 
-st.subheader("C. Entity Co-occurrence Network")
+with open("data_path/entities.json", "r") as f:
+    entities_data = json.load(f)
+
+network_files = {}
+
+for entry in entities_data:
+    keyword = entry["keyword"]
+    entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
+
+    html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
+    network_files[keyword] = html_file
+
+
+# 5. Streamlit layout (2 graphs per row, collapsible)
+
+st.subheader("D. Entity Co-occurrence Network")
 
 keywords = list(network_files.keys())
 
-# 一行 2 个 collapsible 图
 for i in range(0, len(keywords), 2):
     cols = st.columns(2)
 

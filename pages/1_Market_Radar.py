@@ -136,10 +136,30 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 # 2.1 Impact vs Market Sentiment"
 # -------------------------------------------------------
 
+、
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
 # --- Make a safe copy (never modify `scores` globally) ---
 df_imp = scores.copy()
+
+# 🔍 DEBUG: 检查数据
+st.write("Debug Info:")
+st.write(f"Total rows in df_imp: {len(df_imp)}")
+st.write(f"Columns: {df_imp.columns.tolist()}")
+st.write(f"Non-null final_score: {df_imp['final_score'].notna().sum()}")
+st.write(f"Non-null sentiment_score: {df_imp['sentiment_score'].notna().sum()}")
+st.write(f"Non-null keyword: {df_imp['keyword'].notna().sum()}")
+
+# 检查是否有无穷大或NaN
+st.write(f"Has inf in final_score: {np.isinf(df_imp['final_score']).any()}")
+st.write(f"Has inf in sentiment_score: {np.isinf(df_imp['sentiment_score']).any()}")
+
+# 显示前几行数据
+st.write("First few rows:")
+st.dataframe(df_imp[['title', 'final_score', 'sentiment_score', 'keyword']].head())
+
+
+##############3
 
 # Prepare marker size
 if "pickup_count" in df_imp.columns and df_imp["pickup_count"].fillna(0).max() > 0:
@@ -171,6 +191,15 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 # 2.2 The Alpha Quadrant (Four Quadrant Analysis)
 # -------------------------------------------------------
 st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
+
+if not os.path.exists(alpha_file):
+    st.info("No alpha.csv for today.")
+else:
+    df_alpha = pd.read_csv(alpha_file).copy()
+    
+    # 🔍 清理数据
+    df_alpha = df_alpha.dropna(subset=['source_credibility', 'materiality_score', 'sentiment_score'])
+    
 
 if not os.path.exists(alpha_file):
     st.info("No alpha.csv for today.")

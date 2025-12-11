@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import numpy as np
 
 # ---------------------------------------------------------
 # 1. Page Configuration

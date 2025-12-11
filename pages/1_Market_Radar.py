@@ -138,109 +138,90 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
-# Prepare marker size based on pickup_count (already merged above)
-if "pickup_count" in scores.columns and scores["pickup_count"].fillna(0).max() > 0:
-    pc = scores["pickup_count"].fillna(0)
-    if pc.max() > pc.min():
-        scores["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
-    else:
-        scores["marker_size"] = 14
+# --- Make a safe copy (never modify `scores` globally) ---
+df_imp = scores.copy()
+
+# Prepare marker size
+if "pickup_count" in df_imp.columns and df_imp["pickup_count"].fillna(0).max() > 0:
+    pc = df_imp["pickup_count"].fillna(0)
+    df_imp["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
 else:
-    scores["marker_size"] = 14  # constant size if no pickup_count
+    df_imp["marker_size"] = 14
 
+# Build scatter plot
 fig_scatter = px.scatter(
-    scores,
+    df_imp,
     x="final_score",
     y="sentiment_score",
     color="keyword",
     size="marker_size",
-    hover_data=["title", "final_score", "sentiment_score", "url"]
+    hover_data=["title", "final_score", "sentiment_score", "url"],
 )
 
-# Horizontal line at sentiment = 0
+# Add horizontal and vertical lines
 fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
+fig_scatter.add_vline(x=df_imp["final_score"].median(), line_dash="dash", line_color="gray")
 
-# Vertical line at median final_score
-fig_scatter.add_vline(
-    x=scores["final_score"].median(),
-    line_dash="dash",
-    line_color="gray"
-)
+fig_scatter.update_layout(height=450)
 
 st.plotly_chart(fig_scatter, use_container_width=True)
 
-
-fig_scatter = px.scatter(
-    scores,
-    x="final_score",
-    y="sentiment_score",
-    color="keyword",
-    size="marker_size",
-    hover_data=["title", "final_score", "sentiment_score", "url"]
-)
-
-# Horizontal line at sentiment = 0
-fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
-
-# Vertical line at median final_score (can be changed to a fixed threshold)
-fig_scatter.add_vline(
-    x=scores["final_score"].median(),
-    line_dash="dash",
-    line_color="gray"
-)
-
-st.plotly_chart(fig_scatter, use_container_width=True)
 
 # -------------------------------------------------------
 # 2.2 The Alpha Quadrant (Four Quadrant Analysis)
 # -------------------------------------------------------
 st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
-alpha_file = os.path.join(data_path, "alpha.csv")
-alpha = pd.read_csv(alpha_file)
 
-# Basic preparation
-df = alpha.copy()
-df["sentiment_norm"] = df["sentiment_score"].clip(-1, 1)
+if not os.path.exists(alpha_file):
+    st.info("No alpha.csv for today.")
+else:
+    df_alpha = pd.read_csv(alpha_file).copy()
 
-# Determine quadrant boundaries using medians
-x_mid = df["source_credibility"].median()
-y_mid = df["materiality_score"].median()
+    # Normalize sentiment score for visualization
+    df_alpha["sentiment_norm"] = df_alpha["sentiment_score"].clip(-1, 1)
 
-# Quadrant labeling function
-def get_quadrant(row):
-    if row["source_credibility"] >= x_mid and row["materiality_score"] >= y_mid:
-        return "Critical Movers (Q1)"
-    elif row["source_credibility"] < x_mid and row["materiality_score"] >= y_mid:
-        return "Rumor Mill (Q2)"
-    elif row["source_credibility"] < x_mid and row["materiality_score"] < y_mid:
-        return "Low Value Noise (Q3)"
-    else:
-        return "Market Noise (Q4)"
+    # Compute quadrant midpoints
+    x_mid = df_alpha["source_credibility"].median()
+    y_mid = df_alpha["materiality_score"].median()
 
-df["quadrant"] = df.apply(get_quadrant, axis=1)
+    # Quadrant function
+    def get_quadrant(row):
+        if row["source_credibility"] >= x_mid and row["materiality_score"] >= y_mid:
+            return "Critical Movers (Q1)"
+        elif row["source_credibility"] < x_mid and row["materiality_score"] >= y_mid:
+            return "Rumor Mill (Q2)"
+        elif row["source_credibility"] < x_mid and row["materiality_score"] < y_mid:
+            return "Low Value (Q3)"
+        else:
+            return "Market Noise (Q4)"
 
-# Build scatter plot
-fig_q = px.scatter(
-    df,
-    x="source_credibility",
-    y="materiality_score",
-    color="sentiment_norm",
-    color_continuous_scale=["red", "white", "green"],
-    hover_data=["title", "keyword", "url"],
-    size=[12] * len(df)
-)
+    df_alpha["quadrant"] = df_alpha.apply(get_quadrant, axis=1)
 
-# Draw quadrant lines
-fig_q.add_vline(x=x_mid, line_width=1, line_dash="dash", line_color="gray")
-fig_q.add_hline(y=y_mid, line_width=1, line_dash="dash", line_color="gray")
+    # Build quadrants scatter plot
+    fig_q = px.scatter(
+        df_alpha,
+        x="source_credibility",
+        y="materiality_score",
+        color="sentiment_norm",
+        color_continuous_scale=["red", "white", "green"],
+        hover_data=["title", "keyword", "url"],
+        size=[12] * len(df_alpha)
+    )
 
-# Add quadrant text labels
-fig_q.add_annotation(x=x_mid + 0.1, y=y_mid + 0.1, text="Q1: Critical Movers", showarrow=False)
-fig_q.add_annotation(x=x_mid - 0.1, y=y_mid + 0.1, text="Q2: Rumor Mill", showarrow=False)
-fig_q.add_annotation(x=x_mid - 0.1, y=y_mid - 0.1, text="Q3: Low Value", showarrow=False)
-fig_q.add_annotation(x=x_mid + 0.1, y=y_mid - 0.1, text="Q4: Market Noise", showarrow=False)
+    # Add lines
+    fig_q.add_vline(x=x_mid, line_dash="dash", line_color="gray")
+    fig_q.add_hline(y=y_mid, line_dash="dash", line_color="gray")
 
-st.plotly_chart(fig_q, use_container_width=True, key="alpha_quadrant")
+    # Add quadrant labels
+    fig_q.add_annotation(x=x_mid + 0.05, y=y_mid + 0.05, text="Q1: Critical Movers", showarrow=False)
+    fig_q.add_annotation(x=x_mid - 0.05, y=y_mid + 0.05, text="Q2: Rumor Mill", showarrow=False)
+    fig_q.add_annotation(x=x_mid - 0.05, y=y_mid - 0.05, text="Q3: Low Value", showarrow=False)
+    fig_q.add_annotation(x=x_mid + 0.05, y=y_mid - 0.05, text="Q4: Market Noise", showarrow=False)
+
+    fig_q.update_layout(height=500)
+
+    st.plotly_chart(fig_q, use_container_width=True)
+
 
 # -------------------------------------------------------
 # 2.3 Word Cloud 

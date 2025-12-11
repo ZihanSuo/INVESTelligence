@@ -1,11 +1,5 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="AI Financial News Agent",
-    page_icon="📈",
-    layout="wide"
-)
-
 ########## Import Packages #############
 # 1. Global Setup & Data Loading
 import pandas as pd

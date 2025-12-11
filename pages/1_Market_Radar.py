@@ -446,7 +446,7 @@ else:
         return file_path
 
     # ---- Normalize raw entities_data once ----
-    entity_blocks = normalize_entities(entities_data)
+    entity_blocks = normalize_entities(entities_file)
 
     network_files = {}
     for entry in entity_blocks:

@@ -620,36 +620,118 @@ else:
 ###########################final
 
 
+# -------------------------------------------------------
+# C. Sentiment Trend (Interactive)
+# -------------------------------------------------------
 
-stats_files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
-
-df_list = []
-for f in stats_files:
-    d = pd.read_csv(f)
-    d["date"] = f.split("/")[1]  # folder name as date
-    df_list.append(d)
-
-sent_ts = pd.concat(df_list)
-sent_ts["date"] = pd.to_datetime(sent_ts["date"])
-
-sent_ts["sent_index"] = (
-    sent_ts["weak_pos"] + sent_ts["strong_pos"]
-    - (sent_ts["weak_neg"] + sent_ts["strong_neg"])
-)
-
-
-keywords = sent_ts["keyword"].unique()
+import glob
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+import streamlit as st
 
 st.subheader("C. Sentiment Trend (Sparklines)")
 
-for kw in keywords:
-    sub = sent_ts[sent_ts["keyword"] == kw].sort_values("date")
+# Bloomberg-style multi-color palette
+BLOOMBERG_COLORS = [
+    "#5DA5DA", "#FAA43A", "#F17CB0", "#60BD68", "#B2912F",
+    "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8"
+]
 
-    fig, ax = plt.subplots(figsize=(4, 1))
-    ax.plot(sub["date"], sub["sent_index"], color="#4976f5", linewidth=2)
+# ------------ Load all sentiment_statistics.csv (past 7 days) ------------
+sent_files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
 
-    ax.set_title(kw, fontsize=12)
-    ax.set_xticks([])
-    ax.set_yticks([])
+# Only keep latest 7 days (if less available → also OK)
+sent_files = sent_files[-7:]
 
-    st.pyplot(fig, use_container_width=False)
+df_list = []
+for f in sent_files:
+    try:
+        df = pd.read_csv(f)
+        day = f.split("/")[-2]      # folder name = date
+        df["date"] = pd.to_datetime(day)
+        df_list.append(df)
+    except:
+        pass
+
+if len(df_list) == 0:
+    st.info("Not enough historical sentiment data.")
+    st.stop()
+
+df_all = pd.concat(df_list, ignore_index=True)
+
+# ensure date sorted
+df_all = df_all.sort_values("date")
+
+# get full x-axis (missing days filled)
+full_dates = pd.date_range(df_all["date"].min(), df_all["date"].max(), freq="D")
+
+keywords = sorted(df_all["keyword"].unique())
+
+# pivot: rows = date, columns = keyword, values = sentiment index
+# sentiment index = weighted average sentiment
+def compute_sentiment(row):
+    return (
+        -2 * row["strong_neg"]
+        + -1 * row["weak_neg"]
+        + 0 * row["neutral"]
+        + 1 * row["weak_pos"]
+        + 2 * row["strong_pos"]
+    ) / 100.0   # normalize to [-1,1]
+
+df_all["sent_index"] = df_all.apply(compute_sentiment, axis=1)
+
+pivot = df_all.pivot(index="date", columns="keyword", values="sent_index")
+pivot = pivot.reindex(full_dates)        # fill missing days
+pivot = pivot.fillna(method="ffill")     # forward fill
+pivot = pivot.fillna(0)                  # still empty → 0
+
+# ---------------- Main combined figure ----------------
+fig = go.Figure()
+
+for i, key in enumerate(keywords):
+    fig.add_trace(go.Scatter(
+        x=pivot.index,
+        y=pivot[key],
+        mode="lines",
+        name=key,
+        line=dict(color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)], width=2),
+        hovertemplate=f"<b>{key}</b><br>Date: {{x}}<br>Sentiment: {{y:.3f}}<extra></extra>"
+    ))
+
+fig.update_layout(
+    height=400,
+    plot_bgcolor="rgba(0,0,0,0)",
+    paper_bgcolor="rgba(0,0,0,0)",
+    margin=dict(l=10, r=10, t=30, b=10),
+    yaxis=dict(title="Sentiment Index", range=[-1,1], gridcolor="#DDD"),
+    xaxis=dict(gridcolor="#EEE"),
+    legend=dict(orientation="h", y=-0.25)
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+# ---------------- Expanders for individual charts ----------------
+st.markdown("### Individual Keyword Views")
+
+for i, key in enumerate(keywords):
+    with st.expander(f"{key.title()} Trend"):
+        fig2 = go.Figure()
+        fig2.add_trace(go.Scatter(
+            x=pivot.index,
+            y=pivot[key],
+            mode="lines",
+            line=dict(color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)], width=3),
+            hovertemplate=f"<b>{key}</b><br>Date: {{x}}<br>Sentiment: {{y:.3f}}<extra></extra>"
+        ))
+
+        fig2.update_layout(
+            height=300,
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            margin=dict(l=10, r=10, t=20, b=10),
+            yaxis=dict(title="Sentiment Index", range=[-1,1], gridcolor="#DDD"),
+            xaxis=dict(gridcolor="#EEE")
+        )
+
+        st.plotly_chart(fig2, use_container_width=True)

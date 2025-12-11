@@ -29,7 +29,7 @@ scores_file = os.path.join(data_path, "scores.csv")
 alpha_file = os.path.join(data_path, "alpha.csv")
 entities_file = os.path.join(data_path, "entities.json")
 wordcount_file = os.path.join(data_path, "word_count.csv")
-
+sentiment_file = os.path.join(data_path, "sentiment_statistics.csv")
 # Read scores.csv
 scores = pd.read_csv(scores_file)
 
@@ -540,7 +540,7 @@ else:
 # -------------------------------------------------------
 # E. 📑 Longitudinal
 # -------------------------------------------------------
-1. 
+
 # -------------------------------------------------------
 # E. 📑 The "Must-Read" Ticker — Bloomberg Terminal Style
 # -------------------------------------------------------

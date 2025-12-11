@@ -405,3 +405,40 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
     net.show(file_path)
     return file_path
 
+# -------------------------
+# 生成所有 keyword 的网络图
+# -------------------------
+network_files = {}
+
+for entry in entities_data:
+    keyword = entry["keyword"]
+
+    entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
+    html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
+
+    network_files[keyword] = html_file
+
+# -------------------------
+# Streamlit 展示部分（缺了这个你就永远看不到图）
+# -------------------------
+import streamlit as st
+from streamlit.components.v1 import html
+
+st.subheader("C. Entity Co-occurrence Network")
+
+keywords = list(network_files.keys())
+
+# 一行 2 个 collapsible 图
+for i in range(0, len(keywords), 2):
+    cols = st.columns(2)
+
+    for j in range(2):
+        if i + j < len(keywords):
+            key = keywords[i + j]
+            file_path = network_files[key]
+
+            with cols[j]:
+                with st.expander(f"{key.title()} Entity Network", expanded=False):
+                    html(open(file_path, "r", encoding="utf-8").read(), height=600)
+
+

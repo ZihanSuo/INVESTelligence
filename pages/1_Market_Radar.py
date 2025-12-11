@@ -213,6 +213,50 @@ fig_q.add_annotation(x=x_mid + 0.1, y=y_mid - 0.1, text="Q4: Market Noise", show
 
 st.plotly_chart(fig_q, use_container_width=True, key="alpha_quadrant")
 
+# --------------------------------------------------
+# PART B — Cross-sectional Sentiment Distribution
+# --------------------------------------------------
+
+df_sent = pd.read_csv(sentiment_file)
+
+with row1_col2:
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.subheader("B. Sentiment Distribution (100% Stacked)")
+
+    # Ordered sentiment buckets (negative → positive)
+    categories = ["strong_neg", "weak_neg", "neutral", "weak_pos", "strong_pos"]
+
+    # Professional Bloomberg-like color palette
+    colors = {
+        "strong_neg": "#d62728",   # strong red
+        "weak_neg":   "#ff9896",   # light red
+        "neutral":    "#c7c7c7",   # gray
+        "weak_pos":   "#98df8a",   # light green
+        "strong_pos": "#2ca02c",   # strong green
+    }
+
+    df_plot = df_sent.sort_values("keyword")
+    x = np.arange(len(df_plot))
+    bottom = np.zeros(len(df_plot))
+
+    fig_b, ax_b = plt.subplots(figsize=(10, 5))
+
+    for cat in categories:
+        vals = df_plot[cat].astype(float)
+        ax_b.bar(x, vals,
+                 bottom=bottom,
+                 label=cat.replace("_", " ").title(),
+                 color=colors[cat])
+        bottom += vals
+
+    ax_b.set_xticks(x)
+    ax_b.set_xticklabels(df_plot["keyword"], rotation=30, ha="right")
+    ax_b.set_ylabel("Distribution (%)")
+    ax_b.legend(loc="upper right", frameon=False)
+
+    st.pyplot(fig_b, use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
 # -------------------------------------------------------
 # C. Word Cloud (scalable for unlimited keywords)
@@ -493,6 +537,10 @@ else:
                             html(f.read(), height=600)
 
 
+# -------------------------------------------------------
+# E. 📑 Longitudinal
+# -------------------------------------------------------
+1. 
 # -------------------------------------------------------
 # E. 📑 The "Must-Read" Ticker — Bloomberg Terminal Style
 # -------------------------------------------------------

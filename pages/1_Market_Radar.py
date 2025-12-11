@@ -636,7 +636,8 @@ BLOOMBERG_COLORS = [
 ]
 
 # ------------ Load all sentiment_statistics.csv (past 7 days) ------------
-sent_files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
+
+files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
 
 # Only keep latest 7 days (if less available → also OK)
 def extract_date(path):

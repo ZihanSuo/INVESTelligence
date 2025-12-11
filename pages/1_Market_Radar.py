@@ -738,5 +738,7 @@ fig.update_yaxes(range=[-1, 1])  # 强制固定在 [-1, 1]，便于比较
 st.plotly_chart(fig, use_container_width=True)
 
 
-st.write("Pivot head:", pivot.head(10))
+st.write("latest_files:", latest_files)
+st.write("df_all sample:", df_all.head(20))
+
 

@@ -159,30 +159,21 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# C. Word Cloud per Keyword (color matched to scatter)
+# C. Keyword Word Cloud
 # -------------------------------------------------------
 
 st.markdown("### C. Keyword Word Cloud (per theme)")
+
+import numpy as np
+from wordcloud import WordCloud
 
 # Load today's word_count file
 word_count_file = os.path.join(data_path, "word_count.csv")
 wc = pd.read_csv(word_count_file)   # expected columns: keyword, word, count
 
-# -------- Step 1: Extract keyword-color mapping from Scatter --------
-color_map = {}
-for trace in fig_scatter.data:
-    kw = trace.name
-    # Plotly sometimes stores category colors as arrays, sometimes as strings
-    if hasattr(trace.marker, "color"):
-        color_map[kw] = trace.marker.color
-    else:
-        color_map[kw] = "#888888"  # fallback
-
-# -------- Step 2: Build word clouds per keyword --------
+# Get all unique keywords
 unique_keywords = wc["keyword"].unique()
-
-# Layout: 3 images per row
-cols_per_row = 3
+cols_per_row = 3  # 3 wordclouds per row
 
 for i in range(0, len(unique_keywords), cols_per_row):
     row_keywords = unique_keywords[i:i + cols_per_row]
@@ -191,14 +182,10 @@ for i in range(0, len(unique_keywords), cols_per_row):
     for col, kw in zip(cols, row_keywords):
         subset = wc[wc["keyword"] == kw]
 
-        # Build frequency dict: {word: count}
+        # Frequency dictionary: {word: count}
         freq = dict(zip(subset["word"], subset["count"]))
 
-        # Custom color function for this keyword
-        def color_func(word, *args, **kwargs):
-            return color_map.get(kw, "#999999")
-
-        # Generate word cloud
+        # Generate WordCloud (default color settings)
         wc_img = WordCloud(
             width=500,
             height=350,
@@ -206,13 +193,12 @@ for i in range(0, len(unique_keywords), cols_per_row):
             collocations=False
         ).generate_from_frequencies(freq)
 
-        wc_img = wc_img.recolor(color_func=color_func)
+        # Convert to array for Streamlit
+        wc_array = wc_img.to_array()
 
-        # Plot into Streamlit
-        fig, ax = plt.subplots(figsize=(5, 3))
-        ax.imshow(wc_img, interpolation='bilinear')
-        ax.axis("off")
+        # Display
         col.markdown(f"**{kw.capitalize()}**")
-        col.pyplot(fig, use_container_width=True, key=f"wc_{kw}")
+        col.image(wc_array, use_container_width=True)
+
 
 

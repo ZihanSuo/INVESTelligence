@@ -620,57 +620,48 @@ else:
 
 
 # -------------------------------------------------------
-# C. Sentiment Trend (Interactive Sparklines)
+# C. Sentiment Trend (Sparklines)
 # -------------------------------------------------------
 
 st.subheader("C. Sentiment Trend (Sparklines)")
 
-# Bloomberg-like multi-line palette
-BLOOM_COLORS = [
+import glob
+import plotly.graph_objs as go
+
+# Bloomberg-style color palette
+BLOOMBERG_COLORS = [
     "#5DA5DA", "#FAA43A", "#F17CB0", "#60BD68", "#B2912F",
-    "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8",
-    "#1F77B4", "#FF7F0E", "#2CA02C"
+    "#B276B2", "#DECF3F", "#4D4D4D", "#9F9F9F", "#AEC7E8"
 ]
 
-# -----------------------------
-# 1. Load latest <= 7 days data
-# -----------------------------
-# Use glob to find all sentiment statistics files
+# -------------------------------------------------------
+# 1. Collect up to last 7 days of sentiment_statistics.csv
+# -------------------------------------------------------
+
 files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
 
 def extract_date(path):
-    # Assumes folder structure: data/YYYY-MM-DD/filename.csv
-    try:
-        folder = path.split("/")[-2]
-        return pd.to_datetime(folder, errors="coerce")
-    except:
-        return pd.NaT
+    """Extract YYYY-MM-DD folder name as datetime."""
+    folder = path.split("/")[-2]
+    return pd.to_datetime(folder, errors="coerce")
 
+# Pair (file_path, date)
 file_date_pairs = []
 for f in files:
     dt = extract_date(f)
     if pd.notna(dt):
         file_date_pairs.append((f, dt))
 
-if not file_date_pairs:
-    st.info("No sentiment data found.")
-    st.stop()
+# Sort by date descending
+file_date_pairs.sort(key=lambda x: x[1], reverse=True)
 
-# Determine the date range (Anchor to the latest available date)
-max_date = max(d for _, d in file_date_pairs)
-start_date = max_date - pd.Timedelta(days=6) # 7 days window including max_date
+# Pick latest ≤ 7 days
+latest_files = [f for f, d in file_date_pairs[:7]]
 
-# Filter files within the 7-day window
-latest_files = [
-    f for f, d in file_date_pairs
-    if start_date <= d <= max_date
-]
+# -------------------------------------------------------
+# 2. Load and merge sentiment data
+# -------------------------------------------------------
 
-latest_files = sorted(latest_files, key=lambda f: extract_date(f))
-
-# -----------------------------
-# 2. Read & Merge
-# -----------------------------
 df_list = []
 for f in latest_files:
     try:
@@ -678,8 +669,7 @@ for f in latest_files:
         date_str = f.split("/")[-2]
         df["date"] = pd.to_datetime(date_str)
         df_list.append(df)
-    except Exception as e:
-        # print(f"Error reading {f}: {e}")
+    except:
         pass
 
 if len(df_list) == 0:
@@ -687,30 +677,33 @@ if len(df_list) == 0:
     st.stop()
 
 df_all = pd.concat(df_list, ignore_index=True)
-df_all = df_all.sort_values("date")
 
-# -----------------------------
-# 3. Compute sentiment index
-# -----------------------------
-def get_sentiment(row):
-    # Weighted sentiment score calculation
+# Ensure date column is datetime
+df_all["date"] = pd.to_datetime(df_all["date"])
+
+# -------------------------------------------------------
+# 3. Compute sentiment index (mapped to [-1, 1])
+# -------------------------------------------------------
+
+def compute_sentiment(row):
     return (
-        -2 * row.get("strong_neg", 0)
-        -1 * row.get("weak_neg", 0)
-        +0 * row.get("neutral", 0)
-        +1 * row.get("weak_pos", 0)
-        +2 * row.get("strong_pos", 0)
+        -2 * row["strong_neg"]
+        + -1 * row["weak_neg"]
+        + 0 * row["neutral"]
+        + 1 * row["weak_pos"]
+        + 2 * row["strong_pos"]
     ) / 100.0
 
-# Apply calculation
-if "sent_index" not in df_all.columns:
-    df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
+df_all["sent_index"] = df_all.apply(compute_sentiment, axis=1)
 
-# -----------------------------
-# 4. Pivot & Reindex (Strict No-Fabrication Logic)
-# -----------------------------
-# Create the full 7-day timeline based on the max_date
-full_dates = pd.date_range(start=start_date, end=max_date, freq="D")
+# -------------------------------------------------------
+# 4. Pivot to wide table: index=date, columns=keywords
+# -------------------------------------------------------
+
+# Full timeline covering all available days
+full_dates = pd.date_range(
+    df_all["date"].min(), df_all["date"].max(), freq="D"
+)
 
 pivot = df_all.pivot_table(
     index="date",
@@ -719,56 +712,40 @@ pivot = df_all.pivot_table(
     aggfunc="mean"
 )
 
-# Reindex to force the X-axis to show all 7 days.
-# Important: We DO NOT use fillna() here. 
-# Dates without data will remain NaN (empty) to avoid fake data points.
+# Reindex → fill missing days
 pivot = pivot.reindex(full_dates)
+
+# Forward fill missing values, then fill remaining gaps with 0
+pivot = pivot.fillna(method="ffill").fillna(0)
 pivot.index.name = "date"
 
-# -----------------------------
+# -------------------------------------------------------
 # 5. Plot combined sparkline chart
-# -----------------------------
+# -------------------------------------------------------
+
 fig = go.Figure()
 
-# Iterate through each keyword (column)
 for i, kw in enumerate(pivot.columns):
-    # Get series and drop NaNs ONLY for the line drawing (optional) 
-    # OR pass NaNs to Plotly (Plotly handles NaNs by creating gaps)
-    series = pivot[kw]
-    
-    # Check if the keyword has ANY data in this window
-    if series.notna().sum() > 0:
-        fig.add_trace(go.Scatter(
-            x=pivot.index,
-            y=series,
-            mode="lines+markers",
-            name=kw,
-            line=dict(color=BLOOM_COLORS[i % len(BLOOM_COLORS)], width=2),
-            marker=dict(size=6),
-            # connectgaps=True: Connects points visually if intermediate days are missing.
-            # connectgaps=False: Leaves a gap in the line. 
-            # Set to True if you want to see the trend between Day 1 and Day 3.
-            connectgaps=True 
-        ))
+    fig.add_trace(go.Scatter(
+        x=pivot.index,
+        y=pivot[kw],
+        mode="lines+markers",
+        name=kw,
+        line=dict(
+            color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)],
+            width=2
+        ),
+        marker=dict(size=5),
+    ))
 
 fig.update_layout(
-    title=f"Sentiment Trend (Last 7 Days: {start_date.strftime('%m-%d')} to {max_date.strftime('%m-%d')})",
+    title="Sentiment Trend (Latest 7 Days)",
     yaxis_title="Sentiment Index",
     xaxis_title="Date",
     template="plotly_white",
-    hovermode="x unified",
-    height=420,
-    showlegend=True,
-    legend=dict(
-        orientation="h", 
-        yanchor="bottom", 
-        y=1.02, 
-        xanchor="right", 
-        x=1
-    )
+    height=480,
+    hovermode="x unified"
 )
 
-# Fix Y-axis range for consistent comparison
-fig.update_yaxes(range=[-1.1, 1.1], zeroline=True, zerolinewidth=1, zerolinecolor='lightgray')
+st.plotly_chart(fig, use_container_width=True)
 
-st.plotly_chart(fig, use_container_width=True) # or use_column_width=True for older Streamlit

@@ -68,31 +68,16 @@ if has_alpha:
 else:
     alpha = None
 
-
 # -------------------------------------------------------
-# Prepare marker size
-# If alpha.csv exists → use pickup_count
-# Else → use constant marker size
+# Merge pickup_count (if alpha exists)
 # -------------------------------------------------------
-
-# Merge alpha into scores if available
 if has_alpha:
-    # Only merge pickup_count and final_score/sentiment_score must match
     scores = scores.merge(
         alpha[["title", "pickup_count"]],
         on="title",
         how="left"
     )
 
-# If pickup_count exists and is not all zero
-if "pickup_count" in scores.columns and scores["pickup_count"].fillna(0).max() > 0:
-    
-    # Min-max scaling into visible range
-    pc = scores["pickup_count"].fillna(0)
-    scores["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
-else:
-    # Fall back to constant
-    scores["marker_size"] = 12
 
 # -------------------------------------------------------
 # 1. Snapshot
@@ -150,22 +135,40 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 # -------------------------------------------------------
 # 2.1 Impact vs Market Sentiment"
 # -------------------------------------------------------
-st.markdown("#### 2.1 Impact vs Market Sentiment")
-# Merge pickup_count from alpha.csv if available
-if has_alpha:
-    scores = scores.merge(
-        alpha[["title", "pickup_count"]],
-        on="title",
-        how="left",
-        suffixes=("", "_alpha")
-    )
 
-# Prepare marker size
+st.markdown("#### 2.1 Impact vs Market Sentiment")
+
+# Prepare marker size based on pickup_count (already merged above)
 if "pickup_count" in scores.columns and scores["pickup_count"].fillna(0).max() > 0:
     pc = scores["pickup_count"].fillna(0)
-    scores["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+    if pc.max() > pc.min():
+        scores["marker_size"] = 10 + 20 * (pc - pc.min()) / (pc.max() - pc.min())
+    else:
+        scores["marker_size"] = 14
 else:
     scores["marker_size"] = 14  # constant size if no pickup_count
+
+fig_scatter = px.scatter(
+    scores,
+    x="final_score",
+    y="sentiment_score",
+    color="keyword",
+    size="marker_size",
+    hover_data=["title", "final_score", "sentiment_score", "url"]
+)
+
+# Horizontal line at sentiment = 0
+fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
+
+# Vertical line at median final_score
+fig_scatter.add_vline(
+    x=scores["final_score"].median(),
+    line_dash="dash",
+    line_color="gray"
+)
+
+st.plotly_chart(fig_scatter, use_container_width=True)
+
 
 fig_scatter = px.scatter(
     scores,

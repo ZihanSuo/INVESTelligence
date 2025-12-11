@@ -1,19 +1,57 @@
+########## Import Packages #############
+# 1. Global Setup & Data Loading
+
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 import os
-import json
+import datetime
 from datetime import datetime
+
+# 2. Alpha Matrix & Visualization
+
+import plotly
+
+# 3. Word Cloud Generation 
+
 from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-import numpy as np
-import glob
-import plotly.graph_objects as go
 import colorsys
 import random
+
+
+# 4. Sentiment Statistics 
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 5. Entity Network
+
+import json
 from collections import defaultdict
 from pyvis.network import Network
 from streamlit.components.v1 import html
+
+# 6. Trend Analysis 
+
+import glob
+import plotly.graph_objects as go
+
+st.markdown("""
+<style>
+    .card {
+        background-color: #F7F9FC;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #E4E9F1;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+    .metric-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 
@@ -51,7 +89,6 @@ else:
     alpha = None
 
 
-
 # -------------------------------------------------------
 # Prepare marker size
 # If alpha.csv exists → use pickup_count
@@ -78,12 +115,12 @@ else:
     scores["marker_size"] = 12
 
 # -------------------------------------------------------
-# Page title and Level 1: The Snapshot
+# 1. Snapshot
 # -------------------------------------------------------
 
 st.title("Market Radar")
 
-st.markdown("### 1. The Snapshot (Daily Market Pulse)")
+st.markdown("### 1. Daily Market Pulse")
 
 # Total Articles
 total_articles = len(scores)

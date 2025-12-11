@@ -27,6 +27,7 @@ data_path = f"data/{today}"
 # Load main files
 scores_file = os.path.join(data_path, "scores.csv")
 alpha_file = os.path.join(data_path, "alpha.csv")
+entities_file == os.path.join(data_path, "entities.json")
 
 # Read scores.csv
 scores = pd.read_csv(scores_file)
@@ -425,12 +426,8 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
 
 # 4. Load data & generate graphs
 
-with open("data_path/entities.json", "r") as f:
-    entities_data = json.load(f)
 
-network_files = {}
-
-for entry in entities_data:
+for entry in entities_file:
     keyword = entry["keyword"]
     entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
 

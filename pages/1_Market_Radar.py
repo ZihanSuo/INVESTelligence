@@ -1,7 +1,5 @@
 import streamlit as st
-# ---------------------------------------------------------
-# 1. Page Configuration
-# ---------------------------------------------------------
+
 st.set_page_config(
     page_title="AI Financial News Agent",
     page_icon="📈",

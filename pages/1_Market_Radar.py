@@ -8,6 +8,9 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import numpy as np
 import glob
+import plotly.graph_objects as go
+
+
 # ---------------------------------------------------------
 # 1. Page Configuration
 # ---------------------------------------------------------
@@ -623,11 +626,6 @@ else:
 # C. Sentiment Trend (Interactive)
 # -------------------------------------------------------
 
-import glob
-import pandas as pd
-import numpy as np
-import plotly.graph_objects as go
-import streamlit as st
 
 st.subheader("C. Sentiment Trend (Sparklines)")
 
@@ -641,7 +639,19 @@ BLOOMBERG_COLORS = [
 sent_files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
 
 # Only keep latest 7 days (if less available → also OK)
-sent_files = sent_files[-7:]
+def extract_date(path):
+    folder = path.split("/")[-2]
+    return pd.to_datetime(folder, errors="coerce")
+
+
+file_date_pairs = [(f, extract_date(f)) for f in files]
+file_date_pairs = [p for p in file_date_pairs if p[1] is not pd.NaT]
+
+
+file_date_pairs.sort(key=lambda x: x[1], reverse=True)
+
+latest_files = [p[0] for p in file_date_pairs[:7]]
+
 
 df_list = []
 for f in sent_files:
@@ -688,50 +698,22 @@ pivot = pivot.fillna(0)                  # still empty → 0
 # ---------------- Main combined figure ----------------
 fig = go.Figure()
 
-for i, key in enumerate(keywords):
+for kw in pivot.columns:
     fig.add_trace(go.Scatter(
         x=pivot.index,
-        y=pivot[key],
-        mode="lines",
-        name=key,
-        line=dict(color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)], width=2),
-        hovertemplate=f"<b>{key}</b><br>Date: {{x}}<br>Sentiment: {{y:.3f}}<extra></extra>"
+        y=pivot[kw],
+        mode="lines+markers",
+        name=kw,
     ))
 
 fig.update_layout(
-    height=400,
-    plot_bgcolor="rgba(0,0,0,0)",
-    paper_bgcolor="rgba(0,0,0,0)",
-    margin=dict(l=10, r=10, t=30, b=10),
-    yaxis=dict(title="Sentiment Index", range=[-1,1], gridcolor="#DDD"),
-    xaxis=dict(gridcolor="#EEE"),
-    legend=dict(orientation="h", y=-0.25)
+    title="Sentiment Trend (Last 7 days)",
+    yaxis_title="Sentiment Index",
+    xaxis_title="Date",
+    template="plotly_white",
+    height=450,
 )
 
-st.plotly_chart(fig, use_container_width=True)
 
-# ---------------- Expanders for individual charts ----------------
-st.markdown("### Individual Keyword Views")
 
-for i, key in enumerate(keywords):
-    with st.expander(f"{key.title()} Trend"):
-        fig2 = go.Figure()
-        fig2.add_trace(go.Scatter(
-            x=pivot.index,
-            y=pivot[key],
-            mode="lines",
-            line=dict(color=BLOOMBERG_COLORS[i % len(BLOOMBERG_COLORS)], width=3),
-            hovertemplate=f"<b>{key}</b><br>Date: {{x}}<br>Sentiment: {{y:.3f}}<extra></extra>"
-        ))
-
-        fig2.update_layout(
-            height=300,
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            margin=dict(l=10, r=10, t=20, b=10),
-            yaxis=dict(title="Sentiment Index", range=[-1,1], gridcolor="#DDD"),
-            xaxis=dict(gridcolor="#EEE")
-        )
-
-        st.plotly_chart(fig2, use_container_width=True)
 

@@ -5,3 +5,5 @@ numpy
 networkx
 streamlit-agraph
 requests
+wordcloud
+matplotlib

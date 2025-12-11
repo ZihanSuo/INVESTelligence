@@ -497,7 +497,7 @@ else:
 # 5. The "Must-Read" Ticker
 # -------------------------------------------------------
 
-st.subheader("4. 📑 The 'Must-Read' Ticker)
+st.subheader("4. 📑 The 'Must-Read' Ticker")
 
 if scores is None or len(scores) == 0:
     st.info("No score data available.")

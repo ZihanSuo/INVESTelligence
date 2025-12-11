@@ -157,24 +157,24 @@ st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
-# Alpha Matrix Scatter Plot
+# C. Market Attention Map (Treemap)
 # -------------------------------------------------------
 
-st.subheader("Alpha Matrix: Importance vs Sentiment")
+st.markdown("### C. Market Attention Map")
 
-fig_scatter = px.scatter(
-    scores,
-    x="final_score",
-    y="sentiment_score",
-    color="keyword",
-    size="marker_size",
-    hover_data=["title", "final_score", "sentiment_score", "url"],
-    title="Core Signals: Impact vs Market Sentiment"
+tree_df = scores.groupby("keyword").agg(
+    article_count=("title", "count"),
+    avg_sentiment=("sentiment_score", "mean")
+).reset_index()
+
+fig_tree = px.treemap(
+    tree_df,
+    path=["keyword"],
+    values="article_count",
+    color="avg_sentiment",
+    color_continuous_scale="RdYlGn",
+    title="Theme Heatmap: Information Density & Sentiment"
 )
 
-# Optional quadrant lines for readability
-fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
-fig_scatter.add_vline(x=scores["final_score"].median(), line_dash="dash", line_color="gray")
-
-st.plotly_chart(fig_scatter, use_container_width=True)
+st.plotly_chart(fig_tree, use_container_width=True)
 

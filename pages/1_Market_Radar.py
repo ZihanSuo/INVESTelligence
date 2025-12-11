@@ -9,7 +9,7 @@ from datetime import datetime
 
 # 2. Alpha Matrix & Visualization
 
-import plotly
+import plotly.express as px
 
 # 3. Word Cloud Generation 
 

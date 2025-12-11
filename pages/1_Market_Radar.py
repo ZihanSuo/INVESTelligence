@@ -7,7 +7,7 @@ from datetime import datetime
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import numpy as np
-
+import glob
 # ---------------------------------------------------------
 # 1. Page Configuration
 # ---------------------------------------------------------
@@ -616,3 +616,40 @@ else:
                 )
 
             st.markdown("</div>", unsafe_allow_html=True)
+
+###########################final
+
+
+
+stats_files = sorted(glob.glob("data/*/sentiment_statistics.csv"))
+
+df_list = []
+for f in stats_files:
+    d = pd.read_csv(f)
+    d["date"] = f.split("/")[1]  # folder name as date
+    df_list.append(d)
+
+sent_ts = pd.concat(df_list)
+sent_ts["date"] = pd.to_datetime(sent_ts["date"])
+
+sent_ts["sent_index"] = (
+    sent_ts["weak_pos"] + sent_ts["strong_pos"]
+    - (sent_ts["weak_neg"] + sent_ts["strong_neg"])
+)
+
+
+keywords = sent_ts["keyword"].unique()
+
+st.subheader("C. Sentiment Trend (Sparklines)")
+
+for kw in keywords:
+    sub = sent_ts[sent_ts["keyword"] == kw].sort_values("date")
+
+    fig, ax = plt.subplots(figsize=(4, 1))
+    ax.plot(sub["date"], sub["sent_index"], color="#4976f5", linewidth=2)
+
+    ax.set_title(kw, fontsize=12)
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    st.pyplot(fig, use_container_width=False)

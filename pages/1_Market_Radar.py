@@ -619,26 +619,6 @@ else:
             st.markdown("</div>", unsafe_allow_html=True)
 
 
-理解了。既然你希望严格基于现有数据，不要通过算法（插值或填充）去“无中生有”创造中间日期的数值，那么我们应该只保留 reindex 来固定 X 轴的时间范围（确保显示过去7天），但让缺失的数据保持为 NaN（空值）。
-
-在绘图时，利用 Plotly 的 connectgaps=True 来连接存在的点（视觉连线），或者直接接受断点（如果那天没数据就是空的）。
-
-以下是重写后的代码：
-
-保留你的文件读取和 Sentiment 计算逻辑。
-
-修改 Pivot 部分：只做 reindex 确保日期轴完整，坚决不使用 fillna 或 interpolate。
-
-修改 Plotly 部分：处理空值情况。
-
-Python
-
-import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
-import glob
-import os
-
 # -------------------------------------------------------
 # C. Sentiment Trend (Interactive Sparklines)
 # -------------------------------------------------------

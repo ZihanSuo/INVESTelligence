@@ -695,6 +695,7 @@ def get_sentiment(row):
     ) / 100.0
 
 df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
+df_all["keyword"] = df_all["keyword"].str.replace(" ", "_")
 
 # -----------------------------
 # Pivot to wide table
@@ -702,9 +703,9 @@ df_all["sent_index"] = df_all.apply(get_sentiment, axis=1)
 full_dates = pd.date_range(df_all["date"].min(), df_all["date"].max(), freq="D")
 
 pivot = df_all.pivot(index="date", columns="keyword", values="sent_index")
-pivot = pivot.reindex(full_dates)      # fill missing dates
-pivot = pivot.fillna(method="ffill")   # forward fill
-pivot = pivot.fillna(0)                # still NaN → 0
+pivot = pivot.reindex(full_dates)
+pivot = pivot.fillna(method="ffill")
+pivot = pivot.fillna(0)
 
 pivot.index.name = "date"
 
@@ -738,7 +739,6 @@ fig.update_yaxes(range=[-1, 1])  # 强制固定在 [-1, 1]，便于比较
 st.plotly_chart(fig, use_container_width=True)
 
 
-st.write("latest_files:", latest_files)
-st.write("df_all sample:", df_all.head(20))
+
 
 

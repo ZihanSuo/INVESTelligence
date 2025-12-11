@@ -157,9 +157,63 @@ fig_scatter.add_vline(
 
 st.plotly_chart(fig_scatter, use_container_width=True)
 
+# -------------------------------------------------------
+# B2. The Alpha Quadrant (Four Quadrant Analysis)
+# -------------------------------------------------------
+
+st.markdown("### B2. The Alpha Quadrant (Source Credibility × Materiality)")
+
+alpha_file = os.path.join(data_path, "alpha.csv")
+alpha = pd.read_csv(alpha_file)
+
+# Basic preparation
+df = alpha.copy()
+df["sentiment_norm"] = df["sentiment_score"].clip(-1, 1)
+
+# Determine quadrant boundaries using medians
+x_mid = df["source_credibility"].median()
+y_mid = df["materiality_score"].median()
+
+# Quadrant labeling function
+def get_quadrant(row):
+    if row["source_credibility"] >= x_mid and row["materiality_score"] >= y_mid:
+        return "Critical Movers (Q1)"
+    elif row["source_credibility"] < x_mid and row["materiality_score"] >= y_mid:
+        return "Rumor Mill (Q2)"
+    elif row["source_credibility"] < x_mid and row["materiality_score"] < y_mid:
+        return "Low Value Noise (Q3)"
+    else:
+        return "Market Noise (Q4)"
+
+df["quadrant"] = df.apply(get_quadrant, axis=1)
+
+# Build scatter plot
+fig_q = px.scatter(
+    df,
+    x="source_credibility",
+    y="materiality_score",
+    color="sentiment_norm",
+    color_continuous_scale=["red", "white", "green"],
+    hover_data=["title", "keyword", "url"],
+    size=[12] * len(df),
+    title="Alpha Quadrant: Credibility vs Materiality"
+)
+
+# Draw quadrant lines
+fig_q.add_vline(x=x_mid, line_width=1, line_dash="dash", line_color="gray")
+fig_q.add_hline(y=y_mid, line_width=1, line_dash="dash", line_color="gray")
+
+# Add quadrant text labels
+fig_q.add_annotation(x=x_mid + 0.1, y=y_mid + 0.1, text="Q1: Critical Movers", showarrow=False)
+fig_q.add_annotation(x=x_mid - 0.1, y=y_mid + 0.1, text="Q2: Rumor Mill", showarrow=False)
+fig_q.add_annotation(x=x_mid - 0.1, y=y_mid - 0.1, text="Q3: Low Value", showarrow=False)
+fig_q.add_annotation(x=x_mid + 0.1, y=y_mid - 0.1, text="Q4: Market Noise", showarrow=False)
+
+st.plotly_chart(fig_q, use_container_width=True, key="alpha_quadrant")
+
 
 # -------------------------------------------------------
-# Auto-Color Word Cloud (scalable for unlimited keywords)
+# C. Word Cloud (scalable for unlimited keywords)
 # -------------------------------------------------------
 
 import colorsys

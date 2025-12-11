@@ -387,63 +387,66 @@ else:
     # 2. Graph generator + Streamlit layout
     # ---------------------------------------------------
 
-    def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
-        """
-        Create a PyVis graph for one keyword and save as HTML.
-        """
-        net = Network(
-            height="600px",
-            width="100%",
-            bgcolor="#FFFFFF",
-            font_color="#222",
-        )
+def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
+    net = Network(
+        height="600px",
+        width="100%",
+        bgcolor="#FFFFFF",
+        font_color="#222",
+    )
 
-        # Make the layout more compact and readable
-        net.barnes_hut()
+    # Default physics — guaranteed compatible with all pyvis versions
+    net.barnes_hut()
 
-        # Center node: keyword
+    # Optional: make graph more compact without breaking older pyvis
+    net.set_options("""
+    var options = {
+      physics: {
+        barnesHut: {
+          gravitationalConstant: -3000,
+          centralGravity: 0.25,
+          springLength: 90,
+          springConstant: 0.04
+        },
+        minVelocity: 0.75
+      }
+    }
+    """)
+
+    # Keyword node
+    net.add_node(
+        keyword,
+        label=keyword,
+        size=55,
+        color="#4976f5",
+        title=f"{keyword} — {len(entity_freq)} entities"
+    )
+
+    max_freq = max(entity_freq.values()) if entity_freq else 1
+
+    # Entity nodes
+    for ent, freq in entity_freq.items():
+        sentiment = entity_sent_avg.get(ent, 0)
+        size = 10 + (freq / max_freq) * 25
+
         net.add_node(
-            keyword,
-            label=keyword,
-            size=55,
-            color="#4976f5",
-            font={"size": 20, "color": "#111"},
-            title=f"{keyword}\nTotal Entities: {len(entity_freq)}",
+            ent,
+            label=ent,
+            size=size,
+            color=sentiment_to_color(sentiment),
+            title=f"{ent} | Count:{freq} | Sent:{sentiment:.2f}"
         )
+        net.add_edge(keyword, ent, color="#999", width=1)
 
-        # Entity nodes
-        max_freq = max(entity_freq.values()) if entity_freq else 1
+    # Co-occurrence edges
+    for a in cooccur:
+        for b, count in cooccur[a].items():
+            if count > 0:
+                net.add_edge(a, b, width=1 + count * 0.7, color="#BBB")
 
-        for ent, freq in entity_freq.items():
-            sentiment = entity_sent_avg.get(ent, 0.0)
-            size = 10 + (freq / max_freq) * 25  # medium scaling
-
-            net.add_node(
-                ent,
-                label=ent,
-                size=size,
-                color=sentiment_to_color(sentiment),
-                font={"size": 14},
-                title=f"{ent}\nCount: {freq}\nAvg Sentiment: {sentiment:.2f}",
-            )
-
-            net.add_edge(keyword, ent, color="#999999", width=1)
-
-        # Co-occurrence edges
-        for a in cooccur:
-            for b, count in cooccur[a].items():
-                if count > 0:
-                    net.add_edge(
-                        a,
-                        b,
-                        width=1 + count * 0.7,
-                        color="#BBBBBB",
-                        title=f"Co-occurs: {count}",
-                    )
-
-        file_path = os.path.join(OUTPUT_DIR, f"{keyword}_network.html")
-        net.write_html(file_path)
-        return file_path
+    file_path = os.path.join(OUTPUT_DIR, f"{keyword}_network.html")
+    net.write_html(file_path)
+    return file_path
 
     # ---- Normalize raw entities_data once ----
     entity_blocks = normalize_entities(entities_file)

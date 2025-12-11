@@ -48,6 +48,7 @@ st.subheader("Plotly Test")
 
 fig_test = px.scatter(x=[1,2,3], y=[3,1,4])
 st.plotly_chart(fig_test)
+st.write("Plotly renderer:", pio.renderers.default)
 
 # -------------------------------------------------------
 # Load data from today's folder

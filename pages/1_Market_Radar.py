@@ -624,16 +624,13 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
 
 entity_blocks = normalize_entities(raw_entities)
 
-if not entity_blocks:
-    st.markdown("### D. Entity Co-occurrence Network")
-    st.info("No entity data available for this date.")
-else:
-    network_files = {}
-    for entry in entity_blocks:
-        keyword = entry.get("keyword", "unknown")
-        entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
-        html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
-        network_files[keyword] = html_file
+
+network_files = {}
+for entry in entity_blocks:
+    keyword = entry.get("keyword", "unknown")
+    entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
+    html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
+    network_files[keyword] = html_file
 
     
 

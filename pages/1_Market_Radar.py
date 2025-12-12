@@ -110,7 +110,15 @@ sentiment_file = os.path.join(data_path, "sentiment_statistics.csv")
 scores = pd.read_csv(scores_file)
 
 
-
+fig_scatter = px.scatter(
+    scores,
+    x="final_score",
+    y="sentiment_score",
+    color="keyword",
+    size="marker_size",
+    hover_data=["title", "final_score", "sentiment_score", "url"],
+    title="Core Signals: Impact vs Market Sentiment"
+)
 # -------------------------------------------------------
 # 1. Snapshot
 # -------------------------------------------------------

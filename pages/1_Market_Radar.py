@@ -107,19 +107,6 @@ entities_file = os.path.join(data_path, "entities.json")
 wordcount_file = os.path.join(data_path, "word_count.csv")
 sentiment_file = os.path.join(data_path, "sentiment_statistics.csv")
 
-scores = pd.read_csv(scores_file)
-
-
-fig_scatter = px.scatter(
-    scores,
-    x="final_score",
-    y="sentiment_score",
-    color="keyword",
-    hover_data=["title", "final_score", "sentiment_score", "url"],
-    title="Core Signals: Impact vs Market Sentiment"
-)
-
-st.plotly_chart(fig_scatter, use_container_width=True)
 
 # -------------------------------------------------------
 # 1. Snapshot
@@ -181,47 +168,18 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
-df = scores.copy()
+scores = pd.read_csv(scores_file)
 
-# Prepare colors
-keywords = sorted(df["keyword"].unique())
-colors = plt.cm.tab10(np.linspace(0, 1, len(keywords)))
-color_map = dict(zip(keywords, colors))
 
-fig, ax = plt.subplots(figsize=(10, 6))
-
-# Scatter per keyword
-for kw in keywords:
-    d = df[df["keyword"] == kw]
-    ax.scatter(
-        d["final_score"],
-        d["sentiment_score"],
-        color=color_map[kw],
-        label=kw,
-        s=55,
-        alpha=0.85
-    )
-
-# Lines
-ax.axhline(0, color="gray", linestyle="--", linewidth=1)
-median_x = df["final_score"].median()
-ax.axvline(median_x, color="gray", linestyle="--", linewidth=1)
-
-# Labels
-ax.set_xlabel("Impact Score (final_score)", fontsize=12)
-ax.set_ylabel("Market Sentiment (sentiment_score)", fontsize=12)
-ax.set_title("Impact vs Market Sentiment", fontsize=14)
-
-# Legend inside top-left, with transparent box
-legend = ax.legend(
-    title="Keyword",
-    loc="upper left",
-    framealpha=0.6,        # semi-transparent background
-    facecolor="white",
-    edgecolor="gray"
+fig_scatter = px.scatter(
+    scores,
+    x="final_score",
+    y="sentiment_score",
+    color="keyword",
+    hover_data=["title", "final_score", "sentiment_score", "url"]
 )
 
-st.pyplot(fig)
+st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # -------------------------------------------------------
@@ -230,56 +188,31 @@ st.pyplot(fig)
 
 st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
 
-if not os.path.exists(alpha_file):
-    st.info("No alpha.csv found.")
-else:
-    df_alpha = pd.read_csv(alpha_file).copy()
+# Load alpha.csv
+alpha = pd.read_csv(alpha_file)
 
-    # Midpoints
-    x_mid = df_alpha["source_credibility"].median()
-    y_mid = df_alpha["materiality_score"].median()
+# Add normalized sentiment for coloring (optional but good)
+alpha["sentiment_norm"] = alpha["sentiment_score"].clip(-1, 1)
 
-    # Normalize sentiment for color map
-    senti = df_alpha["sentiment_score"].clip(-1, 1)
+# Compute quadrant medians
+x_mid = alpha["source_credibility"].median()
+y_mid = alpha["materiality_score"].median()
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+# Scatter plot
+fig_q = px.scatter(
+    alpha,
+    x="source_credibility",
+    y="materiality_score",
+    color="sentiment_norm",
+    color_continuous_scale=["red", "white", "green"],
+    hover_data=["title", "keyword", "url"]
+)
 
-    # Scatter plot
-    sc = ax.scatter(
-        df_alpha["source_credibility"],
-        df_alpha["materiality_score"],
-        c=senti,
-        cmap="RdYlGn",        # red → yellow → green
-        s=70,
-        alpha=0.85,
-        edgecolor="black",
-        linewidth=0.3
-    )
+# Add quadrant lines
+fig_q.add_hline(y=y_mid, line_dash="dash", line_color="gray")
+fig_q.add_vline(x=x_mid, line_dash="dash", line_color="gray")
 
-    # Quadrant lines
-    ax.axvline(x_mid, color="gray", linestyle="--", linewidth=1)
-    ax.axhline(y_mid, color="gray", linestyle="--", linewidth=1)
-
-    # Labels
-    ax.set_xlabel("Source Credibility", fontsize=12)
-    ax.set_ylabel("Materiality Score", fontsize=12)
-    ax.set_title("Alpha Quadrant", fontsize=14)
-
-    # Quadrant annotations
-    ax.text(x_mid + 0.01, y_mid + 0.01, "Q1: Critical Movers", fontsize=10, color="black")
-    ax.text(x_mid - 0.29, y_mid + 0.01, "Q2: Rumor Mill", fontsize=10, color="black")
-    ax.text(x_mid - 0.29, y_mid - 0.03, "Q3: Low Value", fontsize=10, color="black")
-    ax.text(x_mid + 0.01, y_mid - 0.03, "Q4: Market Noise", fontsize=10, color="black")
-
-    # Colorbar as "legend", placed inside top-left
-    cbar = fig.colorbar(sc, ax=ax)
-    cbar.set_label("Sentiment Score", fontsize=11)
-
-    # Move colorbar inside + style
-    cbar.ax.set_position([0.13, 0.75, 0.02, 0.15])  # left, bottom, width, height
-    cbar.ax.set_facecolor((1,1,1,0.6))             # semi-transparent
-
-    st.pyplot(fig)
+st.plotly_chart(fig_q, use_container_width=True)
 
                 
 # -------------------------------------------------------
@@ -354,7 +287,7 @@ for i in range(0, len(unique_keywords), cols_per_row):
 df_sent = pd.read_csv(sentiment_file)
 
 st.markdown('<div class="card">', unsafe_allow_html=True)
-st.subheader("3. Sentiment Distribution") 
+st.markdown("### 3. Sentiment Distribution") 
 #######check here
 
 categories = ["strong_neg", "weak_neg", "neutral", "weak_pos", "strong_pos"]
@@ -549,7 +482,7 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
 entity_blocks = normalize_entities(raw_entities)
 
 if not entity_blocks:
-    st.subheader("D. Entity Co-occurrence Network")
+    st.markdown("### D. Entity Co-occurrence Network")
     st.info("No entity data available for this date.")
 else:
     network_files = {}
@@ -583,7 +516,7 @@ else:
 # -------------------------------------------------------
 
 
-st.subheader("5. The 'Must-Read' Ticker")
+st.markdown("### 5. The 'Must-Read' Ticker")
 
 if scores is None or len(scores) == 0:
     st.info("No score data available.")

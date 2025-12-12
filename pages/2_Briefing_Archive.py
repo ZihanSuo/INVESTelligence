@@ -6,7 +6,7 @@ import os
 ARCHIVE_FOLDER = 'newsletter_archive' 
 
 def render_html_archive():
-    st.header("📚 Briefing Archive")
+    st.header("📰 Briefing Archive")
 
     # 1. Validation: Check if folder exists
     if not os.path.exists(ARCHIVE_FOLDER):

@@ -298,7 +298,7 @@ st.markdown("#### 3.1 The Consensus Spectrum")
 
 # Config
 categories = ["strong_neg", "weak_neg", "neutral", "weak_pos", "strong_pos"]
-colors = ["#d73027", "#fdae61", "#d9d9d9", "#a6d96a", "#1a9850"]  # ColorBrewer RdYlGn
+colors = ["#4c6b5c", "#88a98e", "#d9d9d9", "#b6e3b5", "#5bbd5b"]
 labels = ["Strong Bearish", "Weak Bearish", "Neutral", "Weak Bullish", "Strong Bullish"]
 df_plot = df_sent.sort_values("keyword")
 

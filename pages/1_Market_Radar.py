@@ -456,6 +456,7 @@ else:
 # 4. Entity Co-occurrence Network
 # -------------------------------------------------------
 
+st.markdown("### 4. Entity Co-occurrence Network")
 
 # 1. Load entities.json safely
 OUTPUT_DIR = "network_graphs"
@@ -634,13 +635,13 @@ else:
         html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
         network_files[keyword] = html_file
 
-    st.subheader("4. Entity Co-occurrence Network")
+    
 
     keywords = list(network_files.keys())
 
-    for i in range(0, len(keywords), 2):
-        cols = st.columns(2)
-        for j in range(2):
+    for i in range(0, len(keywords), 3):
+        cols = st.columns(3)
+        for j in range(3):
             if i + j < len(keywords):
                 key = keywords[i + j]
                 file_path = network_files[key]

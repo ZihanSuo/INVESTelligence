@@ -647,7 +647,7 @@ else:
                 file_path = network_files[key]
 
                 with cols[j]:
-                    with st.expander(f"{key.title()} Entity Network", expanded=False):
+                    with st.expander(f"{key.title()} Entity Network", expanded=True):
                         with open(file_path, "r", encoding="utf-8") as f:
                             html(f.read(), height=600)
 

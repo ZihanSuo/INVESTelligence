@@ -115,10 +115,10 @@ fig_scatter = px.scatter(
     x="final_score",
     y="sentiment_score",
     color="keyword",
-    size="marker_size",
     hover_data=["title", "final_score", "sentiment_score", "url"],
     title="Core Signals: Impact vs Market Sentiment"
 )
+
 # -------------------------------------------------------
 # 1. Snapshot
 # -------------------------------------------------------

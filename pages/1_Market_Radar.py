@@ -147,15 +147,14 @@ st.markdown("#### 2.1 Impact vs Market Sentiment")
 
 df = scores.copy()
 
-# Prepare colors for each keyword
+# Prepare colors
 keywords = sorted(df["keyword"].unique())
 colors = plt.cm.tab10(np.linspace(0, 1, len(keywords)))
 color_map = dict(zip(keywords, colors))
 
-# Figure setup
 fig, ax = plt.subplots(figsize=(10, 6))
 
-# Draw each keyword's scatter
+# Scatter per keyword
 for kw in keywords:
     d = df[df["keyword"] == kw]
     ax.scatter(
@@ -163,28 +162,30 @@ for kw in keywords:
         d["sentiment_score"],
         color=color_map[kw],
         label=kw,
-        s=50,        # marker size
-        alpha=0.8
+        s=55,
+        alpha=0.85
     )
 
-# Horizontal line for sentiment = 0
+# Lines
 ax.axhline(0, color="gray", linestyle="--", linewidth=1)
-
-# Vertical line for median(final_score)
 median_x = df["final_score"].median()
 ax.axvline(median_x, color="gray", linestyle="--", linewidth=1)
 
 # Labels
 ax.set_xlabel("Impact Score (final_score)", fontsize=12)
 ax.set_ylabel("Market Sentiment (sentiment_score)", fontsize=12)
-ax.set_title("Impact vs Market Sentiment (Matplotlib Version)", fontsize=14)
+ax.set_title("Impact vs Market Sentiment", fontsize=14)
 
-# Show legend
-ax.legend(title="Keyword", bbox_to_anchor=(1.05, 1), loc='upper left')
+# Legend inside top-left, with transparent box
+legend = ax.legend(
+    title="Keyword",
+    loc="upper left",
+    framealpha=0.6,        # semi-transparent background
+    facecolor="white",
+    edgecolor="gray"
+)
 
-# Push to Streamlit
 st.pyplot(fig)
-
 
 
 # -------------------------------------------------------
@@ -194,175 +195,56 @@ st.pyplot(fig)
 st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
 
 if not os.path.exists(alpha_file):
-    st.info("No alpha.csv for today.")
+    st.info("No alpha.csv found.")
 else:
-    # 读取数据
-    df_alpha = pd.read_csv(alpha_file)
-    
-    # 清理
-    if df_alpha.columns.duplicated().any():
-        df_alpha = df_alpha.loc[:, ~df_alpha.columns.duplicated()]
-    
-    df_alpha = df_alpha.reset_index(drop=True)
-    df_alpha = df_alpha.dropna(subset=['source_credibility', 'materiality_score', 'sentiment_score'])
-    
-    if len(df_alpha) == 0:
-        st.warning("No valid data in alpha.csv")
-    else:
-        # 计算中位数
-        x_mid = df_alpha["source_credibility"].median()
-        y_mid = df_alpha["materiality_score"].median()
-        
-        # 标准化 sentiment
-        sentiment_norm = df_alpha["sentiment_score"].clip(-1, 1)
-        
-        # 创建颜色映射 (红→黄→绿)
-        def sentiment_to_color(s):
-            # s 范围 [-1, 1]
-            # 红(负) → 黄(0) → 绿(正)
-            if s < 0:
-                # 红色到黄色
-                r = 255
-                g = int(255 * (1 + s))  # -1→0, 0→255
-                b = 0
-            else:
-                # 黄色到绿色
-                r = int(255 * (1 - s))  # 0→255, 1→0
-                g = 255
-                b = 0
-            return f'rgb({r},{g},{b})'
-        
-        colors = [sentiment_to_color(s) for s in sentiment_norm]
-        
-        # 构建 hover text
-        hover_text = []
-        for _, row in df_alpha.iterrows():
-            text = f"<b>{row['title']}</b><br>"
-            text += f"Keyword: {row['keyword']}<br>"
-            text += f"Credibility: {row['source_credibility']:.2f}<br>"
-            text += f"Materiality: {row['materiality_score']:.2f}<br>"
-            text += f"Sentiment: {row['sentiment_score']:.2f}<br>"
-            text += f"URL: {row['url']}"
-            hover_text.append(text)
-        
-        # 创建散点图
-        fig2 = go.Figure()
-        
-        fig2.add_trace(go.Scatter(
-            x=df_alpha['source_credibility'],
-            y=df_alpha['materiality_score'],
-            mode='markers',
-            marker=dict(
-                size=14,
-                color=colors,
-                line=dict(width=1, color='white'),
-                opacity=0.8
-            ),
-            text=hover_text,
-            hovertemplate='%{text}<extra></extra>'
-        ))
-        
-        # 添加参考线
-        fig2.add_vline(
-            x=x_mid,
-            line_dash="dash",
-            line_color="gray",
-            line_width=2
-        )
-        
-        fig2.add_hline(
-            y=y_mid,
-            line_dash="dash",
-            line_color="gray",
-            line_width=2
-        )
-        
-        # 计算偏移量用于标签
-        x_range = df_alpha['source_credibility'].max() - df_alpha['source_credibility'].min()
-        y_range = df_alpha['materiality_score'].max() - df_alpha['materiality_score'].min()
-        offset_x = x_range * 0.05
-        offset_y = y_range * 0.05
-        
-        # 添加象限标签
-        fig2.add_annotation(
-            x=x_mid + offset_x, 
-            y=y_mid + offset_y,
-            text="<b>Q1: Critical Movers</b><br>(High Cred + High Impact)",
-            showarrow=False,
-            font=dict(size=10, color="green"),
-            bgcolor="rgba(255,255,255,0.8)",
-            borderpad=4
-        )
-        
-        fig2.add_annotation(
-            x=x_mid - offset_x,
-            y=y_mid + offset_y,
-            text="<b>Q2: Rumor Mill</b><br>(Low Cred + High Impact)",
-            showarrow=False,
-            font=dict(size=10, color="orange"),
-            bgcolor="rgba(255,255,255,0.8)",
-            borderpad=4,
-            xanchor="right"
-        )
-        
-        fig2.add_annotation(
-            x=x_mid - offset_x,
-            y=y_mid - offset_y,
-            text="<b>Q3: Low Value</b><br>(Low Cred + Low Impact)",
-            showarrow=False,
-            font=dict(size=10, color="gray"),
-            bgcolor="rgba(255,255,255,0.8)",
-            borderpad=4,
-            xanchor="right",
-            yanchor="top"
-        )
-        
-        fig2.add_annotation(
-            x=x_mid + offset_x,
-            y=y_mid - offset_y,
-            text="<b>Q4: Market Noise</b><br>(High Cred + Low Impact)",
-            showarrow=False,
-            font=dict(size=10, color="blue"),
-            bgcolor="rgba(255,255,255,0.8)",
-            borderpad=4,
-            yanchor="top"
-        )
-        
-        # 更新布局
-        fig2.update_layout(
-            title="Alpha Quadrant: Credibility vs Materiality",
-            xaxis_title="Source Credibility",
-            yaxis_title="Materiality Score",
-            height=550,
-            hovermode='closest',
-            showlegend=False,
-            plot_bgcolor='rgba(245, 245, 245, 0.5)'
-        )
-        
-        st.plotly_chart(fig2, use_container_width=True)
-        
-        # 象限统计
-        def get_quadrant(row):
-            if row["source_credibility"] >= x_mid and row["materiality_score"] >= y_mid:
-                return "Q1: Critical Movers"
-            elif row["source_credibility"] < x_mid and row["materiality_score"] >= y_mid:
-                return "Q2: Rumor Mill"
-            elif row["source_credibility"] < x_mid and row["materiality_score"] < y_mid:
-                return "Q3: Low Value"
-            else:
-                return "Q4: Market Noise"
-        
-        df_alpha["quadrant"] = df_alpha.apply(get_quadrant, axis=1)
-        
-        st.markdown("##### Quadrant Distribution")
-        quad_counts = df_alpha["quadrant"].value_counts()
-        
-        cols = st.columns(4)
-        quadrants = ["Q1: Critical Movers", "Q2: Rumor Mill", "Q3: Low Value", "Q4: Market Noise"]
-        for i, quad in enumerate(quadrants):
-            with cols[i]:
-                count = quad_counts.get(quad, 0)
-                st.metric(quad, count)
+    df_alpha = pd.read_csv(alpha_file).copy()
+
+    # Midpoints
+    x_mid = df_alpha["source_credibility"].median()
+    y_mid = df_alpha["materiality_score"].median()
+
+    # Normalize sentiment for color map
+    senti = df_alpha["sentiment_score"].clip(-1, 1)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Scatter plot
+    sc = ax.scatter(
+        df_alpha["source_credibility"],
+        df_alpha["materiality_score"],
+        c=senti,
+        cmap="RdYlGn",        # red → yellow → green
+        s=70,
+        alpha=0.85,
+        edgecolor="black",
+        linewidth=0.3
+    )
+
+    # Quadrant lines
+    ax.axvline(x_mid, color="gray", linestyle="--", linewidth=1)
+    ax.axhline(y_mid, color="gray", linestyle="--", linewidth=1)
+
+    # Labels
+    ax.set_xlabel("Source Credibility", fontsize=12)
+    ax.set_ylabel("Materiality Score", fontsize=12)
+    ax.set_title("Alpha Quadrant", fontsize=14)
+
+    # Quadrant annotations
+    ax.text(x_mid + 0.01, y_mid + 0.01, "Q1: Critical Movers", fontsize=10, color="black")
+    ax.text(x_mid - 0.29, y_mid + 0.01, "Q2: Rumor Mill", fontsize=10, color="black")
+    ax.text(x_mid - 0.29, y_mid - 0.03, "Q3: Low Value", fontsize=10, color="black")
+    ax.text(x_mid + 0.01, y_mid - 0.03, "Q4: Market Noise", fontsize=10, color="black")
+
+    # Colorbar as "legend", placed inside top-left
+    cbar = fig.colorbar(sc, ax=ax)
+    cbar.set_label("Sentiment Score", fontsize=11)
+
+    # Move colorbar inside + style
+    cbar.ax.set_position([0.13, 0.75, 0.02, 0.15])  # left, bottom, width, height
+    cbar.ax.set_facecolor((1,1,1,0.6))             # semi-transparent
+
+    st.pyplot(fig)
+
                 
 # -------------------------------------------------------
 # 2.3 Word Cloud 

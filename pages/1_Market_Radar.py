@@ -112,7 +112,7 @@ sentiment_file = os.path.join(data_path, "sentiment_statistics.csv")
 # 1. Snapshot
 # -------------------------------------------------------
 
-st.title("Market Radar")
+st.title("🚀 Market Radar")
 
 st.markdown("### 1. Daily Market Pulse")
 
@@ -296,24 +296,36 @@ st.markdown("### 3. Sentiment Distribution")
 # --------------------------------------------------
 st.markdown("#### 3.1 The Consensus Spectrum") 
 
+# Config
 categories = ["strong_neg", "weak_neg", "neutral", "weak_pos", "strong_pos"]
+colors = ["#c62828", "#ef9a9a", "#eeeeee", "#a5d6a7", "#2e7d32"]
+labels = ["Strong Bearish", "Weak Bearish", "Neutral", "Weak Bullish", "Strong Bullish"]
 df_plot = df_sent.sort_values("keyword")
 
-x = np.arange(len(df_plot["keyword"]))
-bottom = np.zeros(len(df_plot))
+fig = go.Figure()
 
-fig_b, ax_b = plt.subplots(figsize=(10, 5))
-for cat in categories:
-    vals = df_plot[cat].astype(float)
-    ax_b.bar(x, vals, bottom=bottom, label=cat)
-    bottom += vals
+# Build Traces
+for cat, color, label in zip(categories, colors, labels):
+    fig.add_trace(go.Bar(
+        name=label,
+        x=df_plot["keyword"],
+        y=df_plot[cat],
+        marker_color=color,
+        hovertemplate="%{y}%"
+    ))
 
-ax_b.set_xticks(x)
-ax_b.set_xticklabels(df_plot["keyword"], rotation=30, ha="right")
-ax_b.legend()
+# Layout Styling
+fig.update_layout(
+    barmode='stack',
+    plot_bgcolor='white',
+    height=400,
+    margin=dict(t=20, b=20, l=0, r=0),
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    xaxis=dict(title=None, showgrid=False, tickfont=dict(size=14)),
+    yaxis=dict(showgrid=True, gridcolor='#f0f0f0', range=[0, 100])
+)
 
-st.pyplot(fig_b, use_container_width=True)
-st.markdown("</div>", unsafe_allow_html=True)
+st.plotly_chart(fig, use_container_width=True)
 
 # --------------------------------------------------
 # 3.2 The Sentiment Trend

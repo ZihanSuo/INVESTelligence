@@ -107,6 +107,8 @@ entities_file = os.path.join(data_path, "entities.json")
 wordcount_file = os.path.join(data_path, "word_count.csv")
 sentiment_file = os.path.join(data_path, "sentiment_statistics.csv")
 
+scores = pd.read_csv(scores_file)
+
 
 
 # -------------------------------------------------------

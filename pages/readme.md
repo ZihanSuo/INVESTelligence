@@ -1,4 +1,4 @@
-# Final Report
+# 🧠 Methodology
 
 Hi, when you read this markdown, congratulations to me (who finally finishes this project) and god bless you(who has to read this and figure out the long and complicated workflow).
 

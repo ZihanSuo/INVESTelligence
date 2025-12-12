@@ -456,7 +456,6 @@ else:
 # 4. Entity Co-occurrence Network
 # -------------------------------------------------------
 
-st.markdown("### 4. Entity Co-occurrence Network")
 
 # 1. Load entities.json safely
 OUTPUT_DIR = "network_graphs"
@@ -624,30 +623,25 @@ def generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur):
 
 entity_blocks = normalize_entities(raw_entities)
 
-
-network_files = {}
-for entry in entity_blocks:
-    keyword = entry.get("keyword", "unknown")
-    entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
-    html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
-    network_files[keyword] = html_file
-
-    
-
-    keywords = list(network_files.keys())
-
-    for i in range(0, len(keywords), 3):
+if not entity_blocks:
+    st.markdown("### 4. Entity Co-occurrence Network")
+    st.info("No entity data available for this date.")
+else:
+    for i in range(0, len(entity_blocks), 3):
         cols = st.columns(3)
-        for j in range(3):
-            if i + j < len(keywords):
-                key = keywords[i + j]
-                file_path = network_files[key]
+        
+        batch = entity_blocks[i : i+3]
+        
+        for j, entry in enumerate(batch):
+            keyword = entry.get("keyword", "unknown")
+            
+            entity_freq, entity_sent_avg, cooccur = build_network_data(entry)
+            html_file = generate_pyvis_graph(keyword, entity_freq, entity_sent_avg, cooccur)
 
-                with cols[j]:
-                    with st.expander(f"{key.title()} Entity Network", expanded=True):
-                        with open(file_path, "r", encoding="utf-8") as f:
-                            html(f.read(), height=600)
-
+            with cols[j]:
+                with st.expander(f"{keyword.title()} Network", expanded=True):
+                    with open(html_file, "r", encoding="utf-8") as f:
+                        html(f.read(), height=500, scrolling=True)
 
 
 

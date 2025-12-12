@@ -128,12 +128,9 @@ with col3:
             <strong>Transparent AI.</strong><br>
             Understand the scoring algorithms, source weighting, and n8n pipelines.
         </div>
+        <a href="/3_Methodology" target="_self" style="display: inline-block; margin-top: 12px; padding: 6px 12px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Learn More ➜</a>
     </div>
     """, unsafe_allow_html=True)
-    
-    if st.button("Learn More ➜", key="btn_method"):
-        st.toast("Documentation is being updated.", icon="📚")
-
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 # Footer

@@ -116,11 +116,14 @@ st.title("Market Radar")
 
 st.markdown("### 1. Daily Market Pulse")
 
+
+scores = pd.read_csv(scores_file)
+
 # Total Articles
-total_articles = len(scores_file)
+total_articles = len(scores)
 
 # Weighted market sentiment using final_score as weight
-if "final_score" in scores_file.columns:
+if "final_score" in scores.columns:
     weighted_senti = (
         (scores["sentiment_score"] * scores["final_score"]).sum()
         / scores["final_score"].sum()
@@ -137,9 +140,9 @@ else:
     senti_label = "Neutral"
 
 # Top keyword by article count
-if "keyword" in scores_file.columns:
+if "keyword" in scores.columns:
     unique_keywords = (
-        scores_file["keyword"]
+        scores["keyword"]
         .dropna()
         .astype(str)
         .unique()
@@ -168,7 +171,6 @@ st.markdown("### 2. Alpha Matrix (Core Signals)")
 
 st.markdown("#### 2.1 Impact vs Market Sentiment")
 
-scores = pd.read_csv(scores_file)
 
 
 fig_scatter = px.scatter(

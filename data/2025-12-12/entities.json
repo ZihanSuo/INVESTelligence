@@ -1,0 +1,633 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "Bitcoin Winter Has Begun: Why A Major Crash May Still Be Ahead - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/12/bitcoin-winter-has-begun-why-a-major-crash-may-still-be-ahead/",
+        "entities": [
+          "Wall Street",
+          "Cryptocurrency",
+          "Bull Market",
+          "Bear Market"
+        ],
+        "score": 61.4,
+        "sentiment": -0.75
+      },
+      {
+        "title": "Analysts flag risks for Strategy at Nasdaq's 100 index reshuffle - Reuters",
+        "url": "https://www.reuters.com/business/finance/analysts-flag-risks-strategy-nasdaqs-100-index-reshuffle-2025-12-12/",
+        "entities": [
+          "Strategy",
+          "Stock Performance",
+          "Crypto Treasury Companies",
+          "Nasdaq 100"
+        ],
+        "score": 73.48,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Do Kwon: TerraUSD creator sentenced to 15 years in prison over $40bn crash - BBC",
+        "url": "https://www.bbc.com/news/articles/ckgmm92d213o",
+        "entities": [
+          "Regulatory Scrutiny",
+          "Terraform Labs",
+          "Do Kwon",
+          "TerraUSD",
+          "Digital Currency",
+          "Cryptocurrency",
+          "Luna"
+        ],
+        "score": 77.04,
+        "sentiment": -0.7
+      },
+      {
+        "title": "Gemini shares soar after winning CFTC approval for prediction market: CNBC Crypto World - cnbc.com",
+        "url": "https://www.cnbc.com/video/2025/12/11/gemini-shares-soar-after-winning-cftc-approval-prediction-market-cnbc-crypto-world.html",
+        "entities": [
+          "Fed",
+          "CFTC",
+          "Terraform Labs",
+          "XRP",
+          "Gemini"
+        ],
+        "score": 41.4,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Crypto Entrepreneur Who Caused 2022 Crash Is Sentenced to 15 Years in Prison - The New York Times",
+        "url": "https://www.nytimes.com/2025/12/11/technology/crypto-do-kwon-sentenced-prison.html",
+        "entities": [
+          "Cryptocurrency",
+          "FTX",
+          "Binance"
+        ],
+        "score": 67.2,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Saylor’s Plan To Build A Bitcoin Powered Shadow Central Bank - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/11/saylors-plan-to-build-a-bitcoin-powered-shadow-central-bank/",
+        "entities": [
+          "Corporate Credit",
+          "Digital Money",
+          "Financial System",
+          "Central Bank"
+        ],
+        "score": 71.4,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Should You Buy Bitcoin While It's Under $100,000? - The Motley Fool",
+        "url": "https://www.fool.com/investing/2025/12/05/should-you-buy-bitcoin-while-its-under-100000/",
+        "entities": [
+          "MicroStrategy",
+          "Cryptocurrency",
+          "Market Cycle",
+          "Halving Event"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Bitdeer reduces Bitcoin holdings by 148.5 - bloomingbit",
+        "url": "https://bloomingbit.io/en/feed/news/101978",
+        "entities": [
+          "Bitcoin Holdings",
+          "Bitcoin Mining",
+          "BTC",
+          "Bitdeer"
+        ],
+        "score": 50.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "The Swiss city that lets you pay for most things with bitcoin - BBC",
+        "url": "https://www.bbc.com/news/articles/c0r959n91p4o",
+        "entities": [
+          "Cryptocurrency",
+          "Lugano",
+          "Crypto Sector",
+          "Swiss Franc"
+        ],
+        "score": 72.04,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Cathedra Bitcoin (OTC:CBTTF) Shares Down 2.2% – Here’s What Happened - Defense World",
+        "url": "https://www.defenseworld.net/2025/12/06/cathedra-bitcoin-otccbttf-shares-down-2-2-heres-what-happened.html",
+        "entities": [
+          "Cathedra Bitcoin",
+          "Equities",
+          "Fortress Technologies",
+          "Mining Sector"
+        ],
+        "score": 45.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Texas Invests $5 Million in Bitcoin Under New Law - GovTech",
+        "url": "https://insider.govtech.com/texas/news/texas-invests-5-million-in-bitcoin-under-new-law",
+        "entities": [
+          "BlackRock",
+          "Senate Bill 21",
+          "Texas",
+          "iShares Bitcoin Trust",
+          "Digital Asset Reserve"
+        ],
+        "score": 78.64,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Ever-opportunistic bitcoin miners in the US are reportedly now transforming their crypto farms into 'AI megafactories' - PC Gamer",
+        "url": "https://www.pcgamer.com/hardware/graphics-cards/ever-opportunistic-bitcoin-miners-in-the-us-are-reportedly-now-transforming-their-crypto-farms-into-ai-megafactories/",
+        "entities": [
+          "Gaming GPUs",
+          "Tech Sector",
+          "Crypto Farms",
+          "AI Processing"
+        ],
+        "score": 50.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Global Crypto Mining News in October: Bitcoin Mining Profitability Falls to Record Lows, Power Theft for Mining in Malaysia Exceeds $1.1 Billion, etc - Wu Blockchain",
+        "url": "https://wublock.substack.com/p/global-crypto-mining-news-in-october-e8c",
+        "entities": [
+          "Bitfarms",
+          "AI Compute Network",
+          "High-Performance Computing",
+          "Bitfury"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Drones, Fake Birdsong, and Broken Glass Traps: Malaysia is Undergoing an Unprecedented \"Bitcoin Crackdown\" - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605099899",
+        "entities": [
+          "Bitcoin Mining",
+          "Electricity Theft",
+          "Malaysia",
+          "Regulatory Crackdown"
+        ],
+        "score": 70.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "America’s Biggest Bitcoin Miners Are Pivoting to AI - WIRED",
+        "url": "https://www.wired.com/story/bitcoin-miners-pivot-ai-data-centers/",
+        "entities": [
+          "Bitfarms",
+          "American Bitcoin",
+          "HPC Contracts",
+          "Artificial Intelligence"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Bitsmine Introduces Quantum Mining Engine, Upgrading Global Cloud Infrastructure With Higher Efficiency and Real-Time Transparency - The AI Journal",
+        "url": "https://aijourn.com/bitsmine-introduces-quantum-mining-engine-upgrading-global-cloud-infrastructure-with-higher-efficiency-and-real-time-transparency/",
+        "entities": [
+          "Quantum Mining Engine",
+          "Digital Mining",
+          "Cloud Infrastructure",
+          "Data Centers"
+        ],
+        "score": 55.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "BlackRock files application with SEC for staked ether ETF: CNBC Crypto World - CNBC",
+        "url": "https://www.cnbc.com/video/2025/12/08/blackrock-files-application-with-sec-for-staked-ether-etf-cnbc-crypto-world.html",
+        "entities": [
+          "Staked Ether ETF",
+          "SEC",
+          "Ondo Finance",
+          "BlackRock"
+        ],
+        "score": 46.4,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Lolli Partners with Spark to Accelerate Bitcoin Rewards and Self-Custody - FinSMEs",
+        "url": "https://www.finsmes.com/2025/12/lolli-partners-with-spark-to-accelerate-bitcoin-rewards-and-self-custody.html",
+        "entities": [
+          "Lolli",
+          "BitcoinFi",
+          "Spark",
+          "Thesis"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      }
+    ],
+    "node_count": 18
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "Korean study unlocks Latin America lithium playbook - Mining.com",
+        "url": "https://www.mining.com/korean-study-unlocks-latin-america-lithium-playbook/",
+        "entities": [
+          "Renewable Energy",
+          "Lithium",
+          "Latin America",
+          "Electric Vehicles",
+          "Foreign Investment"
+        ],
+        "score": 73,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Titan Mining starts operations at Kilbourne graphite plant in New York - Mining.com",
+        "url": "https://www.mining.com/titan-mining-starts-operations-at-kilbourne-graphite-plant-in-new-york/",
+        "entities": [
+          "Titan Mining",
+          "Zinc",
+          "Natural Flake Graphite",
+          "Mining Sector",
+          "Kilbourne Graphite Plant"
+        ],
+        "score": 48,
+        "sentiment": 0.15
+      },
+      {
+        "title": "2026 outlook: Fed risks, debt pressures and a new era for gold - Mining.com",
+        "url": "https://www.mining.com/video/2026-outlook-fed-risks-debt-pressures-and-a-new-era-for-gold/",
+        "entities": [
+          "Debt Pressures",
+          "Silver",
+          "Gold",
+          "TD Securities",
+          "Platinum",
+          "Fed Risks"
+        ],
+        "score": 43,
+        "sentiment": 0.35
+      },
+      {
+        "title": "Lithium may get much-needed demand boost from battery storage - Mining.com",
+        "url": "https://www.mining.com/web/lithium-may-get-much-needed-demand-boost-from-battery-storage/",
+        "entities": [
+          "Lithium",
+          "Battery Storage",
+          "Battery Metals",
+          "EV Demand",
+          "Copper"
+        ],
+        "score": 73,
+        "sentiment": -0.3
+      },
+      {
+        "title": "China ramps up exports of refined fuels as margins rise",
+        "url": "https://www.reuters.com/markets/commodities/china-ramps-up-exports-refined-fuels-margins-rise-2025-07-29/",
+        "entities": [
+          "China",
+          "Jet Kerosene",
+          "Refined Fuels",
+          "Diesel",
+          "Gasoil"
+        ],
+        "score": 63.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "China releases third export quota; 8 MMt for clean oil ...",
+        "url": "https://www.spglobal.com/energy/en/news-research/latest-news/refined-products/092024-china-releases-third-export-quota-8-mmt-for-clean-oil-products-1-mmt-for-lsfo",
+        "entities": [
+          "Export Quotas",
+          "China",
+          "Low Sulfur Fuel Oil",
+          "Clean Oil Products",
+          "Oil Markets"
+        ],
+        "score": 42.68,
+        "sentiment": 0
+      },
+      {
+        "title": "China's November crude oil imports reach highest daily ...",
+        "url": "https://www.reuters.com/business/energy/chinas-november-crude-oil-imports-reach-highest-daily-level-27-months-2025-12-08/",
+        "entities": [
+          "Import Quotas",
+          "Crude Oil",
+          "Russia",
+          "Iran",
+          "Refining Margins"
+        ],
+        "score": 68.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "South Africa’s low-cost high-value rare earths heading for 2026 global market entry - Engineering News",
+        "url": "https://www.engineeringnews.co.za/article/south-africas-low-cost-high-value-rare-earths-heading-for-2026-global-market-entry-2025-12-10",
+        "entities": [
+          "Permanent Magnet Market",
+          "South African Rare Earths",
+          "Phalaborwa",
+          "Praseodymium",
+          "Neodymium",
+          "Rainbow Rare Earths"
+        ],
+        "score": 70.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Palmetto Grain Brokerage - - Palmetto Grain Brokerage",
+        "url": "https://www.palmettograin.com/news/story/36582014/usa-rare-earth-just-revved-up-its-commercial-timeline-should-you-buy-usar-stock-here",
+        "entities": [
+          "Gallium",
+          "Heavy Rare Earths",
+          "Beryllium",
+          "USA Rare Earth",
+          "Round Top"
+        ],
+        "score": 70.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "Magnum to acquire Wet Mountains rare earth project in US - Mining Technology",
+        "url": "https://www.mining-technology.com/news/magnum-to-acquire-wet-mountains-project/",
+        "entities": [
+          "Magnum Mining and Exploration",
+          "Critical Minerals",
+          "Rare Earth Elements",
+          "Wet Mountains REE Project",
+          "Wyoming Critical Minerals"
+        ],
+        "score": 75.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "Congo miners urge urgent talks to clear cobalt export backlog - KITCO",
+        "url": "https://www.kitco.com/news/off-the-wire/2025-12-08/congo-miners-urge-urgent-talks-clear-cobalt-export-backlog",
+        "entities": [
+          "EV Supply Chains",
+          "ARECOMS",
+          "Chinese Analysts",
+          "Chamber of Mines",
+          "Cobalt"
+        ],
+        "score": 65.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "China Trade Surplus Tops $1 Trillion On Non-US Growth - Marine Link",
+        "url": "https://www.marinelink.com/news/china-trade-surplus-tops-trillion-nonus-533254",
+        "entities": [
+          "China",
+          "Southeast Asia",
+          "European Union",
+          "Export Growth",
+          "Tariffs"
+        ],
+        "score": 45.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "China makes history with $1 trillion trade surplus for first time ever - Fortune",
+        "url": "https://fortune.com/2025/12/08/china-1-trillion-trade-surplus-exports-rebound/",
+        "entities": [
+          "China",
+          "U.S.",
+          "Trade Surplus",
+          "Exports",
+          "Morgan Stanley",
+          "Economists"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Will MP Materials Stock Have Room to Run in 2026? - The Motley Fool",
+        "url": "https://www.fool.com/investing/2025/12/11/will-mp-materials-stock-have-room-to-run-in-2026/",
+        "entities": [
+          "dysprosium",
+          "MP Materials",
+          "DoD",
+          "NdPr oxide",
+          "rare earth metals",
+          "Saudi Arabian Mining Company",
+          "terbium"
+        ],
+        "score": 70.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "MP Materials CEO Litinsky sells $24.2 million in stock By Investing.com - Investing.com Canada",
+        "url": "https://ca.investing.com/news/insider-trading-news/mp-materials-ceo-litinsky-sells-242-million-in-stock-93CH-4352311",
+        "entities": [
+          "MP Materials",
+          "U.S. Rare Earth Supply Chain",
+          "James Henry Litinsky",
+          "Morgan Stanley",
+          "BMO Capital"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      }
+    ],
+    "node_count": 15
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Tesla sees U.S. sales fall sharply in November as highly anticipated after the EV tax credit expiration - Seeking Alpha",
+        "url": "https://seekingalpha.com/news/4530660-tesla-sees-us-sales-fall-sharply-in-november-as-highly-anticipated-after-the-ev-tax-credit-expiration",
+        "entities": [
+          "EV Market",
+          "Automotive Sector",
+          "EV Tax Credit",
+          "Capital Markets"
+        ],
+        "score": 69.8,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Exclusive: Tesla US sales drop to nearly 4-year low in November despite launch of cheaper versions - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/tesla-us-sales-drop-nearly-3-year-low-november-despite-launch-cheaper-versions-2025-12-11/",
+        "entities": [
+          "Electric Vehicles",
+          "Cox Automotive",
+          "Model Y",
+          "Model 3"
+        ],
+        "score": 73.48,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Waymo recalls, updates software for over 3000 vehicles, U.S. regulator says - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/waymo-recalls-fixes-over-3000-vehicles-over-software-issue-nhtsa-says-2025-12-11/",
+        "entities": [
+          "U.S. Sales",
+          "Electric Vehicles",
+          "Cox Automotive",
+          "Market Share"
+        ],
+        "score": 78.48,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Zevo wants to add robotaxis to its car-share fleet, starting with newcomer Tensor - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/12/zevo-wants-to-add-robotaxis-to-its-car-share-fleet-starting-with-newcomer-tensor/",
+        "entities": [
+          "Autonomous Vehicles",
+          "Transportation Startups",
+          "Car-sharing",
+          "Robotaxis"
+        ],
+        "score": 58,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Rivian debuts custom self-driving chip, $2,500 driver-assistance package - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/rivian-debuts-custom-self-driving-chip-2500-driver-assistance-package-2025-12-11/",
+        "entities": [
+          "Electric Vehicles",
+          "Rivian",
+          "Auto Manufacturing",
+          "Driver-Assistance Technology"
+        ],
+        "score": 63.48,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Will the Self-Driving Cars of the Future Lower Emissions? - The New York Times",
+        "url": "https://www.nytimes.com/2025/12/11/climate/self-driving-cars-emissions.html",
+        "entities": [
+          "Electrification",
+          "Asthma",
+          "Zero-emissions vehicles",
+          "Waymo",
+          "Air quality"
+        ],
+        "score": 52.2,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla Rated Most Unreliable Used Car Brand in US - Newsmax",
+        "url": "https://www.newsmax.com/newsfront/tesla-reliability-ratings-consumer-reports/2025/12/10/id/1237874/",
+        "entities": [
+          "Consumer Reports",
+          "Chrysler",
+          "Jeep",
+          "Ram"
+        ],
+        "score": 60.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "2026 Tesla Model Y review: Spending one week with the new Model Y - Forbes",
+        "url": "https://www.forbes.com/sites/matthewmacconnell/2025/12/08/test-driving-the-2026-tesla-model-y/",
+        "entities": [
+          "Tech Stocks",
+          "EV Market",
+          "Automotive Sector",
+          "Consumer Electronics"
+        ],
+        "score": 66.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla’s Holiday Update Lets You Put Grok in Charge of Mapping Out Directions - Gizmodo",
+        "url": "https://gizmodo.com/teslas-holiday-update-lets-you-put-grok-in-charge-of-mapping-out-directions-2000696891",
+        "entities": [
+          "Grok",
+          "Robotics",
+          "Elon Musk",
+          "EV Market"
+        ],
+        "score": 60.8,
+        "sentiment": 0.15
+      },
+      {
+        "title": "Tesla announces 2025 holiday update with a few cool features - Electrek",
+        "url": "https://electrek.co/2025/12/05/tesla-2025-holiday-update-few-cool-features/",
+        "entities": [
+          "Software Features",
+          "Automotive Sector",
+          "User Experience",
+          "Tech Sector"
+        ],
+        "score": 45.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla Breaks Into Consumer Reports Top 10 Reliability: Model Standouts And Why It Improved - EVWORLD.COM",
+        "url": "https://www.evworld.com/article.php?id=541&slug=tesla-breaks-into-consumer-reports-top-10-reliability-model-standouts-and-why-it-improved",
+        "entities": [
+          "Consumer Reports",
+          "Electric Vehicles",
+          "Model Y",
+          "Model S"
+        ],
+        "score": 65.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Are Tesla Sales Really Popping in China? - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/08/are-tesla-sales-really-popping-in-china/",
+        "entities": [
+          "Chinese Automotive Market",
+          "Model Y",
+          "Elon Musk",
+          "Model 3"
+        ],
+        "score": 50.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Old Teslas Are Falling Apart as They Age - Futurism",
+        "url": "https://futurism.com/advanced-transport/old-teslas-falling-apart",
+        "entities": [
+          "Automotive Sector",
+          "Consumer Reports",
+          "Used Cars",
+          "Model Y"
+        ],
+        "score": 50.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Tesla 'Full Self Driving' Blew Me Away. I Still Wouldn't Buy It - InsideEVs",
+        "url": "https://insideevs.com/reviews/781325/tesla-full-self-driving-review/",
+        "entities": [
+          "Autopilot",
+          "Automotive Technology",
+          "Model Y",
+          "Driver Assistance"
+        ],
+        "score": 50.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Tesla Cracks Consumer Reports Top 10 For First Time As Aging Lineup Boosts Reliability",
+        "url": "https://evxl.co/2025/12/07/tesla-cracks-consumer-reports-top-10/",
+        "entities": [
+          "Consumer Reports",
+          "Electric Vehicles",
+          "BYD",
+          "Cybertruck"
+        ],
+        "score": 55.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Stock Today (TSLA): What to Know Before the Market Opens on December 8, 2025 - ts2.tech",
+        "url": "https://ts2.tech/en/tesla-stock-today-tsla-what-to-know-before-the-market-opens-on-december-8-2025/",
+        "entities": [
+          "European Demand",
+          "Full Self-Driving",
+          "Elon Musk",
+          "Cybertruck"
+        ],
+        "score": 70.8,
+        "sentiment": -0.4
+      }
+    ],
+    "node_count": 16
+  }
+]

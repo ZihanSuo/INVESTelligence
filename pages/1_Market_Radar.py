@@ -605,5 +605,145 @@ else:
 
 
 
+# ==========================================
+# 3. Sentiment Momentum Module
+# ==========================================
+
+st.subheader("3. Sentiment Momentum (7-Day Trend)")
+
+# --- 1. Configuration & Helper Functions ---
+def load_historical_data(days_back=7):
+    """
+    Reads scores.csv from the last 'days_back' days.
+    Path format: data/YYYY-MM-DD/scores.csv
+    """
+    history_data = []
+    end_date = datetime.now()
+    
+    # Iterate backwards from today
+    for i in range(days_back):
+        target_date = end_date - timedelta(days=i)
+        date_str = target_date.strftime("%Y-%m-%d")
+        file_path = f"data/{date_str}/scores.csv"
+        
+        # Check if file exists
+        if os.path.exists(file_path):
+            try:
+                # Read CSV
+                df = pd.read_csv(file_path)
+                
+                # Standardize columns (ensure lowercase)
+                df.columns = [c.lower() for c in df.columns]
+                
+                # Verify required columns exist
+                required_cols = ['keyword', 'final_score', 'sentiment_score']
+                if all(col in df.columns for col in required_cols):
+                    df['date'] = date_str
+                    history_data.append(df)
+            except Exception as e:
+                # Silently skip corrupted files or log if needed
+                continue
+    
+    if not history_data:
+        return pd.DataFrame()
+        
+    return pd.concat(history_data, ignore_index=True)
+
+def calculate_weighted_sentiment(df):
+    """
+    Calculates weighted average sentiment per keyword.
+    Formula: Sum(sentiment * final_score) / Sum(final_score)
+    """
+    # Handle missing/zero values to avoid division by zero
+    df['final_score'] = pd.to_numeric(df['final_score'], errors='coerce').fillna(0)
+    df['sentiment_score'] = pd.to_numeric(df['sentiment_score'], errors='coerce').fillna(0)
+    
+    # Calculate weighted contribution
+    df['weighted_contribution'] = df['sentiment_score'] * df['final_score']
+    
+    # Group by Date and Keyword
+    grouped = df.groupby(['date', 'keyword']).agg({
+        'weighted_contribution': 'sum',
+        'final_score': 'sum'
+    }).reset_index()
+    
+    # Compute Weighted Average
+    # If sum(final_score) is 0, default to 0 sentiment
+    grouped['weighted_sentiment'] = grouped.apply(
+        lambda row: row['weighted_contribution'] / row['final_score'] if row['final_score'] > 0 else 0, 
+        axis=1
+    )
+    
+    return grouped[['date', 'keyword', 'weighted_sentiment']]
+
+# --- 2. Execution Logic ---
+
+# A. Load Data
+raw_history = load_historical_data(days_back=7)
+
+if not raw_history.empty:
+    # B. Calculate Trends
+    trend_df = calculate_weighted_sentiment(raw_history)
+    
+    # C. Handle Missing Dates (Pivot -> Fillna -> Melt)
+    # This ensures lines don't break if a day is missing; they drop to 0
+    pivot_df = trend_df.pivot(index='date', columns='keyword', values='weighted_sentiment').fillna(0)
+    
+    # Sort dates to ensure line chart flows left-to-right
+    pivot_df = pivot_df.sort_index()
+    
+    # Reset for Plotly
+    chart_data = pivot_df.reset_index().melt(id_vars='date', var_name='keyword', value_name='sentiment')
+
+    # --- 3. Visualization (Plotly) ---
+    # Define consistent colors (matching your Scatter Plot style)
+    color_map = {
+        "bitcoin": "#1f77b4",   # Blue
+        "rare earth": "#8c564b", # Brown/Red
+        "tesla": "#17becf",      # Cyan/Teal
+        # Fallback for others
+        "default": "#7f7f7f"
+    }
+
+    fig = px.line(
+        chart_data, 
+        x="date", 
+        y="sentiment", 
+        color="keyword",
+        title="Weighted Sentiment Momentum (Last 7 Days)",
+        markers=True, # Add dots at data points
+        color_discrete_map=color_map,
+        range_y=[-1.1, 1.1] # Fixed y-axis for consistency
+    )
+
+    # Styling to match your "Clean" aesthetic
+    fig.update_layout(
+        xaxis_title=None,
+        yaxis_title="Weighted Sentiment",
+        hovermode="x unified", # Shows all values when hovering over a date
+        plot_bgcolor="white",
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    
+    # Add a zero line reference
+    fig.add_shape(
+        type="line", line=dict(dash="dash", width=1, color="gray"),
+        x0=chart_data['date'].min(), x1=chart_data['date'].max(), y0=0, y1=0
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+else:
+    st.info("Not enough historical data to generate momentum trends yet. (Need > 1 day of data)")
+
+
+
 
 

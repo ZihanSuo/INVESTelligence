@@ -119,7 +119,7 @@ with col2:
         st.switch_page("pages/2_Briefing_Archive.py")
 
 # --- Module 3: Methodology ---
-with col2:
+with col3:
     st.markdown("""
     <div class="feature-card">
         <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">🧠</div>

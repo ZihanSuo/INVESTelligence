@@ -56,12 +56,10 @@ DATA_FOLDER = 'data'   # 根目录
 def select_data_archive():
     st.sidebar.header("🗄️ Market Radar Archive")
 
-    # 1. 检查 data 文件夹是否存在
     if not os.path.exists(DATA_FOLDER):
         st.sidebar.error(f"Error: '{DATA_FOLDER}' folder not found.")
         return None
 
-    # 2. 找出所有形如 YYYY-MM-DD 的子目录
     folders = []
     for f in os.listdir(DATA_FOLDER):
         if len(f) == 10:
@@ -71,14 +69,12 @@ def select_data_archive():
             except:
                 pass
 
-    # 必须按日期倒序 → 最新日期在最上面
     folders.sort(reverse=True)
 
     if not folders:
         st.sidebar.warning(f"No valid dated folders found in '{DATA_FOLDER}'.")
         return None
 
-    # 默认值：今天如果有就选今天，否则选最新
     today = datetime.today().strftime("%Y-%m-%d")
     default_idx = folders.index(today) if today in folders else 0
 

@@ -120,7 +120,7 @@ st.markdown("### 1. Daily Market Pulse")
 total_articles = len(scores_file)
 
 # Weighted market sentiment using final_score as weight
-if "final_score" in scores.columns:
+if "final_score" in scores_file.columns:
     weighted_senti = (
         (scores["sentiment_score"] * scores["final_score"]).sum()
         / scores["final_score"].sum()
@@ -137,9 +137,9 @@ else:
     senti_label = "Neutral"
 
 # Top keyword by article count
-if "keyword" in scores.columns:
+if "keyword" in scores_file.columns:
     unique_keywords = (
-        scores["keyword"]
+        scores_file["keyword"]
         .dropna()
         .astype(str)
         .unique()

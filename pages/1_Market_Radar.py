@@ -117,7 +117,7 @@ st.title("Market Radar")
 st.markdown("### 1. Daily Market Pulse")
 
 # Total Articles
-total_articles = len(scores)
+total_articles = len(scores_file)
 
 # Weighted market sentiment using final_score as weight
 if "final_score" in scores.columns:

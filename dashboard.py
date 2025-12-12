@@ -131,7 +131,7 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("See it ➜", key="btn_archive"):
+    if st.button("See it ➜", key="btn_methodology"):
         st.switch_page("pages/3_Methodology.py")
 st.markdown("<br><br>", unsafe_allow_html=True)
 

@@ -43,46 +43,70 @@ import glob
 import plotly.graph_objects as go
 import plotly.io as pio
 
+# ==========================
+# Market Radar Archive Picker
+# ==========================
 
-# -------------------------------------------------------
-# Load data from today's folder
-# -------------------------------------------------------
+import streamlit as st
+import os
+from datetime import datetime
 
+DATA_FOLDER = 'data'   # 根目录
 
-# 1. 检查 data 文件夹是否存在
-if not os.path.exists('data'):
-    st.error("❌ 'data' directory not found. Please ensure you have uploaded the data folder.")
+def select_data_archive():
+    st.sidebar.header("🗄️ Market Radar Archive")
+
+    # 1. 检查 data 文件夹是否存在
+    if not os.path.exists(DATA_FOLDER):
+        st.sidebar.error(f"Error: '{DATA_FOLDER}' folder not found.")
+        return None
+
+    # 2. 找出所有形如 YYYY-MM-DD 的子目录
+    folders = []
+    for f in os.listdir(DATA_FOLDER):
+        if len(f) == 10:
+            try:
+                datetime.strptime(f, "%Y-%m-%d")
+                folders.append(f)
+            except:
+                pass
+
+    # 必须按日期倒序 → 最新日期在最上面
+    folders.sort(reverse=True)
+
+    if not folders:
+        st.sidebar.warning(f"No valid dated folders found in '{DATA_FOLDER}'.")
+        return None
+
+    # 默认值：今天如果有就选今天，否则选最新
+    today = datetime.today().strftime("%Y-%m-%d")
+    default_idx = folders.index(today) if today in folders else 0
+
+    # 3. dropdown
+    selected = st.sidebar.selectbox(
+        "Select Data Date:",
+        options=folders,
+        index=default_idx
+    )
+
+    st.sidebar.markdown(f"**Using folder:** `{selected}`")
+
+    return selected
+
+selected_date = select_data_archive()
+
+if selected_date is None:
     st.stop()
 
-# 2. 找到 data 目录下所有的日期文件夹
-all_subdirs = [d for d in os.listdir('data') if os.path.isdir(os.path.join('data', d))]
-# 按日期排序，找最近的一个
-all_subdirs.sort(reverse=True)
+data_path = os.path.join(DATA_FOLDER, selected_date)
 
-if not all_subdirs:
-    st.error("❌ No data folders found in 'data/' directory.")
-    st.stop()
-
-# 3. 锁定最新文件夹
-latest_date_folder = all_subdirs[0]
-data_path = os.path.join("data", latest_date_folder)
-
-# 在侧边栏显示当前使用的数据日期，方便调试
-st.sidebar.success(f"📅 Data Date: {latest_date_folder}")
-
-# 4. Load main files
+# Now load the files normally
 scores_file = os.path.join(data_path, "scores.csv")
 alpha_file = os.path.join(data_path, "alpha.csv")
 entities_file = os.path.join(data_path, "entities.json")
 wordcount_file = os.path.join(data_path, "word_count.csv")
-sentiment_file = os.path.join(data_path, "sentiment_statistics.csv") # 确保你也用了这个文件
+sentiment_file = os.path.join(data_path, "sentiment_statistics.csv")
 
-# 5. Safely read scores
-if os.path.exists(scores_file):
-    scores = pd.read_csv(scores_file)
-else:
-    st.error(f"❌ scores.csv not found in {data_path}")
-    st.stop()
 
 
 # -------------------------------------------------------

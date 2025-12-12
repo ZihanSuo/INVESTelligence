@@ -456,6 +456,7 @@ else:
 # 4. Entity Co-occurrence Network
 # -------------------------------------------------------
 
+st.markdown("### 4. Entity Co-occurrence Network")
 
 # 1. Load entities.json safely
 OUTPUT_DIR = "network_graphs"

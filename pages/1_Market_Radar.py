@@ -119,6 +119,8 @@ fig_scatter = px.scatter(
     title="Core Signals: Impact vs Market Sentiment"
 )
 
+st.plotly_chart(fig_scatter, use_container_width=True)
+
 # -------------------------------------------------------
 # 1. Snapshot
 # -------------------------------------------------------

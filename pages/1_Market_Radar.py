@@ -178,3 +178,61 @@ fig_imp.update_layout(
 
 st.plotly_chart(fig_imp, use_container_width=True)
 
+# -------------------------------------------------------
+# 2.2 Alpha Quadrant — NO pickup_count version
+# -------------------------------------------------------
+st.markdown("#### 2.2 Alpha Quadrant: Credibility vs Materiality")
+
+if not has_alpha:
+    st.info("No alpha.csv for today.")
+else:
+    df_q = alpha.copy()
+
+    # sentiment norm for color mapping
+    df_q["sentiment_norm"] = df_q["sentiment_score"].clip(-1, 1)
+
+    # quadrant thresholds
+    x_mid = df_q["source_credibility"].median()
+    y_mid = df_q["materiality_score"].median()
+
+    # ----- color scale -----
+    color_scale = [[0, "red"], [0.5, "white"], [1, "green"]]
+
+    fig_q = go.Figure()
+
+    fig_q.add_trace(
+        go.Scatter(
+            x=df_q["source_credibility"],
+            y=df_q["materiality_score"],
+            mode="markers",
+            marker=dict(
+                size=14,
+                color=df_q["sentiment_norm"],
+                colorscale=color_scale,
+                showscale=True
+            ),
+            text=df_q["title"],
+            hovertemplate="<b>%{text}</b><br>"
+                          "Credibility: %{x}<br>"
+                          "Materiality: %{y}<extra></extra>",
+        )
+    )
+
+    # ----- quadrant lines -----
+    fig_q.add_vline(x=x_mid, line_dash="dash", line_color="gray")
+    fig_q.add_hline(y=y_mid, line_dash="dash", line_color="gray")
+
+    # ----- quadrant labels -----
+    fig_q.add_annotation(x=x_mid + 0.05, y=y_mid + 0.05, text="Q1: Critical Movers", showarrow=False)
+    fig_q.add_annotation(x=x_mid - 0.05, y=y_mid + 0.05, text="Q2: Rumor Mill", showarrow=False)
+    fig_q.add_annotation(x=x_mid - 0.05, y=y_mid - 0.05, text="Q3: Low Value", showarrow=False)
+    fig_q.add_annotation(x=x_mid + 0.05, y=y_mid - 0.05, text="Q4: Market Noise", showarrow=False)
+
+    fig_q.update_layout(
+        height=500,
+        template="plotly_white",
+        xaxis_title="Source Credibility",
+        yaxis_title="Materiality Score",
+    )
+
+    st.plotly_chart(fig_q, use_container_width=True)

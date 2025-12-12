@@ -83,7 +83,7 @@ st.markdown("### 🗺️ System Modules")
 st.caption("Select a module to initiate analysis.")
 
 # Card Layout using Columns
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
 # --- Module 1: Market Radar ---
 with col1:
@@ -99,26 +99,11 @@ with col1:
     """, unsafe_allow_html=True)
     
     if st.button("Launch Radar ➜", key="btn_radar"):
-        st.switch_page("pages/01_Market_Radar.py")
+        st.switch_page("pages/1_Market_Radar.py")
 
-# --- Module 2: Time Machine ---
+
+# --- Module 2: Briefing Archive ---
 with col2:
-    st.markdown("""
-    <div class="feature-card">
-        <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">🕰️</div>
-        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: #0F172A;">Time Machine</div>
-        <div style="font-size: 0.95rem; color: #475569; line-height: 1.6;">
-            <strong>Historical Analysis.</strong><br>
-            Search past trends and replay market sentiment evolution for specific assets.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Access History ➜", key="btn_time"):
-        st.toast("Time Machine module is currently syncing with historical database.", icon="⏳")
-
-# --- Module 3: Briefing Archive ---
-with col3:
     st.markdown("""
     <div class="feature-card">
         <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">📰</div>
@@ -131,10 +116,10 @@ with col3:
     """, unsafe_allow_html=True)
     
     if st.button("View Archive ➜", key="btn_archive"):
-        st.switch_page("pages/02_Briefing_Archive.py")
+        st.switch_page("pages/2_Briefing_Archive.py")
 
-# --- Module 4: Methodology ---
-with col4:
+# --- Module 3: Methodology ---
+with col2:
     st.markdown("""
     <div class="feature-card">
         <div style="font-size: 2rem; margin-bottom: 12px; background-color: #F1F5F9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">🧠</div>

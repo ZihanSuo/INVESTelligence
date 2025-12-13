@@ -1,0 +1,541 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "OCC Greenlights Ripple, Circle, Paxos, BitGo, Fidelity As Crypto Banks - Forbes",
+        "url": "https://www.forbes.com/sites/jasonbrett/2025/12/13/occ-greenlights-ripple-circle-paxos-bitgo-fidelity-as-crypto-banks/",
+        "entities": [
+          "Paxos",
+          "OCC",
+          "Circle",
+          "Ripple",
+          "BitGo",
+          "Crypto Banks",
+          "Fidelity"
+        ],
+        "score": 71.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Saylor’s Plan To Build A Bitcoin Powered Shadow Central Bank - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/11/saylors-plan-to-build-a-bitcoin-powered-shadow-central-bank/",
+        "entities": [
+          "Corporate Credit",
+          "Digital Money",
+          "Financial System",
+          "Central Bank"
+        ],
+        "score": 76.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "ETFs in the Crossfire Amid Bitcoin’s Growing Self-Custody Debate - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/etfs-crossfire-amid-bitcoin-growing-215004125.html",
+        "entities": [
+          "Custodial Services",
+          "Self-Custody",
+          "ETF",
+          "Institutional Adoption"
+        ],
+        "score": 65.6,
+        "sentiment": 0.1
+      },
+      {
+        "title": "There's no Dow or S&P 500 for cryptocurrencies yet. Bitwise is getting a step closer with new ETF - CNBC",
+        "url": "https://www.cnbc.com/2025/12/09/theres-no-dow-or-sp-500-for-cryptocurrencies-yet-bitwise-is-getting-a-step-closer-with-new-etf.html",
+        "entities": [
+          "XRP",
+          "Solana",
+          "Ethereum",
+          "Bitwise 10 Crypto Index ETF"
+        ],
+        "score": 66.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Is an ETF Safer than an Exchange for Bitcoin? - BeInCrypto",
+        "url": "https://beincrypto.com/etfs-crossfire-bitcoin-self-custody-debate/",
+        "entities": [
+          "Custodial Trust",
+          "Self-Custody",
+          "ETF",
+          "Exchanges"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Crypto SWOT: XRP ETFs continue to post record inflows, signaling rising institutional adoption - KITCO",
+        "url": "https://www.kitco.com/opinion/2025-12-08/crypto-swot-xrp-etfs-continue-post-record-inflows-signaling-rising-institutional",
+        "entities": [
+          "Institutional Adoption",
+          "Ether",
+          "CFTC",
+          "XRP ETFs",
+          "BTC-treasury Firms",
+          "Solana Assets"
+        ],
+        "score": 55.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Bitcoin (BTC) Price: Why Tuesday’s FOMC Decision Could Spark a Major Move? - InsuranceNewsNet",
+        "url": "https://insurancenewsnet.com/oarticle/bitcoin-btc-price-why-tuesdays-fomc-decision-could-spark-a-major-move",
+        "entities": [
+          "Crypto ETFs",
+          "Fed Rates",
+          "PCE Inflation",
+          "Bank of America"
+        ],
+        "score": 50.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Circle Receives Conditional Approval from OCC for National Trust Charter - Circle Internet",
+        "url": "https://www.circle.com/pressroom/circle-receives-conditional-approval-from-occ-for-national-trust-charter",
+        "entities": [
+          "OCC",
+          "Circle",
+          "USDC",
+          "Trust Bank",
+          "Digital Assets",
+          "BitLicense",
+          "MiCA"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      }
+    ],
+    "node_count": 8
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "Column: Maritime logistics at the sharp end of the critical minerals race - Mining.com",
+        "url": "https://www.mining.com/column-maritime-logistics-at-the-sharp-end-of-the-critical-minerals-race/",
+        "entities": [
+          "Defense Sector",
+          "EV Sector",
+          "Traxys",
+          "Rare Earth Elements",
+          "AI Sector"
+        ],
+        "score": 78,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Lithium Set for Demand Boost From Energy Storage | Analysts sees faster growth from storage systems, though from lower base - Mining.com",
+        "url": "https://www.mining.com/web/lithium-may-get-much-needed-demand-boost-from-battery-storage/lithium-set-for-demand-boost-from-energy-storage-analysts-sees-faster-growth-from-storage-systems-though-from-lower-base/",
+        "entities": [
+          "Energy Storage",
+          "Indigenous Rights",
+          "Lithium",
+          "British Columbia",
+          "Mineral Claims"
+        ],
+        "score": 43,
+        "sentiment": 0
+      },
+      {
+        "title": "Lithium miner Ioneer eyes bid for Rio’s US boron unit - Mining.com",
+        "url": "https://www.mining.com/web/lithium-miner-ioneer-eyes-bid-for-rios-us-boron-unit/",
+        "entities": [
+          "Ioneer",
+          "Boron",
+          "Critical Minerals",
+          "Rio"
+        ],
+        "score": 63,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Teck joins Centerra as 9.9% shareholder in Metal Energy - Mining.com",
+        "url": "https://www.mining.com/teck-joins-centerra-as-9-9-shareholder-in-metal-energy/",
+        "entities": [
+          "Centerra",
+          "Teck",
+          "British Columbia",
+          "NIV Copper-Gold-Molybdenum Project",
+          "Metal Energy"
+        ],
+        "score": 43,
+        "sentiment": 0
+      },
+      {
+        "title": "BMC Minerals makes ASX debut in $66M IPO - Mining.com",
+        "url": "https://www.mining.com/bmc-minerals-makes-asx-debut-in-66m-ipo/",
+        "entities": [
+          "zinc",
+          "BMC Minerals",
+          "silver",
+          "ABM deposit",
+          "copper"
+        ],
+        "score": 68,
+        "sentiment": 0.4
+      },
+      {
+        "title": "South Africa’s low-cost high-value rare earths heading for 2026 global market entry - Mining Weekly",
+        "url": "https://www.miningweekly.com/article/south-africas-low-cost-high-value-rare-earths-heading-for-2026-global-market-entry-2025-12-10",
+        "entities": [
+          "Permanent Magnet Market",
+          "Rare Earths",
+          "Praseodymium",
+          "Neodymium",
+          "Rainbow Rare Earths"
+        ],
+        "score": 70.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Carina Rare-Earth Project, Brazil - Mining Technology",
+        "url": "https://www.mining-technology.com/projects/carina-rare-earth-project-brazil/",
+        "entities": [
+          "Neodymium-Praseodymium",
+          "Dysprosium",
+          "Brazil Mining",
+          "Carina Rare Earth Project",
+          "Heavy Rare Earths",
+          "Aclara Resources",
+          "Terbium"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Morningstar starts coverage on Australia's Lynas, sees shares overpriced - TradingView",
+        "url": "https://www.tradingview.com/news/reuters.com,2025:newsml_L6N3XD04V:0-morningstar-starts-coverage-on-australia-s-lynas-sees-shares-overpriced/",
+        "entities": [
+          "Neodymium-Praseodymium",
+          "Lynas",
+          "Morningstar",
+          "Rare Earths",
+          "EVs"
+        ],
+        "score": 60.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "US Energy Department offers $134M to boost rare earth recovery projects - Utility Dive",
+        "url": "https://www.utilitydive.com/news/us-energy-department-134m-rare-earth-recovery/807286/",
+        "entities": [
+          "Critical Minerals",
+          "Defense Systems",
+          "U.S. Energy Department",
+          "Advanced Manufacturing",
+          "Rare Earths"
+        ],
+        "score": 77.52,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Palmetto Grain Brokerage - - Palmetto Grain Brokerage",
+        "url": "https://www.palmettograin.com/news/story/36582014/usa-rare-earth-just-revved-up-its-commercial-timeline-should-you-buy-usar-stock-here",
+        "entities": [
+          "Gallium",
+          "Clean-tech Expansion",
+          "Texas",
+          "USA Rare Earth",
+          "Round Top"
+        ],
+        "score": 70.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "GE Vernova working with US government to boost stocks of rare earth yttrium - Reuters",
+        "url": "https://www.reuters.com/business/energy/ge-vernova-working-with-us-government-boost-stocks-rare-earth-yttrium-2025-12-10/",
+        "entities": [
+          "GE Vernova",
+          "China",
+          "Gas Turbines",
+          "Semiconductors",
+          "Yttrium",
+          "U.S. Government",
+          "Aerospace"
+        ],
+        "score": 78.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Congo miners urge urgent talks to clear cobalt export backlog - KITCO",
+        "url": "https://www.kitco.com/news/off-the-wire/2025-12-08/congo-miners-urge-urgent-talks-clear-cobalt-export-backlog",
+        "entities": [
+          "China",
+          "EV Supply Chain",
+          "Tesla",
+          "Battery Supply Chains",
+          "Congo",
+          "Chamber of Mines",
+          "Cobalt"
+        ],
+        "score": 65.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "China Trade Surplus Tops $1 Trillion On Non-US Growth - Marine Link",
+        "url": "https://www.marinelink.com/news/china-trade-surplus-tops-trillion-nonus-533254",
+        "entities": [
+          "China",
+          "Southeast Asia",
+          "European Union",
+          "Tariffs",
+          "Trump's Trade Policy"
+        ],
+        "score": 55.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "China makes history with $1 trillion trade surplus for first time ever - Fortune",
+        "url": "https://fortune.com/2025/12/08/china-1-trillion-trade-surplus-exports-rebound/",
+        "entities": [
+          "China",
+          "U.S.",
+          "Trade Surplus",
+          "Export Market",
+          "Morgan Stanley"
+        ],
+        "score": 55.8,
+        "sentiment": 0.15
+      },
+      {
+        "title": "Will MP Materials Stock Have Room to Run in 2026? - The Motley Fool",
+        "url": "https://www.fool.com/investing/2025/12/11/will-mp-materials-stock-have-room-to-run-in-2026/",
+        "entities": [
+          "dysprosium",
+          "MP Materials",
+          "DoD",
+          "NdPr oxide",
+          "Saudi Arabian Mining Company",
+          "terbium"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Should You Buy MP Materials Stock While It's Under $65? - sharewise.com",
+        "url": "https://www.sharewise.com/us/news_articles/Should_You_Buy_MP_Materials_Stock_While_Its_Under_65_TheMotleyFool_20251209_0124",
+        "entities": [
+          "Department of Defense",
+          "Mountain Pass mine",
+          "MP Materials",
+          "rare earth elements",
+          "Equities"
+        ],
+        "score": 60.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Volta Metals reports rare earth drill results at Springer deposit in Canada - Mining Technology",
+        "url": "https://www.mining-technology.com/news/volta-metals-rare-earth-drill-results/",
+        "entities": [
+          "dysprosium",
+          "Springer deposit",
+          "Volta Metals",
+          "rare earths",
+          "HREE",
+          "terbium"
+        ],
+        "score": 70.8,
+        "sentiment": 0.6
+      }
+    ],
+    "node_count": 17
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Tesla is offering a barrage of deals as it races to avoid another annual sales decline - Business Insider",
+        "url": "https://www.businessinsider.com/tesla-deals-sales-decline-elon-musk-2025-12",
+        "entities": [
+          "Artificial Intelligence",
+          "Robotics",
+          "EVs",
+          "Elon Musk"
+        ],
+        "score": 75.28,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Tesla's latest launch isn't a car — it's a $350 pickleball paddle — and it's not even electric - Business Insider",
+        "url": "https://www.businessinsider.com/tesla-latest-launch-expensive-lifestyle-product-pickleball-paddle-2025-12",
+        "entities": [
+          "Selkirk",
+          "High-Performance Equipment",
+          "Lifestyle Products",
+          "Pickleball"
+        ],
+        "score": 45.28,
+        "sentiment": 0.1
+      },
+      {
+        "title": "EV Sales Are up Everywhere in the World — Except North America - Business Insider",
+        "url": "https://www.businessinsider.com/ev-sales-global-north-america-decline-us-tesla-byd-china-2025-12",
+        "entities": [
+          "Cox Automotive",
+          "Rivian",
+          "EV Demand",
+          "GM"
+        ],
+        "score": 65.28,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Riding onboard with Rivian’s race to autonomy - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/12/riding-onboard-with-rivians-race-to-autonomy/",
+        "entities": [
+          "Electric Vehicles",
+          "Rivian",
+          "Automated Driving",
+          "Transportation Industry"
+        ],
+        "score": 53,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Climate Wheels: 🛞 Porsche Taycan - Axios",
+        "url": "https://www.axios.com/pro/climate-deals/2025/12/13/porsche-taycan-4s-ev-review",
+        "entities": [
+          "Mercedes",
+          "BMW",
+          "Porsche Taycan",
+          "Jaguar",
+          "Performance EVs",
+          "Audi"
+        ],
+        "score": 61.4,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Samsung Galaxy S26 Release Date: What’s Happening In May? - Forbes",
+        "url": "https://www.forbes.com/sites/jaymcgregor/2025/12/13/samsung-galaxy-s26-release-date-galaxy-s26-edge-cancellation/",
+        "entities": [
+          "Samsung",
+          "Galaxy Note Edge",
+          "Silicon-Carbon Batteries",
+          "Chinese Phones",
+          "Smartphone Sector"
+        ],
+        "score": 56.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Rivian stock soars on bullish commentary; CEO says 'AI-centric' approach needed to solve self-driving - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/rivian-stock-soars-on-bullish-commentary-ceo-says-ai-centric-approach-needed-to-solve-self-driving-165534207.html",
+        "entities": [
+          "Electric Vehicles",
+          "Rivian",
+          "AI Stocks",
+          "Autonomous Driving"
+        ],
+        "score": 65.6,
+        "sentiment": 0.6
+      },
+      {
+        "title": "I asked 2 Rivian execs why an adventure-brand EV needs AI and self-driving. To them, they're logical next steps. - Business Insider",
+        "url": "https://www.businessinsider.com/rivian-pivot-bet-on-ai-self-driving-autonomy-2025-12",
+        "entities": [
+          "Rivian",
+          "Nissan",
+          "Autonomous Driving",
+          "General Motors",
+          "Artificial Intelligence"
+        ],
+        "score": 60.28,
+        "sentiment": 0.5
+      },
+      {
+        "title": "AI Can Make Decisions Better Than People Do. So Why Don’t We Trust It?",
+        "url": "https://www.wsj.com/tech/ai/ai-decision-making-algorithm-audit-trust-5efdec1c?gaa_at=eafs&gaa_n=AWEtsqccuPGiAaWNM97P7yl38O0tdoSetAT08BY2D-6ucLMZX0aRTEEvTB2u&gaa_ts=693cdb38&gaa_sig=siwdCnGPq60ErzhK0fQ1ifMUMi5z4c0He0G7LISY0Sv-_C8BHPsTrsJbF2HDTC0_scYdEbK0rE4iA6nvgvIbZQ%3D%3D",
+        "entities": [
+          "AI Technology",
+          "Texas Highway",
+          "Aurora Innovation",
+          "Autonomous Vehicles",
+          "Self-Driving Trucks"
+        ],
+        "score": 48.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla Rated Most Unreliable Used Car Brand in US - Newsmax",
+        "url": "https://www.newsmax.com/newsfront/tesla-reliability-ratings-consumer-reports/2025/12/10/id/1237874/",
+        "entities": [
+          "Consumer Reports",
+          "Chrysler",
+          "Jeep",
+          "Ram"
+        ],
+        "score": 55.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "American Automakers Have Terrible Long-Term Reliability, And Tesla Is The Worst, Consumer Reports Says - Jalopnik",
+        "url": "https://www.jalopnik.com/2046819/consumer-reports-american-automakers-terrible-reliability/",
+        "entities": [
+          "Chrysler",
+          "Jeep",
+          "Ram",
+          "American Automakers"
+        ],
+        "score": 60.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Tesla Stock Forecast: TSLA Weekly Recap, Latest News, and Week-Ahead Catalysts (Updated Dec. 13, 2025)",
+        "url": "https://ts2.tech/en/tesla-stock-forecast-tsla-weekly-recap-latest-news-and-week-ahead-catalysts-updated-dec-13-2025/",
+        "entities": [
+          "Retail Sales",
+          "Model Y",
+          "Driverless Technology",
+          "Elon Musk",
+          "CPI",
+          "Derivatives"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Breaks Into Consumer Reports Top 10 Reliability: Model Standouts And Why It Improved - EVWORLD.COM",
+        "url": "https://www.evworld.com/article.php?id=541&slug=tesla-breaks-into-consumer-reports-top-10-reliability-model-standouts-and-why-it-improved",
+        "entities": [
+          "Consumer Reports",
+          "Model Y",
+          "EV Adoption",
+          "Model S"
+        ],
+        "score": 65.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Rivian Is Stepping up to Challenge Tesla's Key Technology: FSD - Business Insider",
+        "url": "https://www.businessinsider.com/rivian-vs-tesla-autonomous-driving-fsd-chips-ai-assistant-2025-12",
+        "entities": [
+          "Autonomous Vehicles",
+          "Rivian",
+          "Driver Assistance Systems",
+          "AI Technology"
+        ],
+        "score": 70.28,
+        "sentiment": 0.3
+      },
+      {
+        "title": "The accelerator is on the floor for autonomous vehicles - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/07/the-accelerator-is-on-the-floor-for-autonomous-vehicles/",
+        "entities": [
+          "Element Fleet Management",
+          "California DMV",
+          "Waymo",
+          "Robotaxi Service",
+          "Autonomous Vehicles",
+          "Uber"
+        ],
+        "score": 68,
+        "sentiment": 0.1
+      }
+    ],
+    "node_count": 15
+  }
+]

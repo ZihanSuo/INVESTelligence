@@ -1,0 +1,566 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "Bitcoin Price Crash Fears Suddenly Emerge After Serious Saylor Warning - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/14/saylor-issues-stark-warning-amid-sudden-scramble-to-update-bitcoin-price-predictions/",
+        "entities": [
+          "Treasury Companies",
+          "Standard Chartered",
+          "Market Sentiment",
+          "ETF Inflows"
+        ],
+        "score": 76.4,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Crypto Executives Search for Financial Redemption in the Persian Gulf - The Wall Street Journal",
+        "url": "https://www.wsj.com/finance/currencies/crypto-industry-persian-gulf-states-22a0d3a1?gaa_at=eafs&gaa_n=AWEtsqc4hDx8xI85c0K_CXhme7dkoGaEu65OYXQ-7JKwYL869n582Tf-2Pa-&gaa_ts=693e95f7&gaa_sig=YXEelAqpv0hcP2rb9cDjh7iiEG8zZkoxqdcMo7FqnXxIY7DGlv5tD18bLhyGX_HdgtGuFR-c97mCDXRICME9Yg%3D%3D",
+        "entities": [
+          "Binance",
+          "Investment Deals",
+          "UAE Sovereign-Wealth Fund",
+          "Crypto Industry"
+        ],
+        "score": 63.48,
+        "sentiment": -0.1
+      },
+      {
+        "title": "The S.E.C. Was Tough on Crypto. It Pulled Back After Trump Returned to Office. - The New York Times",
+        "url": "https://www.nytimes.com/2025/12/14/us/politics/sec-crypto-firms-trump-investigation.html",
+        "entities": [
+          "Binance",
+          "S.E.C.",
+          "Crypto Sector",
+          "Trump Administration"
+        ],
+        "score": 67.2,
+        "sentiment": -0.1
+      },
+      {
+        "title": "The Herculean Power Of Compounding Runs Roughshod Over The Fed - Forbes",
+        "url": "https://www.forbes.com/sites/johntamny/2025/12/14/the-herculean-power-of-compounding-runs-roughshod-over-the-fed/",
+        "entities": [
+          "Production",
+          "Central Bank",
+          "George Selgin",
+          "Money Supply"
+        ],
+        "score": 41.4,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Emerging Asian Economies Pivot To Stablecoins - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/14/emerging-asian-economies-pivot-to-stablecoins/",
+        "entities": [
+          "Remittances",
+          "Dollarization",
+          "Stablecoins",
+          "Reserve Bank of India",
+          "Philippines"
+        ],
+        "score": 61.4,
+        "sentiment": 0.1
+      },
+      {
+        "title": "American Bitcoin Skyrockets Holdings: Strategic 613 BTC Surge Signals Confidence - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605110211",
+        "entities": [
+          "Cryptocurrency Adoption",
+          "American Bitcoin",
+          "Treasury Holdings",
+          "Institutional Investment"
+        ],
+        "score": 55.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Saylor’s Plan To Build A Bitcoin Powered Shadow Central Bank - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/11/saylors-plan-to-build-a-bitcoin-powered-shadow-central-bank/",
+        "entities": [
+          "Structured Credit",
+          "Corporate Credit",
+          "Reserve Asset",
+          "Digital Money"
+        ],
+        "score": 76.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "The Swiss city that lets you pay for most things with bitcoin - BBC",
+        "url": "https://www.bbc.com/news/articles/c0r959n91p4o",
+        "entities": [
+          "Blockchain Education",
+          "Euros",
+          "Crypto Sector",
+          "Swiss Franc"
+        ],
+        "score": 67.04,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Strategy Drops Nearly $1 Billion on Bitcoin, Marking Largest BTC Buy in Months - Decrypt",
+        "url": "https://decrypt.co/351461/strategy-drops-1-billion-bitcoin-largest-buy-months",
+        "entities": [
+          "Strategy",
+          "Equities",
+          "Asset Purchase",
+          "Preferred Shares"
+        ],
+        "score": 60.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Hyperscale Data Bitcoin Treasury at Approximately $75 Million – Company Announcement - Financial Times",
+        "url": "https://markets.ft.com/data/announce/detail?dockey=600-202512090600PR_NEWS_USPRX____SF42143-1",
+        "entities": [
+          "Open-market Purchases",
+          "Market Capitalization",
+          "AI Stocks",
+          "Digital Asset Treasury"
+        ],
+        "score": 63.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Convicted Crypto Wallet Developer Warns Miners Will Be Next in Bitcoin Crackdown - Gizmodo",
+        "url": "https://gizmodo.com/convicted-crypto-wallet-developer-warns-miners-will-be-next-in-bitcoin-crackdown-2000697969",
+        "entities": [
+          "Samourai Wallet",
+          "Unhosted Wallets",
+          "Miners",
+          "Crypto Regulation"
+        ],
+        "score": 65.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Strategy Fights MSCI Exclusion, Warning that $8.8 Billion Passive Outflows Would Stifle U.S. Crypto Innovation - TipRanks",
+        "url": "https://www.tipranks.com/news/strategy-fights-msci-exclusion-warning-that-8-8-billion-passive-outflows-would-stifle-u-s-crypto-innovation",
+        "entities": [
+          "Passive Investment Funds",
+          "Digital Assets",
+          "MSCI",
+          "MicroStrategy"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Strategy Inc (MSTR) After Hours on December 10, 2025: Bitcoin Leverage, $1.44B Cash Buffer and What to Watch Before the December 11 Open - ts2.tech",
+        "url": "https://ts2.tech/en/strategy-inc-mstr-after-hours-on-december-10-2025-bitcoin-leverage-1-44b-cash-buffer-and-what-to-watch-before-the-december-11-open/",
+        "entities": [
+          "Strategy Inc",
+          "Fed",
+          "Dividends",
+          "$1.44 Billion Cash Reserve",
+          "U.S. Equities",
+          "Debt Service"
+        ],
+        "score": 55.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Circle Receives Conditional Approval from OCC for National Trust Charter - Circle Internet",
+        "url": "https://www.circle.com/pressroom/circle-receives-conditional-approval-from-occ-for-national-trust-charter",
+        "entities": [
+          "OCC",
+          "Circle",
+          "USDC",
+          "Digital Assets",
+          "NYDFS"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Lolli Partners with Spark to Accelerate Bitcoin Rewards and Self-Custody - FinSMEs",
+        "url": "https://www.finsmes.com/2025/12/lolli-partners-with-spark-to-accelerate-bitcoin-rewards-and-self-custody.html",
+        "entities": [
+          "Lolli",
+          "Lightning Network",
+          "Spark",
+          "Thesis"
+        ],
+        "score": 65.8,
+        "sentiment": 0.25
+      }
+    ],
+    "node_count": 15
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "Massive critical minerals deposit found in Utah - Mining.com",
+        "url": "https://www.mining.com/massive-critical-minerals-deposit-found-in-utah/",
+        "entities": [
+          "Heavy Rare Earth Elements",
+          "Lithium",
+          "Ionic MT",
+          "Gallium",
+          "Critical Minerals",
+          "Rare Earths",
+          "Tungsten"
+        ],
+        "score": 78,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Trump tariffs live updates: Trump has said tariff revenues could pay for at least 9 different things; Democrats say tariffs have cost each American household $1,200 - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/live/trump-tariffs-live-updates-us-indonesia-deal-at-risk-of-collapse-trump-floats-some-additional-carveouts-231853344.html",
+        "entities": [
+          "China",
+          "Thailand",
+          "Société Générale",
+          "Vietnam",
+          "IMF"
+        ],
+        "score": 55.6,
+        "sentiment": -0.3
+      },
+      {
+        "title": "South Africa’s low-cost high-value rare earths heading for 2026 global market entry - Mining Weekly",
+        "url": "https://www.miningweekly.com/article/south-africas-low-cost-high-value-rare-earths-heading-for-2026-global-market-entry-2025-12-10",
+        "entities": [
+          "Permanent Magnet Market",
+          "Rare Earths",
+          "Praseodymium",
+          "Neodymium",
+          "Rainbow Rare Earths",
+          "South Africa"
+        ],
+        "score": 70.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Carina Rare-Earth Project, Brazil - Mining Technology",
+        "url": "https://www.mining-technology.com/projects/carina-rare-earth-project-brazil/",
+        "entities": [
+          "Neodymium-Praseodymium",
+          "Dysprosium",
+          "Carina Rare-Earth Project",
+          "Aclara Resources",
+          "Brazil"
+        ],
+        "score": 65.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Palmetto Grain Brokerage - - Palmetto Grain Brokerage",
+        "url": "https://www.palmettograin.com/news/story/36582014/usa-rare-earth-just-revved-up-its-commercial-timeline-should-you-buy-usar-stock-here",
+        "entities": [
+          "Clean-Tech",
+          "Gallium",
+          "Beryllium",
+          "Texas",
+          "USA Rare Earth",
+          "Round Top"
+        ],
+        "score": 70.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "US confirms major rare earth and critical metals discovery in Utah - Interesting Engineering",
+        "url": "https://interestingengineering.com/energy/us-rare-earth-deposit-utah-desert",
+        "entities": [
+          "Defense Sector",
+          "Lithium",
+          "AI Stocks",
+          "Rare Earth Elements",
+          "Ionic Mineral Technologies"
+        ],
+        "score": 70.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Congo miners urge urgent talks to clear cobalt export backlog - KITCO",
+        "url": "https://www.kitco.com/news/off-the-wire/2025-12-08/congo-miners-urge-urgent-talks-clear-cobalt-export-backlog",
+        "entities": [
+          "China",
+          "Tesla",
+          "CATL",
+          "EV Supply Chains",
+          "BYD",
+          "ARECOMS",
+          "Chamber of Mines",
+          "Cobalt"
+        ],
+        "score": 65.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "China Trade Surplus Tops $1 Trillion On Non-US Growth - Marine Link",
+        "url": "https://www.marinelink.com/news/china-trade-surplus-tops-trillion-nonus-533254",
+        "entities": [
+          "China",
+          "Southeast Asia",
+          "U.S.",
+          "European Union",
+          "Tariffs"
+        ],
+        "score": 50.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "China makes history with $1 trillion trade surplus for first time ever - Fortune",
+        "url": "https://fortune.com/2025/12/08/china-1-trillion-trade-surplus-exports-rebound/",
+        "entities": [
+          "China",
+          "Chetan Ahya",
+          "U.S. Trade Policies",
+          "Global Goods Export Market",
+          "Morgan Stanley"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Should You Buy MP Materials Stock While It's Under $65? - sharewise.com",
+        "url": "https://www.sharewise.com/us/news_articles/Should_You_Buy_MP_Materials_Stock_While_Its_Under_65_TheMotleyFool_20251209_0124",
+        "entities": [
+          "Department of Defense",
+          "Mountain Pass mine",
+          "MP Materials",
+          "rare earth elements",
+          "stock"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Power Ministry lists 16 imported items to achieve self-sufficiency - BusinessLine",
+        "url": "https://www.thehindubusinessline.com/companies/power-ministry-lists-16-imported-items-to-achieve-self-sufficiency/article70395093.ece",
+        "entities": [
+          "HVDC valve assemblies",
+          "subsea cables",
+          "Power Ministry",
+          "ethernet switches",
+          "permanent magnets",
+          "aluminium zinc coated steel sheets"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "How Japan built a rare earth supply chain without China - The Straits Times",
+        "url": "https://www.straitstimes.com/business/how-japan-built-a-rare-earth-supply-chain-without-china",
+        "entities": [
+          "Investment",
+          "Supply Chain",
+          "Lynas",
+          "China",
+          "Rare Earths",
+          "Japan"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 12
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Tesla investor Ross Gerber sees Tesla headed for a make-or-break year in 2026 - Business Insider",
+        "url": "https://www.businessinsider.com/tesla-stock-elon-musk-ross-gerber-waymo-self-driving-tsla-2025-12",
+        "entities": [
+          "Waymo",
+          "LidAR Technology",
+          "Elon Musk",
+          "Autonomous Driving"
+        ],
+        "score": 75.28,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Test Driving The Polestar 3: Sporty EV SUV Surprises On Range And Fun - Forbes",
+        "url": "https://www.forbes.com/sites/jamesmorris/2025/12/14/test-driving-the-polestar-3-sporty-ev-suv-surprises-on-range-and-fun/",
+        "entities": [
+          "EV Market",
+          "Performance Vehicles",
+          "Electric SUVs",
+          "Polestar 3",
+          "Tesla Model Y"
+        ],
+        "score": 56.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Alphabet (GOOGL) Slips Amid NHTSA Review of Waymo Self-Driving Cars - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/alphabet-stock-slides-waymo-recalls-183109903.html",
+        "entities": [
+          "Uber",
+          "Waymo",
+          "Alphabet",
+          "Amazon"
+        ],
+        "score": 60.6,
+        "sentiment": -0.3
+      },
+      {
+        "title": "TechCrunch Mobility: Rivian’s survival plan involves more than cars - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/14/rivians-survival-plan-involves-more-than-cars/",
+        "entities": [
+          "Automotive Sector",
+          "Rivian",
+          "Advanced Driver Assistance",
+          "Lucid"
+        ],
+        "score": 48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "High-end car sales sink in China as its economy slows, taking a toll on European automakers - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/high-end-car-sales-sink-020504037.html",
+        "entities": [
+          "European Automakers",
+          "Luxury Cars",
+          "Market Sales",
+          "Chinese Economy"
+        ],
+        "score": 60.6,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Tesla Rated Most Unreliable Used Car Brand in US - Newsmax",
+        "url": "https://www.newsmax.com/newsfront/tesla-reliability-ratings-consumer-reports/2025/12/10/id/1237874/",
+        "entities": [
+          "Automotive Sector",
+          "Ram",
+          "Ford",
+          "Jeep",
+          "Chrysler",
+          "Consumer Reports"
+        ],
+        "score": 50.8,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Tesla Stock Forecast: TSLA Weekly Recap, Latest News, and Week-Ahead Catalysts (Updated Dec. 13, 2025) - ts2.tech",
+        "url": "https://ts2.tech/en/tesla-stock-forecast-tsla-weekly-recap-latest-news-and-week-ahead-catalysts-updated-dec-13-2025/",
+        "entities": [
+          "Retail Sales",
+          "Model Y",
+          "Elon Musk",
+          "CPI",
+          "Derivatives"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Stock News and Forecasts for Dec. 14, 2025: Robotaxi Countdown, Sales Signals, and Wall Street Targets for TSLA - ts2.tech",
+        "url": "https://ts2.tech/en/tesla-stock-news-and-forecasts-for-dec-14-2025-robotaxi-countdown-sales-signals-and-wall-street-targets-for-tsla/",
+        "entities": [
+          "China",
+          "Robotaxi",
+          "Stock Valuation",
+          "Morgan Stanley",
+          "Price Target"
+        ],
+        "score": 70.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "2026 Tesla Model Y review: Spending one week with the new Model Y - Forbes",
+        "url": "https://www.forbes.com/sites/matthewmacconnell/2025/12/08/test-driving-the-2026-tesla-model-y/",
+        "entities": [
+          "Automotive Sector",
+          "Electric Vehicles",
+          "Model Y",
+          "Consumer Technology"
+        ],
+        "score": 66.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Consumer Reports finds reliability issues with EVs, PHEVs - Tech Brew",
+        "url": "https://www.techbrew.com/stories/2025/12/10/consumer-reports-reliability-issues-evs-phevs",
+        "entities": [
+          "Consumer Reports",
+          "Rivian",
+          "EVs",
+          "PHEVs"
+        ],
+        "score": 60.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla 'Full Self Driving' Blew Me Away. I Still Wouldn't Buy It - InsideEVs",
+        "url": "https://insideevs.com/reviews/781325/tesla-full-self-driving-review/",
+        "entities": [
+          "Automotive Technology",
+          "Consumer Trust",
+          "Driver Assistance Systems",
+          "Regulation"
+        ],
+        "score": 50.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "The New Mercedes GLB Is A Mini G For The Electric Age - HotCars",
+        "url": "https://www.hotcars.com/mercedes-glb-specs-photos/",
+        "entities": [
+          "Model Y",
+          "AI Technology",
+          "Mercedes-Benz",
+          "Electric Vehicles",
+          "GLB-Class"
+        ],
+        "score": 45.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "US Tesla Sales Drop 23% in November Year Over Year - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/12/us-tesla-sales-drop-23-in-november-year-over-year/amp/",
+        "entities": [
+          "US EV Tax Credit",
+          "Regulatory Credit Revenue",
+          "Model Y",
+          "Model 3"
+        ],
+        "score": 70.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Cybertruck owner attempts to trade vehicle after facing relentless harassment: 'My wife and kids don't deserve this'",
+        "url": "https://www.yahoo.com/news/articles/cybertruck-owner-attempts-trade-vehicle-230000464.html",
+        "entities": [
+          "Vehicle Vandalism",
+          "Consumer Harassment",
+          "Cybertruck"
+        ],
+        "score": 45.8,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Tesla Enters Consumer Reports’ Top 10 Most Reliable Brands - Not a Tesla App",
+        "url": "https://www.notateslaapp.com/news/3392/tesla-enters-consumer-reports-top-10-most-reliable-brands",
+        "entities": [
+          "Cybertruck",
+          "Consumer Reports",
+          "Model Y",
+          "Model 3"
+        ],
+        "score": 55.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Uber Reportedly Downplaying EV Incentives for Drivers As It Prepares to Miss Emissions Goals - Gizmodo",
+        "url": "https://gizmodo.com/uber-reportedly-downplaying-ev-incentives-for-drivers-as-it-prepares-to-miss-emissions-goals-2000698087",
+        "entities": [
+          "Uber",
+          "Electric Vehicles",
+          "EV Incentives",
+          "Ride-hailing Sector"
+        ],
+        "score": 55.8,
+        "sentiment": -0.4
+      }
+    ],
+    "node_count": 16
+  }
+]

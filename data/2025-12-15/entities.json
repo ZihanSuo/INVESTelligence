@@ -1,0 +1,688 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "Billionaire Michael Saylor Announces New $1 Billion Bitcoin Purchase – Does He Know Something is Coming?",
+        "url": "https://finance.yahoo.com/news/billionaire-michael-saylor-announces-1-133134376.html",
+        "entities": [
+          "Strategy",
+          "Cryptocurrency",
+          "Corporate Holdings",
+          "Market Trends"
+        ],
+        "score": 60.6,
+        "sentiment": 0.2
+      },
+      {
+        "title": "45% of Gen Z adults say they would be happy to receive crypto as a gift this holiday season—here's what experts say - CNBC",
+        "url": "https://www.cnbc.com/2025/12/15/gifting-crypto-this-holiday-season-what-experts-say-to-know-first.html",
+        "entities": [
+          "Cryptocurrency",
+          "Financial Planning",
+          "Market Adoption",
+          "Consumer Behavior"
+        ],
+        "score": 56.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "$1 Billion Blitz: Saylor's Bitcoin Binge Shocks Wall Street--Again - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/1-billion-blitz-saylors-bitcoin-181245069.html",
+        "entities": [
+          "Strategy",
+          "Macro Sentiment",
+          "Digital Asset Treasury",
+          "Institutional Flows"
+        ],
+        "score": 70.6,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Crypto exchange Hashkey raises $206 million in Hong Kong IPO, source says - Reuters",
+        "url": "https://www.reuters.com/world/asia-pacific/crypto-exchange-hashkey-raises-206-million-hong-kong-ipo-source-says-2025-12-15/",
+        "entities": [
+          "Cryptocurrency",
+          "Hong Kong IPO",
+          "Beijing",
+          "Crypto Regulation"
+        ],
+        "score": 53.48,
+        "sentiment": -0.3
+      },
+      {
+        "title": "JPMorgan unveils its latest crypto move with a new tokenized money market fund - Business Insider",
+        "url": "https://www.businessinsider.com/jpmorgan-tokenized-money-market-fund-ethereum-blockchain-crypto-eth-2025-12",
+        "entities": [
+          "Tokenized Money Market Fund",
+          "Robinhood",
+          "JPMorgan",
+          "Cryptocurrency",
+          "Ethereum"
+        ],
+        "score": 70.28,
+        "sentiment": 0.4
+      },
+      {
+        "title": "American Bitcoin Skyrockets Holdings: Strategic 613 BTC Surge Signals Confidence - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605110211",
+        "entities": [
+          "Treasury Holdings",
+          "American Bitcoin",
+          "Crypto World",
+          "Institutional Investment"
+        ],
+        "score": 55.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "American Bitcoin buys additional 261 Bitcoin… holds 5044 BTC in total - bloomingbit",
+        "url": "https://bloomingbit.io/en/feed/news/102479",
+        "entities": [
+          "Bitcoin Treasury",
+          "Bitcoin Holdings",
+          "Cryptocurrency Market",
+          "American Bitcoin Corporation"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "The Swiss city that lets you pay for most things with bitcoin - BBC",
+        "url": "https://www.bbc.com/news/articles/c0r959n91p4o",
+        "entities": [
+          "Cryptocurrency",
+          "Lugano",
+          "Crypto-sector",
+          "Swiss Franc"
+        ],
+        "score": 62.04,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Hut 8 Stock (NASDAQ: HUT) Slides 13% on Dec. 15, 2025 as Bitcoin Falls and American Bitcoin (ABTC) Drags Sentiment - ts2.tech",
+        "url": "https://ts2.tech/en/hut-8-stock-nasdaq-hut-slides-13-on-dec-15-2025-as-bitcoin-falls-and-american-bitcoin-abtc-drags-sentiment/",
+        "entities": [
+          "Cryptocurrency",
+          "Equities",
+          "American Bitcoin",
+          "Hut 8"
+        ],
+        "score": 65.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Crypto This Week & Week Ahead (Dec. 13, 2025): Bitcoin Near $90K as U.S. Bank Charters, a Staked Ethereum ETF Filing, and Tokenization Headlines Reshape the Market - ts2.tech",
+        "url": "https://ts2.tech/en/crypto-this-week-week-ahead-dec-13-2025-bitcoin-near-90k-as-u-s-bank-charters-a-staked-ethereum-etf-filing-and-tokenization-headlines-reshape-the-market/",
+        "entities": [
+          "Tokenization",
+          "U.S. Banking Charters",
+          "ETF Filing",
+          "Ethereum"
+        ],
+        "score": 65.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Retail Bitcoin Activity Hits Historic Lows as Binance Bets Its Future on Abu Dhabi - ts2.tech",
+        "url": "https://ts2.tech/en/retail-bitcoin-activity-hits-historic-lows-as-binance-bets-its-future-on-abu-dhabi/",
+        "entities": [
+          "Binance",
+          "CryptoQuant",
+          "ETF",
+          "Abu Dhabi"
+        ],
+        "score": 70.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "There's no Dow or S&P 500 for cryptocurrencies yet. Bitwise is getting a step closer with new ETF - CNBC",
+        "url": "https://www.cnbc.com/2025/12/09/theres-no-dow-or-sp-500-for-cryptocurrencies-yet-bitwise-is-getting-a-step-closer-with-new-etf.html",
+        "entities": [
+          "ETF",
+          "Retail Investors",
+          "Bitwise",
+          "Cryptocurrency",
+          "Avalanche"
+        ],
+        "score": 71.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Bitcoin holds $90,000 as markets await Fed rate cut decision and Powell's guidance - The Block",
+        "url": "https://www.theblock.co/post/381861/bitcoin-holds-90000-usd-markets-await-fed-rate-cut-decision-powell-guidance",
+        "entities": [
+          "Labor Market",
+          "Jerome Powell",
+          "Bitcoin ETFs",
+          "Fed Rates"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Bitcoin Price Today: BTC Holds Near $90K After Fed Cut, ETF Flow Whiplash and Fresh Forecasts (Dec. 8–14, 2025)",
+        "url": "https://ts2.tech/en/bitcoin-price-today-btc-holds-near-90k-after-fed-cut-etf-flow-whiplash-and-fresh-forecasts-dec-8-14-2025/",
+        "entities": [
+          "Standard Chartered",
+          "Fed",
+          "AI Stocks",
+          "ETF Flows"
+        ],
+        "score": 60.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "US regulator grants crypto firms initial approval to launch trust banks - Reuters",
+        "url": "https://www.reuters.com/sustainability/boards-policy-regulation/us-regulator-grants-crypto-firms-initial-approval-launch-trust-banks-2025-12-12/",
+        "entities": [
+          "Paxos",
+          "Circle",
+          "Ripple",
+          "BitGo",
+          "Trust Banks"
+        ],
+        "score": 73.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "UK regulation of cryptoassets to start in October 2027, finance ministry says - Reuters",
+        "url": "https://www.reuters.com/sustainability/boards-policy-regulation/uk-regulation-cryptoassets-start-october-2027-finance-ministry-says-2025-12-15/",
+        "entities": [
+          "Stablecoins",
+          "Cryptoassets",
+          "Bank of England",
+          "Financial Conduct Authority"
+        ],
+        "score": 88.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Stablecoins Just Got Their Rulebook. Now The Real Competition Begins - Forbes",
+        "url": "https://www.forbes.com/sites/digital-assets/2025/12/14/stablecoins-just-got-their-rulebook-now-the-real-competition-begins/",
+        "entities": [
+          "CLARITY Act",
+          "Stablecoins",
+          "GENIUS Act",
+          "U.S. Treasury",
+          "Cryptocurrency Regulation"
+        ],
+        "score": 81.4,
+        "sentiment": 0.5
+      },
+      {
+        "title": "The Daily: Ripple, Circle and BitGo win conditional approval for US banking charters, Hex Trust to issue and custody wrapped XRP, and more - The Block",
+        "url": "https://www.theblock.co/post/382409/the-daily-ripple-circle-and-bitgo-win-conditional-approval-for-us-banking-charters-hex-trust-to-issue-and-custody-wrapped-xrp-and-more",
+        "entities": [
+          "Hex Trust",
+          "Paxos",
+          "Circle",
+          "Ripple",
+          "BitGo"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      }
+    ],
+    "node_count": 18
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "Pentagon takes big stake in new Korea Zinc smelter in Tennessee, will get 10% of company - CNBC",
+        "url": "https://www.cnbc.com/2025/12/15/pentagon-korea-zinc-refinery-tennessee.html",
+        "entities": [
+          "U.S. Commerce Department",
+          "MP Materials",
+          "Korea Zinc",
+          "Pentagon",
+          "Rare Earths"
+        ],
+        "score": 86.4,
+        "sentiment": 0.6
+      },
+      {
+        "title": "SME warns 2026 may reset US mining’s global role - Mining.com",
+        "url": "https://www.mining.com/sme-warns-2026-may-reset-us-minings-global-role/",
+        "entities": [
+          "China",
+          "US Mining",
+          "Battery Metals",
+          "Regulatory Issues",
+          "Rare Earths",
+          "Copper",
+          "Cobalt"
+        ],
+        "score": 78,
+        "sentiment": -0.5
+      },
+      {
+        "title": "White House plans more ‘historic deals’ with mining sector, official says - Mining.com",
+        "url": "https://www.mining.com/web/white-house-plans-more-historic-deals-with-mining-sector-official-says/",
+        "entities": [
+          "National Defense",
+          "MP Materials",
+          "Critical Minerals",
+          "Trilogy Metals",
+          "Lithium Americas",
+          "Trade Negotiations",
+          "Rare Earths",
+          "Trump Administration"
+        ],
+        "score": 83,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Korea Zinc to Build $7.43 Billion Smelter in U.S. - The Wall Street Journal",
+        "url": "https://www.wsj.com/world/asia/korea-zinc-to-build-7-43-billion-smelter-in-u-s-e14b8d97?gaa_at=eafs&gaa_n=AWEtsqd6MHzULEjqJEbJcBxE70avxRPLkrL_sjpFk46UwU0YOrVFQTyVbBsO&gaa_ts=693ff7be&gaa_sig=k0Sav2Loq8cXbU7s6gMH46A6X0jNDVs5xs5BjBTIc3ZSwNuy3aJGiU8X4s6RD1Tt6IJ_XaYc2BubuvkcwIERLw%3D%3D",
+        "entities": [
+          "China",
+          "Korea Zinc",
+          "U.S.",
+          "Rare Earths",
+          "Ionic"
+        ],
+        "score": 78.48,
+        "sentiment": 0.3
+      },
+      {
+        "title": "US to back Korea Zinc’s $7.4 billion critical minerals plant - Mining.com",
+        "url": "https://www.mining.com/web/us-to-back-korea-zincs-7-4-billion-critical-minerals-plant/",
+        "entities": [
+          "Defense",
+          "Korea Zinc",
+          "Critical Minerals",
+          "Chip-Making",
+          "Aerospace",
+          "US Government"
+        ],
+        "score": 78,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Indonesia’s tin exports surge as supply concerns dissipate",
+        "url": "https://www.mining.com/web/indonesias-tin-exports-surge-as-supply-concerns-dissipate/",
+        "entities": [
+          "Illegal Mining",
+          "Trade Ministry",
+          "Tin",
+          "Supply Disruptions",
+          "Indonesia"
+        ],
+        "score": 68,
+        "sentiment": 0.2
+      },
+      {
+        "title": "China's retail sales growth sharply misses estimates in November, deepening consumption worries - CNBC",
+        "url": "https://www.cnbc.com/2025/12/15/chinas-november-retail-sales-industrial-production-fixed-asset-investment.html",
+        "entities": [
+          "China",
+          "International Monetary Fund",
+          "Trade Surplus",
+          "Exports",
+          "Domestic Consumption"
+        ],
+        "score": 41.4,
+        "sentiment": -0.6
+      },
+      {
+        "title": "South Africa’s low-cost high-value rare earths heading for 2026 global market entry - Mining Weekly",
+        "url": "https://www.miningweekly.com/article/south-africas-low-cost-high-value-rare-earths-heading-for-2026-global-market-entry-2025-12-10",
+        "entities": [
+          "Permanent Magnet Market",
+          "Rare Earths",
+          "Praseodymium",
+          "Neodymium",
+          "Rainbow Rare Earths"
+        ],
+        "score": 70.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Carina Rare-Earth Project, Brazil - Mining Technology",
+        "url": "https://www.mining-technology.com/projects/carina-rare-earth-project-brazil/",
+        "entities": [
+          "Neodymium-Praseodymium",
+          "Carina Rare Earth Project",
+          "Aclara Resources",
+          "Open-Pit Mining",
+          "Rare Earth Oxides"
+        ],
+        "score": 65.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Palmetto Grain Brokerage - - Palmetto Grain Brokerage",
+        "url": "https://www.palmettograin.com/news/story/36582014/usa-rare-earth-just-revved-up-its-commercial-timeline-should-you-buy-usar-stock-here",
+        "entities": [
+          "Gallium",
+          "Heavy Rare Earths",
+          "Round Top Deposit",
+          "Clean-Tech Sector",
+          "Beryllium",
+          "USA Rare Earth"
+        ],
+        "score": 75.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "US confirms major rare earth and critical metals discovery in Utah - Interesting Engineering",
+        "url": "https://interestingengineering.com/energy/us-rare-earth-deposit-utah-desert",
+        "entities": [
+          "Defense Sector",
+          "AI Stocks",
+          "Rare Earth Elements",
+          "Ionic Mineral Technologies",
+          "EV Batteries"
+        ],
+        "score": 75.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "GE Vernova working with US government to boost stocks of rare earth yttrium - Reuters",
+        "url": "https://www.reuters.com/business/energy/ge-vernova-working-with-us-government-boost-stocks-rare-earth-yttrium-2025-12-10/",
+        "entities": [
+          "GE Vernova",
+          "China",
+          "Semiconductors",
+          "Yttrium",
+          "U.S. Government",
+          "Aerospace"
+        ],
+        "score": 78.48,
+        "sentiment": -0.3
+      },
+      {
+        "title": "China to require export licences for some steel products - Reuters",
+        "url": "https://www.reuters.com/world/asia-pacific/china-require-export-licences-some-steel-products-2025-12-12/",
+        "entities": [
+          "China",
+          "Steel Products",
+          "Ministry of Commerce",
+          "Trade Barriers",
+          "Export Licenses"
+        ],
+        "score": 68.48,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Why China’s Export Surge Won’t Last - The National Interest",
+        "url": "https://nationalinterest.org/feature/why-chinas-export-surge-wont-last",
+        "entities": [
+          "China",
+          "Tariff Strategy",
+          "Export Dominance",
+          "ASEAN Markets",
+          "India"
+        ],
+        "score": 55.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Nvidia Stock (NVDA) News Today: China H200 Export Deal, Blackwell/Rubin Outlook, and 2026 Price Targets (Dec. 14, 2025) - ts2.tech",
+        "url": "https://ts2.tech/en/nvidia-stock-nvda-news-today-china-h200-export-deal-blackwell-rubin-outlook-and-2026-price-targets-dec-14-2025/",
+        "entities": [
+          "Blackwell",
+          "China",
+          "Rubin",
+          "H200",
+          "Nvidia",
+          "U.S. Government",
+          "Tariffs",
+          "AI Chips"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "China's Trade Surplus Blows Past $1 Trillion - The Maritime Executive",
+        "url": "https://maritime-executive.com/article/china-s-trade-surplus-blows-past-1-trillion",
+        "entities": [
+          "China",
+          "Southeast Asia",
+          "European Markets",
+          "Tariffs",
+          "U.S. Exports"
+        ],
+        "score": 50.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "China to boost exports, imports in 2026 to pursue 'sustainable' trade, official says - TradingView",
+        "url": "https://www.tradingview.com/news/reuters.com,2025:newsml_P8N3WU04G:0-china-to-boost-exports-imports-in-2026-to-pursue-sustainable-trade-official-says/",
+        "entities": [
+          "China",
+          "International Monetary Fund",
+          "Imports",
+          "Trade Surplus",
+          "Exports"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Should You Buy MP Materials Stock While It's Under $65? - sharewise.com",
+        "url": "https://www.sharewise.com/us/news_articles/Should_You_Buy_MP_Materials_Stock_While_Its_Under_65_TheMotleyFool_20251209_0124",
+        "entities": [
+          "Department of Defense",
+          "Mountain Pass Mine",
+          "MP Materials",
+          "Rare Earth Elements",
+          "Investment in Magnet Factories"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Power Ministry lists 16 imported items to achieve self-sufficiency - BusinessLine",
+        "url": "https://www.thehindubusinessline.com/companies/power-ministry-lists-16-imported-items-to-achieve-self-sufficiency/article70395093.ece",
+        "entities": [
+          "HVDC Valve Assemblies",
+          "Subsea Cables",
+          "Ethernet Switches",
+          "Permanent Magnets",
+          "Power Ministry"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Kongsberg Maritime Grows UUC PM Azimuth Thruster Range - Marine News Magazine",
+        "url": "https://www.marinelink.com/news/kongsberg-maritime-grows-uuc-pm-azimuth-533502",
+        "entities": [
+          "UUC PM Thruster",
+          "Marine Technology",
+          "Kongsberg Maritime",
+          "Permanent Magnet Technology",
+          "Offshore Operations"
+        ],
+        "score": 45.8,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 20
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Tesla US Market Share Surges 30% - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/tesla-us-market-share-surges-151500848.html",
+        "entities": [
+          "Cox Automotive",
+          "EV Sales",
+          "Electric Vehicles",
+          "Market Share",
+          "Tesla Inc."
+        ],
+        "score": 70.6,
+        "sentiment": 0.15
+      },
+      {
+        "title": "Tesla shares jump as Musk confirms driverless robotaxi testing - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/tesla-shares-jump-musk-confirms-driverless-robotaxi-testing-2025-12-15/",
+        "entities": [
+          "Electric Vehicles",
+          "Robotaxi",
+          "Elon Musk",
+          "Self-Driving Technology"
+        ],
+        "score": 73.48,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Tesla starts testing robotaxis in Austin with no safety driver - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/15/tesla-starts-testing-robotaxis-in-austin-with-no-safety-driver/",
+        "entities": [
+          "Autonomous Vehicles",
+          "Electric Cars",
+          "Waymo",
+          "Elon Musk"
+        ],
+        "score": 73,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Ford is starting a battery storage business to power data centers and the grid",
+        "url": "https://techcrunch.com/2025/12/15/ford-is-starting-a-battery-storage-business-to-power-data-centers-and-the-grid/",
+        "entities": [
+          "Data Centers",
+          "Ford",
+          "Battery Storage",
+          "General Motors",
+          "Electric Vehicles"
+        ],
+        "score": 63,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Ford’s next F-150 Lightning will have a gas generator as it pivots away from large EVs - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/15/fords-next-f-150-lightning-will-have-a-gas-generator-as-it-pivots-away-from-large-evs/",
+        "entities": [
+          "Electric Vehicles",
+          "Biden-era Policies",
+          "Consumer Technology",
+          "Ford"
+        ],
+        "score": 63,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Tesla Rated Most Unreliable Used Car Brand in US - Newsmax",
+        "url": "https://www.newsmax.com/newsfront/tesla-reliability-ratings-consumer-reports/2025/12/10/id/1237874/",
+        "entities": [
+          "Automotive Sector",
+          "Chevrolet",
+          "Ford",
+          "Mercedes-Benz",
+          "Consumer Reports"
+        ],
+        "score": 60.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Tesla (TSLA) Stock: The Self-Driving Update That Changes Everything for Investors - CoinCentral",
+        "url": "https://coincentral.com/tesla-tsla-stock-the-self-driving-update-that-changes-everything-for-investors/",
+        "entities": [
+          "NHTSA",
+          "Full Self-Driving",
+          "Model Y",
+          "Robotaxi Service"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla Stock Forecast: TSLA Weekly Recap, Latest News, and Week-Ahead Catalysts (Updated Dec. 13, 2025)",
+        "url": "https://ts2.tech/en/tesla-stock-forecast-tsla-weekly-recap-latest-news-and-week-ahead-catalysts-updated-dec-13-2025/",
+        "entities": [
+          "Retail Sales",
+          "Model Y",
+          "Elon Musk",
+          "CPI",
+          "Derivatives"
+        ],
+        "score": 55.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Cybertruck owner attempts to trade vehicle after facing relentless harassment: 'My wife and kids don't deserve this'",
+        "url": "https://www.yahoo.com/news/articles/cybertruck-owner-attempts-trade-vehicle-230000464.html",
+        "entities": [
+          "Vehicle Trade",
+          "Harassment",
+          "Social Media",
+          "Cybertruck"
+        ],
+        "score": 40.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Tesla’s 8-Year Model Sales Trends in 11 European Countries - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/14/teslas-8-year-model-sales-trends-in-11-european-countries/",
+        "entities": [
+          "Sales Trends",
+          "COVID-19",
+          "European Markets",
+          "Tesla Model 3",
+          "Tesla Model Y"
+        ],
+        "score": 55.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Driverless Tesla spotted on Austin streets, drawing fresh focus on robotaxis - Ynetnews",
+        "url": "https://www.ynetnews.com/tech-and-digital/article/bjpddc3mbg",
+        "entities": [
+          "Bank of America",
+          "Artificial Intelligence",
+          "Robotaxis",
+          "Autonomous Driving"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Plugin Vehicles Pass 75 Million Cumulative Sales! - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/14/plugin-vehicles-pass-75-million-cumulative-sales/amp/",
+        "entities": [
+          "China",
+          "EV Sales",
+          "Nissan LEAF",
+          "Electric Vehicle Market",
+          "Tesla Model 3",
+          "Plugin Vehicles",
+          "Tesla Model Y"
+        ],
+        "score": 50.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla 'Full Self Driving' Blew Me Away. I Still Wouldn't Buy It - InsideEVs",
+        "url": "https://insideevs.com/reviews/781325/tesla-full-self-driving-review/",
+        "entities": [
+          "Full Self Driving",
+          "Driver Assistance Systems",
+          "Model Y",
+          "Autopilot"
+        ],
+        "score": 50.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Rivian Is Stepping up to Challenge Tesla's Key Technology: FSD - Business Insider",
+        "url": "https://www.businessinsider.com/rivian-vs-tesla-autonomous-driving-fsd-chips-ai-assistant-2025-12",
+        "entities": [
+          "AI Technology",
+          "Rivian",
+          "Driver Assistance Systems",
+          "Autonomous Driving"
+        ],
+        "score": 70.28,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 14
+  }
+]

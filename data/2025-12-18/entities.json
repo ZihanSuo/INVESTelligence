@@ -1,0 +1,804 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "Dollar holds gains against sterling, yen as central bank decisions loom - CNBC",
+        "url": "https://www.cnbc.com/2025/12/18/dollar-holds-gains-against-sterling-yen-as-central-bank-decisions-loom.html",
+        "entities": [
+          "Ether",
+          "New Zealand Dollar",
+          "Cryptocurrency Market",
+          "Australian Dollar"
+        ],
+        "score": 56.4,
+        "sentiment": 0.2
+      },
+      {
+        "title": "US crypto industry cheers 2025 wins, but party may fizzle next year - Reuters",
+        "url": "https://www.reuters.com/sustainability/boards-policy-regulation/us-crypto-industry-cheers-2025-wins-party-may-fizzle-next-year-2025-12-18/",
+        "entities": [
+          "Bank Regulation",
+          "SEC",
+          "Crypto Firms",
+          "Investor Risks"
+        ],
+        "score": 78.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "American Bitcoin buys additional 261 Bitcoin… holds 5044 BTC in total - bloomingbit",
+        "url": "https://bloomingbit.io/en/feed/news/102479",
+        "entities": [
+          "Bitcoin Treasury",
+          "Bitcoin Holdings",
+          "Mining Sector",
+          "American Bitcoin Corporation"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "American Bitcoin's Bitcoin reserves have increased by approximately 623 BTC in the past 7 days, bringing its current holdings to 4941 BTC. - bitget.com",
+        "url": "https://www.bitget.com/amp/news/detail/12560605109872",
+        "entities": [
+          "Strategic Acquisitions",
+          "American Bitcoin",
+          "Crypto Mining",
+          "Blockchain Analyst"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Hyperscale Data Bitcoin Treasury at 97.5% of Market Capitalization at Approximately $75.5 Million - Financial Times",
+        "url": "https://markets.ft.com/data/announce/detail?dockey=600-202512160600PR_NEWS_USPRX____SF48387-1",
+        "entities": [
+          "Artificial Intelligence (AI)",
+          "Hyperscale Data",
+          "Digital Asset Treasury (DAT)",
+          "Executive Chairman"
+        ],
+        "score": 73.48,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Crypto This Week & Week Ahead (Dec. 13, 2025): Bitcoin Near $90K as U.S. Bank Charters, a Staked Ethereum ETF Filing, and Tokenization Headlines Reshape the Market - ts2.tech",
+        "url": "https://ts2.tech/en/crypto-this-week-week-ahead-dec-13-2025-bitcoin-near-90k-as-u-s-bank-charters-a-staked-ethereum-etf-filing-and-tokenization-headlines-reshape-the-market/",
+        "entities": [
+          "U.S. Bank Charters",
+          "Tokenization",
+          "Investor Sentiment",
+          "ETF",
+          "Crypto Firms",
+          "Ethereum"
+        ],
+        "score": 55.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "BTC mining firm VBit CEO faces SEC charges over misappropriated $48.5M - Cryptopolitan",
+        "url": "https://www.cryptopolitan.com/vbit-ceo-faces-sec-charges-misappropriation/",
+        "entities": [
+          "Gambling",
+          "SEC",
+          "Advanced Mining",
+          "VBit Technologies"
+        ],
+        "score": 75.8,
+        "sentiment": -0.7
+      },
+      {
+        "title": "BitFuFu Inc. Recognized as One of the World Future Awards' TOP 100 Next Generation Companies for 2025 - Quiver Quantitative",
+        "url": "https://www.quiverquant.com/news/BitFuFu+Inc.+Recognized+as+One+of+the+World+Future+Awards%27+TOP+100+Next+Generation+Companies+for+2025",
+        "entities": [
+          "Sustainable Energy",
+          "Capital Markets",
+          "Mining Sector",
+          "BitFuFu"
+        ],
+        "score": 55.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Bitcoin mining company Cango's total BTC holdings surpass 7,100, with 131 mined this week - bitget.com",
+        "url": "https://www.bitget.com/amp/news/detail/12560605109880",
+        "entities": [
+          "ETH",
+          "Bitcoin Mining",
+          "Market Sentiment",
+          "Cango"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Philly man's bitcoin mining scheme allegedly defrauded investors of $48.5 million, SEC says - PhillyVoice",
+        "url": "https://www.phillyvoice.com/bitcoin-mining-scam-vbit-sec-danh-vo-philadelphia/",
+        "entities": [
+          "Cryptocurrency",
+          "SEC",
+          "Fraud"
+        ],
+        "score": 75.8,
+        "sentiment": -0.7
+      },
+      {
+        "title": "LM Funding America Adds 35 PH/s with Energization of First Oklahoma Immersion Unit - GlobeNewswire",
+        "url": "https://www.globenewswire.com/news-release/2025/12/18/3207635/0/en/LM-Funding-America-Adds-35-PH-s-with-Energization-of-First-Oklahoma-Immersion-Unit.html",
+        "entities": [
+          "Foghashing",
+          "Oklahoma",
+          "Bitcoin Mining",
+          "Treasury"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 11
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "MEGAMINES: Top 10 most capital intensive bulk mining projects - Mining.com",
+        "url": "https://www.mining.com/megamines-top-10-most-capital-intensive-bulk-mining-projects/",
+        "entities": [
+          "MMX",
+          "Minas Gerais",
+          "Anglo",
+          "Brazil",
+          "Eike Batista"
+        ],
+        "score": 63,
+        "sentiment": -0.15
+      },
+      {
+        "title": "Integra CEO aims for mid-tier gold output in Idaho - Mining.com",
+        "url": "https://www.mining.com/integra-ceo-aims-for-mid-tier-gold-output-in-idaho/",
+        "entities": [
+          "Integra",
+          "Mining Sector",
+          "Silver",
+          "Gold",
+          "DeLamar"
+        ],
+        "score": 53,
+        "sentiment": 0.1
+      },
+      {
+        "title": "BHP hit with $253M UK legal costs demand - Mining.com",
+        "url": "https://www.mining.com/bhp-hit-with-253m-uk-legal-costs-demand/",
+        "entities": [
+          "Pogust Goodhead",
+          "Financial Times",
+          "BHP",
+          "UK Legal Industry",
+          "Claimants"
+        ],
+        "score": 63,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Brazil delays critical minerals areas auction - Mining.com",
+        "url": "https://www.mining.com/brazil-delays-critical-minerals-areas-auction/",
+        "entities": [
+          "Nickel",
+          "Brazil",
+          "Rare Earth Elements",
+          "Niobium",
+          "Graphite"
+        ],
+        "score": 78,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Barrick officially resumes operational control of Mali mine - Mining.com",
+        "url": "https://www.mining.com/web/barrick-officially-resumes-operational-control-of-mali-mine/",
+        "entities": [
+          "Mining Sector",
+          "Gold",
+          "Mali",
+          "Barrick Gold",
+          "Copper"
+        ],
+        "score": 43,
+        "sentiment": 0
+      },
+      {
+        "title": "Australia lifts commodity export outlook on iron ore, gold price - Mining.com",
+        "url": "https://www.mining.com/web/australia-lifts-commodity-export-outlook-on-iron-ore-gold-price/",
+        "entities": [
+          "Iron Ore",
+          "Mining Sector",
+          "Gold",
+          "Commodity Exports",
+          "Ambler Metals"
+        ],
+        "score": 43,
+        "sentiment": 0.1
+      },
+      {
+        "title": "How Trump's trade war is playing out inside U.S. supply chain as retailers stocked up for the holidays - CNBC",
+        "url": "https://www.cnbc.com/2025/12/18/trump-tariffs-trade-war-holiday-orders-freight-supply-chain.html",
+        "entities": [
+          "Supply Chain",
+          "Port of Los Angeles",
+          "Retailers",
+          "Tariffs",
+          "Trade War"
+        ],
+        "score": 61.4,
+        "sentiment": -0.3
+      },
+      {
+        "title": "MP Materials produces rare earth metal in Texas",
+        "url": "https://www.mining.com/mp-materials-produces-rare-earth-metal-in-texas/",
+        "entities": [
+          "Neodymium-Praseodymium",
+          "MP Materials",
+          "Defense Systems",
+          "Neodymium-Iron-Boron",
+          "Electric Vehicles",
+          "Aerospace"
+        ],
+        "score": 73,
+        "sentiment": 0.25
+      },
+      {
+        "title": "MP Materials lands multi-billion Pentagon deal",
+        "url": "https://www.mining.com/mp-materials-lands-multi-billion-pentagon-deal/",
+        "entities": [
+          "US Department of Defense",
+          "rare earth magnets",
+          "MP Materials",
+          "Mountain Pass mine",
+          "defense",
+          "robotics",
+          "aerospace"
+        ],
+        "score": 83,
+        "sentiment": 0.4
+      },
+      {
+        "title": "West scrambles to fill heavy rare earth gap as China rivalry ...",
+        "url": "https://www.reuters.com/sustainability/climate-energy/west-scrambles-fill-heavy-rare-earth-gap-china-rivalry-deepens-2025-11-19/",
+        "entities": [
+          "China",
+          "Dysprosium",
+          "MP Materials",
+          "Brazil",
+          "Rare Earth Elements",
+          "Electric Vehicles",
+          "Terbium"
+        ],
+        "score": 78.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "MP Materials Corp. (MP) Stock Price, News, Quote & History",
+        "url": "https://ca.finance.yahoo.com/quote/MP/",
+        "entities": [
+          "Magnetics segment",
+          "MP Materials Corp.",
+          "S&P 500",
+          "Mountain Pass Rare Earth Mine",
+          "rare earth materials"
+        ],
+        "score": 40.6,
+        "sentiment": 0
+      },
+      {
+        "title": "The Pentagon's Bold Move To Secure U.S. Rare Earth ...",
+        "url": "https://www.forbes.com/sites/davidblackmon/2025/07/12/the-pentagons-bold-move-to-secure-us-rare-earth-mineral-needs/",
+        "entities": [
+          "Mountain Pass Mine",
+          "Rare Earth Minerals",
+          "MP Materials",
+          "Pentagon",
+          "Molycorp"
+        ],
+        "score": 76.4,
+        "sentiment": 0.25
+      },
+      {
+        "title": "US government to invest in rare earths production",
+        "url": "https://www.bbc.com/news/articles/c3r91rngq2do",
+        "entities": [
+          "US Department of Defense",
+          "Wind Turbines",
+          "MP Materials",
+          "China",
+          "Rare Earths",
+          "Electric Cars",
+          "Trade War"
+        ],
+        "score": 82.04,
+        "sentiment": 0.3
+      },
+      {
+        "title": "US announces $11bn weapons sale to Taiwan - BBC",
+        "url": "https://www.bbc.com/news/articles/c7095g45p1po.amp",
+        "entities": [
+          "High Mobility Artillery Rocket Systems",
+          "China",
+          "US Congress",
+          "Taiwan",
+          "Defense Security Cooperation Agency"
+        ],
+        "score": 62.04,
+        "sentiment": 0.2
+      },
+      {
+        "title": "U.S. Dollar struggles are the Chinese Yuan's gain: CNBC Panel - CNBC",
+        "url": "https://www.cnbc.com/video/2025/12/19/chinaas-yuan-push-persists-as-u-s-struggles-to-areasserta-the-importance-of-the-dollar-analyst.html",
+        "entities": [
+          "Critical Minerals",
+          "Chinese Yuan",
+          "U.S. Dollar",
+          "Rare Earths",
+          "Deep-Sea Mining"
+        ],
+        "score": 51.4,
+        "sentiment": -0.1
+      },
+      {
+        "title": "U.S. Approves $11 Billion in Arms Sales to Taiwan, Angering Beijing",
+        "url": "https://www.wsj.com/world/china/u-s-approves-11-billion-in-arms-sales-to-taiwan-angering-beijing-e523a54b?gaa_at=eafs&gaa_n=AWEtsqd1wPuYqQ2kSdwe_FM2xqSX8OP-ioZKRRwxBtIUtNmy8gB0oxs8mc0z&gaa_ts=6943d42d&gaa_sig=0G8_00tmf603NroPYLH4KlltvEx-Hlf2_YPXT2vjKefe3kxgG3Vm3lmx0FKvboEvi1DPXbAMWPlWlzq7pijxAQ%3D%3D",
+        "entities": [
+          "Taiwan",
+          "Pentagon",
+          "U.S. Arms Sales",
+          "Beijing",
+          "Defense Security Cooperation Agency"
+        ],
+        "score": 58.48,
+        "sentiment": -0.2
+      },
+      {
+        "title": "India accelerates free trade agreements to counter US tariffs and expand exports - AP News",
+        "url": "https://apnews.com/article/india-trade-oman-eu-chile-new-zealand-296e663446bbdac5aef49935e91e4287",
+        "entities": [
+          "Trade Relations",
+          "Free Trade Agreements",
+          "US Tariffs",
+          "Exports",
+          "India"
+        ],
+        "score": 42.2,
+        "sentiment": 0
+      },
+      {
+        "title": "Trump Live Updates: President Uses Address to Defend Record on Economy - The New York Times",
+        "url": "https://www.nytimes.com/live/2025/12/18/us/trump-news",
+        "entities": [
+          "China",
+          "Arms Sales",
+          "Taiwan",
+          "Pentagon",
+          "Defense Security Cooperation Agency"
+        ],
+        "score": 52.2,
+        "sentiment": -0.4
+      },
+      {
+        "title": "CNBC's Inside India newsletter: Why the India-U.S. trade deal remains elusive - CNBC",
+        "url": "https://www.cnbc.com/2025/12/18/cnbcs-inside-india-newsletter-why-the-india-us-trade-deal-remains-elusive.html",
+        "entities": [
+          "Machinery",
+          "United States",
+          "Tariffs",
+          "Pharmaceuticals",
+          "India"
+        ],
+        "score": 66.4,
+        "sentiment": -0.6
+      },
+      {
+        "title": "China Is Feeling Strong and Senses an American Retreat - The New York Times",
+        "url": "https://www.nytimes.com/2025/12/18/business/trump-xi-us-china.html",
+        "entities": [
+          "China",
+          "Economic Competition",
+          "Trump Administration",
+          "American Retreat",
+          "U.S. National Security"
+        ],
+        "score": 47.2,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Rare earth element technologies developed at Mines licensed by Australian mining company - Mines Newsroom",
+        "url": "https://www.minesnewsroom.com/news/rare-earth-element-technologies-developed-mines-licensed-australian-mining-company",
+        "entities": [
+          "Kroll Institute for Extractive Metallurgy",
+          "rare earth elements",
+          "Colorado School of Mines",
+          "light rare earth elements",
+          "Bayan Mining and Minerals Limited"
+        ],
+        "score": 70.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Best Rare Earth Stocks to Buy Now December 2025 - Zacks Investment Research",
+        "url": "https://www.zacks.com/featured-articles/321/best-rare-earth-stocks",
+        "entities": [
+          "Defense Applications",
+          "Wind Turbines",
+          "Clean Energy",
+          "Electric Vehicles",
+          "Rare Earth Stocks"
+        ],
+        "score": 60.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "US confirms major rare earth and critical metals discovery in Utah - Interesting Engineering",
+        "url": "https://interestingengineering.com/energy/us-rare-earth-deposit-utah-desert",
+        "entities": [
+          "Defense Sector",
+          "Lithium",
+          "AI Stocks",
+          "Electric Vehicles",
+          "Ionic Mineral Technologies"
+        ],
+        "score": 70.8,
+        "sentiment": 0.65
+      },
+      {
+        "title": "Neotech de-risks Hecla-Kilmer’s rare earth system - Mining.com.au",
+        "url": "https://mining.com.au/neotech-de-risks-hecla-kilmers-rare-earth-system/",
+        "entities": [
+          "Rare Earth Elements",
+          "Apatite",
+          "Hecla-Kilmer",
+          "SGS Lakefield",
+          "Neotech Metals"
+        ],
+        "score": 68,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Volta Metals reports rare earth drill results at Springer deposit in Canada - Mining Technology",
+        "url": "https://www.mining-technology.com/news/volta-metals-rare-earth-drill-results/",
+        "entities": [
+          "dysprosium",
+          "Springer deposit",
+          "heavy rare earths",
+          "Volta Metals",
+          "rare earth elements",
+          "Canada",
+          "terbium"
+        ],
+        "score": 65.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Rare Earth Permanent Magnets Manufacturing Incentive Scheme Announced by Ministry of Heavy Industries to Boost - CNBC TV18",
+        "url": "https://www.cnbctv18.com/economy/centre-notifies-rs-7280-crore-scheme-to-boost-domestic-rare-earth-magnets-production-ws-l-19793166.htm",
+        "entities": [
+          "Wind Turbines",
+          "Rare Earth Magnets",
+          "NdFeB",
+          "Electric Vehicles",
+          "Ministry of Heavy Industries"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Power Ministry lists 16 imported items to achieve self-sufficiency - BusinessLine",
+        "url": "https://www.thehindubusinessline.com/companies/power-ministry-lists-16-imported-items-to-achieve-self-sufficiency/article70395093.ece",
+        "entities": [
+          "HVDC Valve Assemblies",
+          "Subsea Cables",
+          "Ethernet Switches",
+          "Permanent Magnets",
+          "Power Ministry"
+        ],
+        "score": 65.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Govt. Approves INR 7,280 Crore Scheme to Promote Sintered Rare Earth Magnet Manufacturing - Energetica India Magazine",
+        "url": "https://energetica-india.net/news/govt-approves-inr-7280-crore-scheme-to-promote-sintered-rare-earth-magnet-manufacturing",
+        "entities": [
+          "Rare Earth Magnets",
+          "NdFeB",
+          "IREL",
+          "Sintered Rare Earth Permanent Magnets",
+          "India"
+        ],
+        "score": 70.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Trump tariffs live updates: Trump has said tariff revenues could pay for at least 9 different things; Democrats say tariffs have cost each American household $1,200 - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/live/trump-tariffs-live-updates-us-indonesia-deal-at-risk-of-collapse-trump-floats-some-additional-carveouts-231853344.html",
+        "entities": [
+          "China",
+          "Supreme Court",
+          "US Farmers",
+          "Tariffs",
+          "Trade Deficit"
+        ],
+        "score": 60.6,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Axios Live: U.S. race against China is \"urgent\" for key minerals and technology - Axios",
+        "url": "https://www.axios.com/2025/12/16/axios-live-us-race-against-china-is-urgent-for-key-minerals-and-technology",
+        "entities": [
+          "Manufacturing Materials",
+          "China",
+          "Nvidia",
+          "Key Minerals",
+          "U.S. Air Force",
+          "Artificial Intelligence",
+          "National Energy Dominance Council"
+        ],
+        "score": 76.4,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Trump’s trade policies drive decline in Asian imports of U.S. energy - Oil & Gas 360",
+        "url": "https://www.oilandgas360.com/trumps-trade-policies-drive-decline-in-asian-imports-of-u-s-energy/",
+        "entities": [
+          "China",
+          "Crude Oil",
+          "Trump Administration",
+          "Japan",
+          "LNG",
+          "South Korea",
+          "India"
+        ],
+        "score": 55.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Trump Security Strategy News Today, Dec 12: Economic Focus on China Shift - Meyka",
+        "url": "https://meyka.com/blog/trump-security-strategy-news-today-dec-12-economic-focus-on-china-shift-1212/",
+        "entities": [
+          "China",
+          "Trade Policies",
+          "Canada",
+          "Economic Rivalry",
+          "US"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      }
+    ],
+    "node_count": 32
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Short Tesla, Buy Rivian Stock? - Forbes",
+        "url": "https://www.forbes.com/sites/greatspeculations/2025/12/18/short-tesla-buy-rivian-stock/",
+        "entities": [
+          "Electric Vehicles",
+          "Rivian",
+          "Market Capitalization",
+          "AI Market"
+        ],
+        "score": 71.4,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Rivian CEO on self-driving, designing AI chips, and why Tesla needs more competition - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/rivian-ceo-on-self-driving-designing-ai-chips-and-why-tesla-needs-more-competition-130229526.html",
+        "entities": [
+          "Autonomous Vehicles",
+          "EV Market",
+          "AI Chips",
+          "Rivian"
+        ],
+        "score": 55.6,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Rivian rolls out new ‘Universal Hands-Free’ driving feature - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/18/rivian-rolls-out-new-universal-hands-free-driving-feature/",
+        "entities": [
+          "Rivian",
+          "Autonomous Driving",
+          "Transportation Technology",
+          "Ford"
+        ],
+        "score": 63,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Rivian Is Now A Tech Company That Also Makes Cars - Forbes",
+        "url": "https://www.forbes.com/sites/scottyreiss/2025/12/18/rivian-is-now-a-tech-company-that-also-makes-cars/",
+        "entities": [
+          "Rivian",
+          "California",
+          "Self-Driving Technology",
+          "Consumer Protection"
+        ],
+        "score": 71.4,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Massachusetts Battery Start-Up to List on Stock Exchange - The New York Times",
+        "url": "https://www.nytimes.com/2025/12/18/business/energy-environment/factorial-electric-vehicle-battery-spac.html",
+        "entities": [
+          "Mercedes-Benz",
+          "Battery Technology",
+          "Electric Vehicles",
+          "Factorial Energy",
+          "Stock Exchange"
+        ],
+        "score": 67.2,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Europe Begins to Tiptoe Away From Key Climate Policies - The New York Times",
+        "url": "https://www.nytimes.com/2025/12/18/climate/europe-climate-policies.html",
+        "entities": [
+          "Deforestation",
+          "Climate Goals",
+          "Emissions Regulations",
+          "Automakers"
+        ],
+        "score": 72.2,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Tesla - Fox News",
+        "url": "https://www.foxnews.com/category/auto/make/tesla?page=46",
+        "entities": [
+          "Cybertruck",
+          "Electric Vehicles",
+          "Elon Musk",
+          "Ford"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla shares jump as Musk confirms driverless robotaxi testing - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/tesla-shares-jump-musk-confirms-driverless-robotaxi-testing-2025-12-15/",
+        "entities": [
+          "Robotaxis",
+          "Self-Driving Technology",
+          "Electric Vehicles",
+          "TSLA"
+        ],
+        "score": 78.48,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Tesla (TSLA) Stock: The Self-Driving Update That Changes Everything for Investors - CoinCentral",
+        "url": "https://coincentral.com/tesla-tsla-stock-the-self-driving-update-that-changes-everything-for-investors/",
+        "entities": [
+          "Full Self-Driving (FSD)",
+          "Model Y",
+          "NHTSA",
+          "Robotaxi Service",
+          "Autonomous Vehicles"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla Stock Forecast: TSLA Weekly Recap, Latest News, and Week-Ahead Catalysts (Updated Dec. 13, 2025)",
+        "url": "https://ts2.tech/en/tesla-stock-forecast-tsla-weekly-recap-latest-news-and-week-ahead-catalysts-updated-dec-13-2025/",
+        "entities": [
+          "Retail Sales",
+          "Model Y",
+          "Elon Musk",
+          "CPI",
+          "Derivatives"
+        ],
+        "score": 60.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Tesla's latest launch isn't a car — it's a $350 pickleball paddle — and it's not even electric - Business Insider",
+        "url": "https://www.businessinsider.com/tesla-latest-launch-expensive-lifestyle-product-pickleball-paddle-2025-12",
+        "entities": [
+          "Selkirk",
+          "Lifestyle Products",
+          "Elon Musk",
+          "Pickleball"
+        ],
+        "score": 45.28,
+        "sentiment": 0.15
+      },
+      {
+        "title": "Cybertruck owner attempts to trade vehicle after facing relentless harassment: 'My wife and kids don't deserve this'",
+        "url": "https://www.yahoo.com/news/articles/cybertruck-owner-attempts-trade-vehicle-230000464.html",
+        "entities": [
+          "Social Media",
+          "Vandalism",
+          "Harassment",
+          "Cybertruck"
+        ],
+        "score": 40.8,
+        "sentiment": -0.6
+      },
+      {
+        "title": "Is The Tesla Cybertruck Actually Reliable? Here's What Consumer Reports Says - Currently.com",
+        "url": "https://currently.att.yahoo.com/att/tesla-cybertruck-actually-reliable-heres-111700779.html",
+        "entities": [
+          "Automotive Industry",
+          "Consumer Reports",
+          "Electric Vehicles",
+          "Cybertruck"
+        ],
+        "score": 55.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Which is better? New Tesla Model Y vs Skoda Enyaq - Yahoo! Autos",
+        "url": "https://autos.yahoo.com/new-vehicles-and-reviews/articles/better-tesla-model-y-vs-010000291.html",
+        "entities": [
+          "Automotive Market",
+          "Electric Vehicles",
+          "Skoda Enyaq",
+          "Tesla Model Y",
+          "Family Cars"
+        ],
+        "score": 55.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Driverless Tesla spotted on Austin streets, drawing fresh focus on robotaxis - Ynetnews",
+        "url": "https://www.ynetnews.com/tech-and-digital/article/bjpddc3mbg",
+        "entities": [
+          "Austin",
+          "Bank of America",
+          "Robotaxis",
+          "Autonomous Vehicles"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla’s 8-Year Model Sales Trends in 11 European Countries - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/14/teslas-8-year-model-sales-trends-in-11-european-countries/",
+        "entities": [
+          "European Market",
+          "Sales Trends",
+          "Model Y",
+          "Model 3"
+        ],
+        "score": 55.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "2026 Breakthrough Awards: We've Tested Hundreds Of EVs. These Are The Best - InsideEVs",
+        "url": "https://insideevs.com/features/782016/breakthrough-ev-finalists/",
+        "entities": [
+          "SUVs",
+          "Electric Vehicles",
+          "Charging Infrastructure",
+          "Hyundai Ioniq 5"
+        ],
+        "score": 55.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "What Investors Continue To Get Wrong About Tesla - Forbes",
+        "url": "https://www.forbes.com/sites/jonmarkman/2025/12/16/what-investors-continue-to-get-wrong-about-tesla/",
+        "entities": [
+          "Austin",
+          "Semi truck",
+          "Transportation revolution",
+          "Model Y",
+          "Robotaxi",
+          "AI-powered services"
+        ],
+        "score": 71.4,
+        "sentiment": 0.3
+      }
+    ],
+    "node_count": 18
+  }
+]

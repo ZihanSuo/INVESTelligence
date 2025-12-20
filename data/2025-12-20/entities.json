@@ -1,0 +1,553 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "Gabon to Audit Mining Deals as Reforms Start Amid IMF Talks - Bloomberg.com",
+        "url": "https://www.bloomberg.com/news/articles/2025-12-19/gabon-to-audit-mining-deals-as-reforms-start-amid-imf-talks",
+        "entities": [
+          "Mining Contracts",
+          "International Monetary Fund",
+          "Audit",
+          "Governance",
+          "Gabon"
+        ],
+        "score": 63.48,
+        "sentiment": 0
+      },
+      {
+        "title": "American Bitcoin buys additional 261 Bitcoin… holds 5044 BTC in total - bloomingbit",
+        "url": "https://bloomingbit.io/en/feed/news/102479",
+        "entities": [
+          "Bitcoin Holdings",
+          "Trump Family",
+          "Bitcoin 100",
+          "American Bitcoin Corporation"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Hyperscale Data Bitcoin Treasury at 97.5% of Market Capitalization at Approximately $75.5 Million - Financial Times",
+        "url": "https://markets.ft.com/data/announce/detail?dockey=600-202512160600PR_NEWS_USPRX____SF48387-1",
+        "entities": [
+          "Artificial Intelligence",
+          "Market Capitalization",
+          "Hyperscale Data",
+          "Digital Asset Treasury"
+        ],
+        "score": 63.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "From Wild West To Wall Street: Blockchain Founders Redefine Trust - Forbes",
+        "url": "https://www.forbes.com/sites/amyguttman/2025/12/15/from-wild-west-to-wall-street-blockchain-founders-redefine-trust/",
+        "entities": [
+          "Institutional Confidence",
+          "Coinbase Asset Management",
+          "Abu Dhabi Global Market",
+          "LimeChain",
+          "Blockchain Technology"
+        ],
+        "score": 61.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "DMG Blockchain: 344 BTC Mined in Fiscal Year 2025, Total Assets Reach $132 Million - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605117680",
+        "entities": [
+          "Digital Assets",
+          "Mining Operations",
+          "DMG Blockchain",
+          "Artificial Intelligence"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Medicine approval times in Europe to be cut by almost 15% - The Pharmaceutical Journal",
+        "url": "https://pharmaceutical-journal.com/article/news/medicine-approval-times-in-europe-to-be-cut-by-almost-15",
+        "entities": [
+          "Pharmaceutical Legislation",
+          "European Medicines Agency",
+          "Supply Chains",
+          "Medicines and Healthcare products Regulatory Agency",
+          "Council of the European Union"
+        ],
+        "score": 65.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "EU proposal would simplify Medical Device Regulation - MedTech Dive",
+        "url": "https://www.medtechdive.com/news/eu-proposal-simplify-mdr/808398/",
+        "entities": [
+          "AI Regulations",
+          "European Parliament",
+          "MedTech Europe",
+          "Rare Disease Treatments",
+          "Medical Device Regulation"
+        ],
+        "score": 50.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Zodia Custody Secures MiCA Licence to Unlock EU-Wide Digital Asset Services - The Fintech Times",
+        "url": "https://thefintechtimes.com/zodia-custody-secures-mica-licence-to-unlock-eu-wide-digital-asset-services/",
+        "entities": [
+          "MiCA",
+          "Digital Assets Custody",
+          "CSSF",
+          "Standard Chartered",
+          "Zodia Custody"
+        ],
+        "score": 65.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Bitcoin Mining Powerhouse: Bitdeer Mines 144.1 BTC in a Single Week - Bitget",
+        "url": "https://www.bitget.com/amp/news/detail/12560605118781",
+        "entities": [
+          "Bitcoin Sector",
+          "Bitcoin Mining",
+          "Bitdeer",
+          "Cloud Mining"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "SEC flags Bitcoin miner hosting services as subject to securities laws - TradingView — Track All Markets",
+        "url": "https://www.tradingview.com/news/cointelegraph:4956abec8094b:0-sec-flags-bitcoin-miner-hosting-services-as-subject-to-securities-laws/",
+        "entities": [
+          "SEC",
+          "Investor Funds",
+          "Cryptocurrency Mining",
+          "VBit"
+        ],
+        "score": 75.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "EverValue Coin (EVA) consolidates an economic model with growing Bitcoin backing - markets.businessinsider.com",
+        "url": "https://markets.businessinsider.com/news/stocks/evervalue-coin-eva-consolidates-an-economic-model-with-growing-bitcoin-backing-1035659749",
+        "entities": [
+          "Bitcoin mining",
+          "EverValue Coin",
+          "Smart contracts",
+          "Institutional initiatives",
+          "Arbitrum"
+        ],
+        "score": 70.28,
+        "sentiment": 0.2
+      },
+      {
+        "title": "LM Funding America Adds 35 PH/s with Energization of First Oklahoma Immersion Unit - GlobeNewswire",
+        "url": "https://www.globenewswire.com/news-release/2025/12/18/3207635/0/en/LM-Funding-America-Adds-35-PH-s-with-Energization-of-First-Oklahoma-Immersion-Unit.html",
+        "entities": [
+          "Bitcoin Mining",
+          "Foghashing",
+          "Immersion Cooling",
+          "LM Funding",
+          "Oklahoma",
+          "Power Supplier"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      }
+    ],
+    "node_count": 12
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "Copper price nears $12,000 as base metals stage broad rally - Mining.com",
+        "url": "https://www.mining.com/web/copper-nears-12000-a-ton-as-base-metals-stage-broad-rally/",
+        "entities": [
+          "Nickel",
+          "BHP",
+          "Aluminum",
+          "Base Metals",
+          "Copper"
+        ],
+        "score": 48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Govt. Approves INR 7,280 Crore Scheme to Promote Sintered Rare Earth Magnet Manufacturing - Energetica India Magazine",
+        "url": "https://energetica-india.net/news/govt-approves-inr-7280-crore-scheme-to-promote-sintered-rare-earth-magnet-manufacturing",
+        "entities": [
+          "Rare Earth Magnets",
+          "NdFeB",
+          "IREL",
+          "Domestic Manufacturing",
+          "India's Industrial Supply Chain"
+        ],
+        "score": 70.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Rare Earth Permanent Magnets Manufacturing Incentive Scheme Announced by Ministry of Heavy Industries to Boost - CNBC TV18",
+        "url": "https://www.cnbctv18.com/economy/centre-notifies-rs-7280-crore-scheme-to-boost-domestic-rare-earth-magnets-production-ws-l-19793166.htm",
+        "entities": [
+          "Wind Turbines",
+          "Rare Earth Magnets",
+          "NdFeB Magnets",
+          "IREL",
+          "Electric Vehicles"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Centre notifies rare earth magnet scheme - financialexpress.com",
+        "url": "https://www.financialexpress.com/business/industry-centre-notifies-rare-earth-magnet-schemenbsp-4079137/",
+        "entities": [
+          "Renewable Energy",
+          "Neodymium-Iron-Boron",
+          "Electric Vehicles",
+          "Aerospace",
+          "Manufacturing Incentives"
+        ],
+        "score": 75.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Best Rare Earth Stocks to Buy Now December 2025 - Zacks Investment Research",
+        "url": "https://www.zacks.com/featured-articles/321/best-rare-earth-stocks",
+        "entities": [
+          "Defense Applications",
+          "Wind Turbines",
+          "Electric Vehicles",
+          "Clean-Tech Transition",
+          "Rare Earth Stocks"
+        ],
+        "score": 65.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Rare earth element technologies developed at Mines licensed by Australian mining company - Mines Newsroom",
+        "url": "https://www.minesnewsroom.com/news/rare-earth-element-technologies-developed-mines-licensed-australian-mining-company",
+        "entities": [
+          "Kroll Institute for Extractive Metallurgy",
+          "Rare Earth Elements",
+          "Colorado School of Mines",
+          "Light Rare Earth Elements",
+          "Bayan Mining and Minerals Limited"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Neotech de-risks Hecla-Kilmer’s rare earth system - Mining.com.au",
+        "url": "https://mining.com.au/neotech-de-risks-hecla-kilmers-rare-earth-system/",
+        "entities": [
+          "rare earth elements",
+          "apatite",
+          "Hecla-Kilmer Project",
+          "SGS Lakefield",
+          "Neotech Metals"
+        ],
+        "score": 68,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Nigeria’s Rare Earth Breakthrough: Will Refinery Anchor a New African Supply Chain? - Rare Earth Exchanges",
+        "url": "https://rareearthexchanges.com/news/nigerias-rare-earth-breakthrough-will-refinery-anchor-a-new-african-supply-chain/",
+        "entities": [
+          "Critical Minerals",
+          "Rare Earth Processing Plant",
+          "Nigeria",
+          "Nasarawa State",
+          "Hasetins Commodities"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "ABx confirms rare earth heap leach potential - Mining.com.au",
+        "url": "https://mining.com.au/abx-confirms-rare-earth-heap-leach-potential/",
+        "entities": [
+          "Australian Nuclear Science and Technology Organisation",
+          "dysprosium",
+          "clean energy transition",
+          "rare earths",
+          "terbium",
+          "ABx Group"
+        ],
+        "score": 68,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Lynas Rare Earths (ASX:LYC) Stock: Latest News, Analyst Forecasts, and Key Catalysts as of 20 December 2025 - ts2.tech",
+        "url": "https://ts2.tech/en/lynas-rare-earths-asxlyc-stock-latest-news-analyst-forecasts-and-key-catalysts-as-of-20-december-2025/",
+        "entities": [
+          "Lynas Rare Earths",
+          "China",
+          "FY26 rebound",
+          "heavy rare earth",
+          "Kalgoorlie Rare Earths Processing Facility"
+        ],
+        "score": 65.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "How Japan built a rare earth supply chain without China - The Straits Times",
+        "url": "https://www.straitstimes.com/business/how-japan-built-a-rare-earth-supply-chain-without-china",
+        "entities": [
+          "Supply Chain",
+          "Lynas",
+          "China",
+          "International Cooperation",
+          "Japan"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "U.S.-Australia Mining Deal: One Small Step Toward Weakening China’s Chokehold on Critical Minerals - Supply Chain Brain",
+        "url": "https://www.supplychainbrain.com/articles/42989-us-australia-mining-deal-one-small-step-toward-weakening-chinas-chokehold-on-critical-minerals",
+        "entities": [
+          "China",
+          "Lithium",
+          "U.S.",
+          "Critical Minerals",
+          "Australia",
+          "Rare Earths",
+          "Tungsten"
+        ],
+        "score": 70.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Power Ministry lists 16 imported items to achieve self-sufficiency - BusinessLine",
+        "url": "https://www.thehindubusinessline.com/companies/power-ministry-lists-16-imported-items-to-achieve-self-sufficiency/article70395093.ece",
+        "entities": [
+          "aluminium zinc coated steel sheets",
+          "HVDC valve assemblies",
+          "subsea cables",
+          "manufacturing roadmap",
+          "permanent magnets",
+          "Power Ministry"
+        ],
+        "score": 60.8,
+        "sentiment": 0.1
+      }
+    ],
+    "node_count": 13
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "Tesla Wins Final Court Fight Over Elon Musk’s Pay Package - The Wall Street Journal",
+        "url": "https://www.wsj.com/business/autos/tesla-wins-final-court-fight-over-elon-musks-pay-package-7292f747?gaa_at=eafs&gaa_n=AWEtsqeFR46YQA2os8-q9eCfZtlcS0-ZW7Y5dgIg0kp9zSiJtx0RLwtFrEjM&gaa_ts=6945cd03&gaa_sig=GUu88O2DwYykc8zpt3_gCJMMTalKgHwER9OrlinMuT8_AZbySrQvi0MQEZbdfyG4u_LIZTsyqrSByfkgnkQWyQ%3D%3D",
+        "entities": [
+          "Delaware Supreme Court",
+          "Automotive Sector",
+          "Technology Sector",
+          "Elon Musk"
+        ],
+        "score": 73.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "I worked at Tesla and Waymo. Here are the leadership lessons I bring to my startup. - Business Insider",
+        "url": "https://www.businessinsider.com/former-tesla-waymo-employee-leadership-lessons-from-elon-musk-2025-12",
+        "entities": [
+          "AI Startups",
+          "Waymo",
+          "Leadership",
+          "Procurement"
+        ],
+        "score": 40.28,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Musk wins appeal that restores 2018 Tesla pay deal now worth about $155 billion - Reuters",
+        "url": "https://www.reuters.com/sustainability/boards-policy-regulation/musk-wins-appeal-restores-2018-tesla-pay-deal-worth-56-billion-2025-12-19/",
+        "entities": [
+          "Robotaxi Network",
+          "SpaceX",
+          "Elon Musk",
+          "xAI"
+        ],
+        "score": 83.48,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Elon Musk’s $56B Tesla pay package restored by Delaware Supreme Court - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/19/elon-musks-56b-tesla-pay-package-restored-by-delaware-supreme-court/",
+        "entities": [
+          "Delaware Supreme Court",
+          "Corporate Governance",
+          "Elon Musk",
+          "EV Industry"
+        ],
+        "score": 83,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla shares jump as Musk confirms driverless robotaxi testing - Reuters",
+        "url": "https://www.reuters.com/business/autos-transportation/tesla-shares-jump-musk-confirms-driverless-robotaxi-testing-2025-12-15/",
+        "entities": [
+          "Robotaxis",
+          "Investor Optimism",
+          "Electric Vehicles",
+          "Self-Driving Technology"
+        ],
+        "score": 73.48,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Tesla (TSLA) Stock: The Self-Driving Update That Changes Everything for Investors - CoinCentral",
+        "url": "https://coincentral.com/tesla-tsla-stock-the-self-driving-update-that-changes-everything-for-investors/",
+        "entities": [
+          "NHTSA",
+          "Robotaxi",
+          "Model Y",
+          "FSD"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla - Fox News",
+        "url": "https://www.foxnews.com/category/auto/make/tesla?page=46",
+        "entities": [
+          "Electric Vehicles",
+          "Elon Musk",
+          "Ford",
+          "Cybertruck"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Stock News and Forecasts for Dec. 14, 2025: Robotaxi Countdown, Sales Signals, and Wall Street Targets for TSLA - ts2.tech",
+        "url": "https://ts2.tech/en/tesla-stock-news-and-forecasts-for-dec-14-2025-robotaxi-countdown-sales-signals-and-wall-street-targets-for-tsla/",
+        "entities": [
+          "China",
+          "Robotaxi",
+          "Stock Valuation",
+          "Morgan Stanley",
+          "TSLA"
+        ],
+        "score": 70.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Which is better? New Tesla Model Y vs Skoda Enyaq - Yahoo! Autos",
+        "url": "https://autos.yahoo.com/new-vehicles-and-reviews/articles/better-tesla-model-y-vs-010000291.html",
+        "entities": [
+          "European Market",
+          "Electric Vehicles",
+          "Tesla Model Y",
+          "Skoda Enyaq"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Driverless Tesla spotted on Austin streets, drawing fresh focus on robotaxis - Ynetnews",
+        "url": "https://www.ynetnews.com/tech-and-digital/article/bjpddc3mbg",
+        "entities": [
+          "Autonomous Vehicles",
+          "Wall Street",
+          "Ride-Hailing Market",
+          "Bank of America"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Tesla’s 8-Year Model Sales Trends in 11 European Countries - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/14/teslas-8-year-model-sales-trends-in-11-european-countries/",
+        "entities": [
+          "COVID-19",
+          "Europe",
+          "Model Y",
+          "Model 3"
+        ],
+        "score": 55.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "2026 Breakthrough Awards: We've Tested Hundreds Of EVs. These Are The Best - InsideEVs",
+        "url": "https://insideevs.com/features/782016/breakthrough-ev-finalists/",
+        "entities": [
+          "Electric Vehicles",
+          "North American Charging System",
+          "Hyundai Ioniq 5",
+          "Optiq"
+        ],
+        "score": 60.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "What Investors Continue To Get Wrong About Tesla - Forbes",
+        "url": "https://www.forbes.com/sites/jonmarkman/2025/12/16/what-investors-continue-to-get-wrong-about-tesla/",
+        "entities": [
+          "U.S. Trucking Industry",
+          "Semi Truck",
+          "AI-powered Services",
+          "Model Y"
+        ],
+        "score": 71.4,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Ford recalls nearly 273,000 vehicles over rollaway risk - CBS News",
+        "url": "https://www.cbsnews.com/news/ford-recall-vehicles-faulty-parking-function-rollaway/",
+        "entities": [
+          "Ford",
+          "Mustang Mach-E",
+          "Maverick",
+          "National Highway Traffic Safety Administration",
+          "F-150 Lightning"
+        ],
+        "score": 45.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Volkswagen reveals self-driving rival to Tesla Cybercab - Torquecafe.com",
+        "url": "https://torquecafe.com/volkswagen-news-gen-urban-tesla-cybercab-rival/",
+        "entities": [
+          "Autonomous Vehicles",
+          "Robotaxis",
+          "Volkswagen",
+          "Self-Driving Technology"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "China Approves First Level‑3 Self‑Driving Cars - StratNews Global",
+        "url": "https://stratnewsglobal.com/china/china-approves-first-level-3-self-driving-cars/",
+        "entities": [
+          "China",
+          "WeRide",
+          "Autonomous Driving",
+          "Level-3 Technology",
+          "Pony AI"
+        ],
+        "score": 65.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Driving in Australia will never be the same - NT News",
+        "url": "https://www.ntnews.com.au/motoring/on-the-road/driving-in-australia-will-never-be-the-same/news-story/07a652804be90e46a3ac0034c1fd4bb4",
+        "entities": [
+          "China",
+          "Self-Driving Technology",
+          "Automotive Industry",
+          "Australia",
+          "Electric Vehicles"
+        ],
+        "score": 60.8,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 17
+  }
+]

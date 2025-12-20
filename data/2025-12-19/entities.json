@@ -1,0 +1,633 @@
+[
+  {
+    "keyword": "bitcoin",
+    "graph_data": [
+      {
+        "title": "Strategy and bitcoin-buying firms face wider exclusion from stock indexes - Reuters",
+        "url": "https://www.reuters.com/business/strategy-bitcoin-buying-firms-face-wider-exclusion-stock-indexes-2025-12-19/",
+        "entities": [
+          "Coinbase",
+          "Crypto Industry",
+          "EU Council",
+          "MicroStrategy"
+        ],
+        "score": 58.48,
+        "sentiment": -0.3
+      },
+      {
+        "title": "Bitcoin Is Doing Something Last Seen in 2014. Wall Street Analysts Say This Will Happen in 2026. - Yahoo Finance",
+        "url": "https://finance.yahoo.com/news/bitcoin-doing-something-last-seen-091500313.html",
+        "entities": [
+          "Spot Bitcoin ETFs",
+          "Standard Chartered",
+          "Institutional Investors",
+          "Bernstein"
+        ],
+        "score": 65.6,
+        "sentiment": 0.3
+      },
+      {
+        "title": "American Bitcoin buys additional 261 Bitcoin… holds 5044 BTC in total - bloomingbit",
+        "url": "https://bloomingbit.io/en/feed/news/102479",
+        "entities": [
+          "Bitcoin Holdings",
+          "Bitcoin 100",
+          "President Trump's Family",
+          "American Bitcoin Corporation"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "American Bitcoin's Bitcoin reserves have increased by approximately 623 BTC in the past 7 days, bringing its current holdings to 4941 BTC. - bitget.com",
+        "url": "https://www.bitget.com/amp/news/detail/12560605109872",
+        "entities": [
+          "blockchain",
+          "American Bitcoin",
+          "crypto mining",
+          "Trump family"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Hyperscale Data Bitcoin Treasury at 97.5% of Market Capitalization at Approximately $75.5 Million - Financial Times",
+        "url": "https://markets.ft.com/data/announce/detail?dockey=600-202512160600PR_NEWS_USPRX____SF48387-1",
+        "entities": [
+          "AI Stocks",
+          "Market Capitalization",
+          "Hyperscale Data",
+          "Digital Asset Treasury"
+        ],
+        "score": 63.48,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 5
+  },
+  {
+    "keyword": "rare earth",
+    "graph_data": [
+      {
+        "title": "US raises Graphite One loan to $2.1B - Mining.com",
+        "url": "https://www.mining.com/us-raises-graphite-one-loan-to-2-1b/",
+        "entities": [
+          "Critical Minerals",
+          "Battery Metals",
+          "USA",
+          "Canada",
+          "Graphite One"
+        ],
+        "score": 48,
+        "sentiment": 0
+      },
+      {
+        "title": "Is China Saving The Planet? Lessons From 2025’s Cleantech Race - Forbes",
+        "url": "https://www.forbes.com/sites/elenabou/2025/12/19/is-china-saving-the-planet-lessons-from-2025s-cleantech-race/",
+        "entities": [
+          "China",
+          "Solar Panels",
+          "Batteries",
+          "Cleantech Exports",
+          "Electric Vehicles"
+        ],
+        "score": 66.4,
+        "sentiment": 0.45
+      },
+      {
+        "title": "Nike’s China conundrum deepens as turnaround stagnates - Reuters",
+        "url": "https://www.reuters.com/business/retail-consumer/nikes-china-conundrum-deepens-turnaround-stagnates-2025-12-19/",
+        "entities": [
+          "Retail Sector",
+          "Nike",
+          "Li-Ning",
+          "Digital Sales",
+          "Anta"
+        ],
+        "score": 63.48,
+        "sentiment": -0.5
+      },
+      {
+        "title": "Gabon to audit mining deals as reforms start amid IMF talks - Mining.com",
+        "url": "https://www.mining.com/web/gabon-to-audit-mining-deals-as-reforms-start-amid-imf-talks/",
+        "entities": [
+          "Huazhou",
+          "Apollo Minerals",
+          "Zinc",
+          "Eramet",
+          "Iron Ore",
+          "Fortescue",
+          "Manganese"
+        ],
+        "score": 63,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Erdene sees Mongolia gold mine anchoring future district - Mining.com",
+        "url": "https://www.mining.com/erdene-sees-mongolia-gold-mine-anchoring-future-district/",
+        "entities": [
+          "US Geological Survey",
+          "Gold",
+          "Mongolia Gold Mine",
+          "Graphite",
+          "Copper"
+        ],
+        "score": 43,
+        "sentiment": 0.1
+      },
+      {
+        "title": "ioneer expects partner search to conclude in H1 2026 - Mining.com",
+        "url": "https://www.mining.com/ioneer-expects-partner-search-to-conclude-in-h1-2026/",
+        "entities": [
+          "Boric Acid",
+          "Gold",
+          "Lithium",
+          "Copper"
+        ],
+        "score": 58,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Goldman flags record gold, weak oil in 2026 commodity picks - Mining.com",
+        "url": "https://www.mining.com/web/goldman-flags-record-gold-weak-oil-in-2026-commodity-picks/",
+        "entities": [
+          "Oil",
+          "Natural Gas",
+          "Iron Ore",
+          "Gold",
+          "Copper"
+        ],
+        "score": 43,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Savannah nears full ownership of Barroso lithium lease - Mining.com",
+        "url": "https://www.mining.com/savannah-nears-full-ownership-of-barroso-lithium-lease/",
+        "entities": [
+          "Lithium",
+          "Battery Metals",
+          "Electric Vehicles",
+          "European Supply Chains",
+          "Savannah"
+        ],
+        "score": 78,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Press Release - Mining.com",
+        "url": "https://www.mining.com/press-release?id=69450ba718e86fe8dc04441d",
+        "entities": [
+          "Vanguard Mining Corp.",
+          "SGS Canada Inc.",
+          "Uranium",
+          "Precious Metals",
+          "Brussels Creek Project"
+        ],
+        "score": 53,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Govt. Approves INR 7,280 Crore Scheme to Promote Sintered Rare Earth Magnet Manufacturing - Energetica India Magazine",
+        "url": "https://energetica-india.net/news/govt-approves-inr-7280-crore-scheme-to-promote-sintered-rare-earth-magnet-manufacturing",
+        "entities": [
+          "Rare Earth Magnets",
+          "Manufacturing Ecosystem",
+          "IREL",
+          "Neodymium-Iron-Boron",
+          "India"
+        ],
+        "score": 70.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Rare Earth Permanent Magnets Manufacturing Incentive Scheme Announced by Ministry of Heavy Industries to Boost - CNBC TV18",
+        "url": "https://www.cnbctv18.com/economy/centre-notifies-rs-7280-crore-scheme-to-boost-domestic-rare-earth-magnets-production-ws-l-19793166.htm",
+        "entities": [
+          "Wind Turbines",
+          "Rare Earth Magnets",
+          "Neodymium-Iron-Boron (NdFeB)",
+          "IREL",
+          "Electric Vehicles"
+        ],
+        "score": 70.8,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Centre notifies rare earth magnet scheme - financialexpress.com",
+        "url": "https://www.financialexpress.com/business/industry-centre-notifies-rare-earth-magnet-schemenbsp-4079137/",
+        "entities": [
+          "Renewable Energy",
+          "Neodymium-Iron-Boron",
+          "Electric Vehicles",
+          "Aerospace",
+          "Electronics"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Best Rare Earth Stocks to Buy Now December 2025 - Zacks Investment Research",
+        "url": "https://www.zacks.com/featured-articles/321/best-rare-earth-stocks",
+        "entities": [
+          "Defense Applications",
+          "Wind Turbines",
+          "Zacks Rank",
+          "Clean Energy",
+          "Electric Vehicles",
+          "Rare Earth Stocks"
+        ],
+        "score": 60.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Rare earth element technologies developed at Mines licensed by Australian mining company - Mines Newsroom",
+        "url": "https://www.minesnewsroom.com/news/rare-earth-element-technologies-developed-mines-licensed-australian-mining-company",
+        "entities": [
+          "Kroll Institute for Extractive Metallurgy",
+          "Rare Earth Elements",
+          "Bayan Mining and Minerals",
+          "Rare Earth Processing",
+          "Light Rare Earth Elements"
+        ],
+        "score": 65.8,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Why China’s Export Surge Won’t Last - The National Interest",
+        "url": "https://nationalinterest.org/feature/why-chinas-export-surge-wont-last",
+        "entities": [
+          "China",
+          "Exports",
+          "Tariffs",
+          "ASEAN Markets",
+          "India"
+        ],
+        "score": 55.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Nvidia Stock (NVDA) News Today: China H200 Export Deal, Blackwell/Rubin Outlook, and 2026 Price Targets (Dec. 14, 2025) - ts2.tech",
+        "url": "https://ts2.tech/en/nvidia-stock-nvda-news-today-china-h200-export-deal-blackwell-rubin-outlook-and-2026-price-targets-dec-14-2025/",
+        "entities": [
+          "Blackwell",
+          "China",
+          "Rubin",
+          "AI Stocks",
+          "H200",
+          "Nvidia",
+          "U.S. Government"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "China to boost exports, imports in 2026 to pursue 'sustainable' trade, official says - TradingView",
+        "url": "https://www.tradingview.com/news/reuters.com,2025:newsml_P8N3WU04G:0-china-to-boost-exports-imports-in-2026-to-pursue-sustainable-trade-official-says/",
+        "entities": [
+          "China",
+          "International Monetary Fund",
+          "Sustainable Trade",
+          "Imports",
+          "Trade Surplus",
+          "Exports"
+        ],
+        "score": 45.8,
+        "sentiment": -0.1
+      },
+      {
+        "title": "China puts anti-dumping tariff of up to 18.9% on imports of pork from the EU - Greenwich Time",
+        "url": "https://www.greenwichtime.com/business/article/china-puts-anti-dumping-tariff-of-up-to-18-9-on-imports-of-pork-from-the-eu-21245262.php",
+        "entities": [
+          "China's Commerce Ministry",
+          "European Union",
+          "Anti-Dumping Tariff",
+          "Pork Imports",
+          "Electric Vehicles"
+        ],
+        "score": 56.4,
+        "sentiment": -0.1
+      },
+      {
+        "title": "ABx confirms rare earth heap leach potential - Mining.com.au",
+        "url": "https://mining.com.au/abx-confirms-rare-earth-heap-leach-potential/",
+        "entities": [
+          "Australian Nuclear Science and Technology Organisation",
+          "Dysprosium",
+          "Rare Earths",
+          "Terbium",
+          "ABx Group"
+        ],
+        "score": 73,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Neotech de-risks Hecla-Kilmer’s rare earth system - Mining.com.au",
+        "url": "https://mining.com.au/neotech-de-risks-hecla-kilmers-rare-earth-system/",
+        "entities": [
+          "Rare Earth Elements",
+          "Apatite",
+          "Hecla-Kilmer",
+          "SGS Lakefield",
+          "Neotech Metals"
+        ],
+        "score": 68,
+        "sentiment": 0.25
+      },
+      {
+        "title": "Gadolyn Expands Advisory Board to Accelerate U.S. Manufacturing of Rare Earth Magnet Alloys - The Manila Times",
+        "url": "https://www.manilatimes.net/2025/12/19/tmt-newswire/globenewswire/gadolyn-expands-advisory-board-to-accelerate-us-manufacturing-of-rare-earth-magnet-alloys/2246574",
+        "entities": [
+          "Rare Earth Magnets",
+          "Critical Materials",
+          "Supply Chain Resilience",
+          "Gadolyn",
+          "DARPA"
+        ],
+        "score": 65.8,
+        "sentiment": 0.5
+      },
+      {
+        "title": "Power Ministry lists 16 imported items to achieve self-sufficiency - BusinessLine",
+        "url": "https://www.thehindubusinessline.com/companies/power-ministry-lists-16-imported-items-to-achieve-self-sufficiency/article70395093.ece",
+        "entities": [
+          "Power Sector",
+          "HVDC Valve Assemblies",
+          "Subsea Cables",
+          "Ethernet Switches",
+          "Permanent Magnets",
+          "Steel Sheets"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Lynas Rare Earths (ASX: LYC) Share Price After the Bell 12 Dec 2025: What Investors Need to Know Before the Next Market Open - ts2.tech",
+        "url": "https://ts2.tech/en/lynas-rare-earths-asx-lyc-share-price-after-the-bell-12-dec-2025-what-investors-need-to-know-before-the-next-market-open/",
+        "entities": [
+          "Lynas Rare Earths",
+          "Rare Earth Sector",
+          "Wesfarmers",
+          "ASX: LYC"
+        ],
+        "score": 50.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Lynas Rare Earths (ASX:LYC) Stock Update: Weekly Slide, Fresh Headlines, Analyst Forecasts, and What to Watch Next Week (Updated 14 Dec 2025)",
+        "url": "https://ts2.tech/en/lynas-rare-earths-asxlyc-stock-update-weekly-slide-fresh-headlines-analyst-forecasts-and-what-to-watch-next-week-updated-14-dec-2025/",
+        "entities": [
+          "Lynas Rare Earths",
+          "S&P/ASX 50",
+          "NdPr prices",
+          "non-China rare earth supply",
+          "valuation pushback"
+        ],
+        "score": 65.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "How Japan built a rare earth supply chain without China - The Straits Times",
+        "url": "https://www.straitstimes.com/business/how-japan-built-a-rare-earth-supply-chain-without-china",
+        "entities": [
+          "China",
+          "Lynas",
+          "Rare Earth Supply Chain",
+          "Australian Mining",
+          "Malaysia",
+          "Japan"
+        ],
+        "score": 70.8,
+        "sentiment": 0.2
+      }
+    ],
+    "node_count": 25
+  },
+  {
+    "keyword": "tesla",
+    "graph_data": [
+      {
+        "title": "The 5 key moments that turned around Tesla's year and pushed it back to record highs - Business Insider",
+        "url": "https://www.businessinsider.com/tesla-stock-price-year-in-review-recap-share-rebound-2025-2025-12",
+        "entities": [
+          "Wall Street",
+          "New York Fed",
+          "AI Trade",
+          "DOGE"
+        ],
+        "score": 60.28,
+        "sentiment": 0.3
+      },
+      {
+        "title": "Musk wins appeal that restores 2018 Tesla pay deal now worth about $155 billion - Reuters",
+        "url": "https://www.reuters.com/sustainability/boards-policy-regulation/musk-wins-appeal-restores-2018-tesla-pay-deal-worth-56-billion-2025-12-19/",
+        "entities": [
+          "SpaceX",
+          "Robotaxi Network",
+          "Artificial Intelligence",
+          "Elon Musk",
+          "Delaware Supreme Court"
+        ],
+        "score": 78.48,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Wins Final Court Fight Over Elon Musk’s Pay Package - The Wall Street Journal",
+        "url": "https://www.wsj.com/business/autos/tesla-wins-final-court-fight-over-elon-musks-pay-package-7292f747?gaa_at=eafs&gaa_n=AWEtsqeFR46YQA2os8-q9eCfZtlcS0-ZW7Y5dgIg0kp9zSiJtx0RLwtFrEjM&gaa_ts=6945cd03&gaa_sig=GUu88O2DwYykc8zpt3_gCJMMTalKgHwER9OrlinMuT8_AZbySrQvi0MQEZbdfyG4u_LIZTsyqrSByfkgnkQWyQ%3D%3D",
+        "entities": [
+          "Delaware Supreme Court",
+          "Automotive Sector",
+          "Equities",
+          "Elon Musk"
+        ],
+        "score": 73.48,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Italy ends probes on Stellantis, Volkswagen, Tesla, BYD over EV consumer info - Reuters",
+        "url": "https://www.reuters.com/sustainability/boards-policy-regulation/italy-ends-probes-stellantis-volkswagen-tesla-byd-over-ev-consumer-info-2025-12-19/",
+        "entities": [
+          "Volkswagen",
+          "Electric Vehicles",
+          "BYD",
+          "Stellantis"
+        ],
+        "score": 53.48,
+        "sentiment": 0
+      },
+      {
+        "title": "Elon Musk’s $56B Tesla pay package restored by Delaware Supreme Court - TechCrunch",
+        "url": "https://techcrunch.com/2025/12/19/elon-musks-56b-tesla-pay-package-restored-by-delaware-supreme-court/",
+        "entities": [
+          "EV Market",
+          "Compensation Package",
+          "Corporate Governance",
+          "Elon Musk",
+          "Delaware Supreme Court",
+          "Texas"
+        ],
+        "score": 83,
+        "sentiment": 0.05
+      },
+      {
+        "title": "What does TikTok's deal mean for America's users? - BBC",
+        "url": "https://www.bbc.com/news/videos/c5yje8pvg8jo",
+        "entities": [
+          "Self-Driving Taxis",
+          "Automotive Sector",
+          "Musk",
+          "Tech Sector"
+        ],
+        "score": 52.04,
+        "sentiment": -0.1
+      },
+      {
+        "title": "Volkswagen Halts Exports of Its Electric Bus to U.S. Next Year - The Wall Street Journal",
+        "url": "https://www.wsj.com/business/autos/volkswagen-halts-imports-of-its-electric-bus-to-u-s-next-year-acae1626?gaa_at=eafs&gaa_n=AWEtsqfnMV7MJuDM1zdrE8NaVnB23jWQ6betmQAIvJLzgxHmXRLi7pZwtJHR&gaa_ts=6945ebc8&gaa_sig=dVnPIJzyTClts7sRPboER7DNprYFYkQaFTvOptQJ3Kuqqni38dsL26IaxxXN5OTgC1kqESD_yffJTelTlne-xg%3D%3D",
+        "entities": [
+          "General Motors",
+          "Volkswagen",
+          "Electric Vehicles",
+          "Ford"
+        ],
+        "score": 63.48,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Why Did Micron Stock Jump 10% Yesterday? - Forbes",
+        "url": "https://www.forbes.com/sites/greatspeculations/2025/12/19/why-did-micron-stock-jump-10-yesterday/",
+        "entities": [
+          "Institutional Investors",
+          "Micron",
+          "Trading Volume",
+          "Derivatives"
+        ],
+        "score": 46.4,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla (TSLA) Stock: The Self-Driving Update That Changes Everything for Investors - CoinCentral",
+        "url": "https://coincentral.com/tesla-tsla-stock-the-self-driving-update-that-changes-everything-for-investors/",
+        "entities": [
+          "NHTSA",
+          "Full Self-Driving",
+          "Robotaxi",
+          "Model Y"
+        ],
+        "score": 65.8,
+        "sentiment": 0.4
+      },
+      {
+        "title": "Tesla - Fox News",
+        "url": "https://www.foxnews.com/category/auto/make/tesla?page=46",
+        "entities": [
+          "Electric Vehicles",
+          "Elon Musk",
+          "Ford",
+          "Cybertruck"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "Tesla Stock Forecast: TSLA Weekly Recap, Latest News, and Week-Ahead Catalysts (Updated Dec. 13, 2025)",
+        "url": "https://ts2.tech/en/tesla-stock-forecast-tsla-weekly-recap-latest-news-and-week-ahead-catalysts-updated-dec-13-2025/",
+        "entities": [
+          "Retail Sales",
+          "Model Y",
+          "Elon Musk",
+          "CPI",
+          "Derivatives"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "Tesla Stock News and Forecasts for Dec. 14, 2025: Robotaxi Countdown, Sales Signals, and Wall Street Targets for TSLA - ts2.tech",
+        "url": "https://ts2.tech/en/tesla-stock-news-and-forecasts-for-dec-14-2025-robotaxi-countdown-sales-signals-and-wall-street-targets-for-tsla/",
+        "entities": [
+          "Morgan Stanley",
+          "Equities",
+          "Price Target",
+          "Robotaxi"
+        ],
+        "score": 70.8,
+        "sentiment": -0.2
+      },
+      {
+        "title": "Plugin Vehicles Pass 75 Million Cumulative Sales! - CleanTechnica",
+        "url": "https://cleantechnica.com/2025/12/14/plugin-vehicles-pass-75-million-cumulative-sales/amp/",
+        "entities": [
+          "China Market",
+          "Electric Vehicles",
+          "Tesla Model 3",
+          "Plugin Vehicles",
+          "Tesla Model Y"
+        ],
+        "score": 65.8,
+        "sentiment": 0.6
+      },
+      {
+        "title": "Used Tesla reliability: what TÜV and Consumer Reports say - Автомобильный портал 32CARS.RU",
+        "url": "https://www.32cars.ru/en/posts/id6653-used-tesla-reliability-what-tuv-and-consumer-reports-say",
+        "entities": [
+          "EV Market",
+          "TÜV",
+          "Tesla Model 3",
+          "Consumer Reports",
+          "Tesla Model Y"
+        ],
+        "score": 55.8,
+        "sentiment": -0.3
+      },
+      {
+        "title": "This YouTuber's Cross-Country 'Self Driving' Road Trip Shows What You Shouldn't Do With A Tesla - SlashGear",
+        "url": "https://www.slashgear.com/2048227/tesla-model-y-fsd-cross-country-drive-damage-cost-youtuber-justin-demaree/",
+        "entities": [
+          "Road Trip",
+          "Full Self-Driving",
+          "Automotive Safety",
+          "YouTube"
+        ],
+        "score": 45.8,
+        "sentiment": -0.4
+      },
+      {
+        "title": "Volkswagen reveals self-driving rival to Tesla Cybercab - Torquecafe.com",
+        "url": "https://torquecafe.com/volkswagen-news-gen-urban-tesla-cybercab-rival/",
+        "entities": [
+          "Gen.Urban",
+          "Volkswagen",
+          "Cybercab",
+          "Self-Driving Cars"
+        ],
+        "score": 55.8,
+        "sentiment": 0.1
+      },
+      {
+        "title": "China Approves First Level‑3 Self‑Driving Cars - StratNews Global",
+        "url": "https://stratnewsglobal.com/china/china-approves-first-level-3-self-driving-cars/",
+        "entities": [
+          "China",
+          "WeRide",
+          "Pony AI",
+          "Level-3 Autonomous Driving"
+        ],
+        "score": 65.8,
+        "sentiment": 0.2
+      },
+      {
+        "title": "California judge rules Tesla’s Autopilot, Full Self-Driving marketing deceptive; DMV threatens sales suspension - Storyboard18",
+        "url": "https://www.storyboard18.com/how-it-works/california-judge-rules-teslas-autopilot-full-self-driving-marketing-deceptive-dmv-threatens-sales-suspension-86142.htm",
+        "entities": [
+          "California DMV",
+          "Full Self-Driving",
+          "California Courts",
+          "Autopilot"
+        ],
+        "score": 75.8,
+        "sentiment": -0.6
+      }
+    ],
+    "node_count": 18
+  }
+]

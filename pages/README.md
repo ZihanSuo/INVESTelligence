@@ -1,4 +1,4 @@
-# Final Report
+# Methodology
 
 **AI-Powered Financial News Intelligence Agent**
 

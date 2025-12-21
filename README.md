@@ -11,6 +11,8 @@ running daily in under **10 minutes** at **<$0.30 per run**.
 
 **Role:** End-to-end system deDsign, scoring framework, pipeline implementation
 
+
+
 ## 1. At a Glance
 
 - ⏱ **End-to-end runtime:** under 15 minutes
@@ -19,7 +21,7 @@ running daily in under **10 minutes** at **<$0.30 per run**.
 - 📬 **Outputs:** Daily investor newsletter + interactive dashboard
 - 🎯 **Target users:** Individual investors and prosumers
 
----
+
 
 ## 2. Who Is This For
 
@@ -35,7 +37,7 @@ This project intentionally does **not** target high-frequency trading, real-time
 
 Instead, it focuses on **daily decision support** under realistic cost and time constraints.
 
----
+
 
 ## 3. What Makes INVESTelligence Different
 

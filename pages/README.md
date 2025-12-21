@@ -248,7 +248,7 @@ INVESTelligence treats intelligence generation as a **design problem**, not a mo
 
 By combining semantic judgment with explicit constraints, the system produces outputs that are **ranked, explainable, and usable in practice**.
 
----
+
 
 ## 7. Visualization & Interface Layer
 

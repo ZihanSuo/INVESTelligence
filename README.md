@@ -66,7 +66,7 @@ INVESTelligence offers more than just news aggregation. It’s a reproducible, c
 
 That’s all you need—clean, explainable signals, delivered automatically.
 
----
+
 
 ## 4.  **Deployment Strategy**
 
@@ -124,7 +124,7 @@ For users who prefer a managed execution environment, INVESTelligence can be dep
 
 The workflow logic, scoring pipeline, and output behavior remain **identical** to the self-hosted setup. However, this needs your membership of n8n.‘
 
----
+
 
 ## 5. System Architecture
 
@@ -170,7 +170,7 @@ graph TD
     - GitHub serves as a transparent, reproducible storage layer.
     - A Streamlit dashboard consumes these files directly, providing interactive visualization and acting as the primary user-facing interface.
 
----
+
 
 ## 6. Intelligence & Scoring Design
 
@@ -249,7 +249,7 @@ INVESTelligence treats intelligence generation as a **design problem**, not a mo
 
 By combining semantic judgment with explicit constraints, the system produces outputs that are **ranked, explainable, and usable in practice**.
 
----
+
 
 ## 7. Visualization & Interface Layer
 
@@ -302,7 +302,7 @@ The visualization layer completes the intelligence loop:
 
 By separating scoring from presentation while preserving transparency, INVESTelligence ensures that insights are not only accurate—but usable.
 
----
+
 
 ## 8. Design Trade-offs & Constraints
 

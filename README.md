@@ -36,6 +36,7 @@ This repository is organized around a data-to-delivery pipeline, separating auto
 │
 ├── README.md               # Project overview and documentation
 └── requirements.txt        # Python dependencies
+```
 
 The system follows a layered design:
 - **workflow/** handles automation and orchestration (n8n)

@@ -17,6 +17,7 @@ running daily in under **10 minutes** at **<$0.30 per run**.
 
 This repository is organized around a data-to-delivery pipeline, separating automation, storage, and visualization layers for clarity and extensibility.
 
+```text
 .
 ├── workflow/               # n8n workflows (including screenshots, coding part and AI prompts)
 │
@@ -35,6 +36,11 @@ This repository is organized around a data-to-delivery pipeline, separating auto
 │
 ├── README.md               # Project overview and documentation
 └── requirements.txt        # Python dependencies
+
+The system follows a layered design:
+- **workflow/** handles automation and orchestration (n8n)
+- **data/** and **newsletter_archive/** serve as persistent storage for analysis
+- **dashboard.py** and **pages/** focus on visualization and user interaction
 
 
 

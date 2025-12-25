@@ -13,6 +13,31 @@ running daily in under **10 minutes** at **<$0.30 per run**.
 
 
 
+## 0. Repository Structure
+
+This repository is organized around a data-to-delivery pipeline, separating automation, storage, and visualization layers for clarity and extensibility.
+
+.
+├── workflow/               # n8n workflows (including screenshots, coding part and AI prompts)
+│
+├── data/                   # Structured data generated from each run
+│                           # (cleaned outputs, intermediate files, metrics)
+│
+├── newsletter_archive/     # Historical newsletter outputs
+│                           # used for tracking, analysis, and visualization
+│
+├── dashboard.py            # Main Streamlit dashboard entry point
+│
+├── pages/                  # Additional Streamlit pages for data visualization
+│
+├── .streamlit/             # Streamlit configuration
+├── .devcontainer/          # Development environment configuration
+│
+├── README.md               # Project overview and documentation
+└── requirements.txt        # Python dependencies
+
+
+
 ## 1. At a Glance
 
 - ⏱ **End-to-end runtime:** under 15 minutes

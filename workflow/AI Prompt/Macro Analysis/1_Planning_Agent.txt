@@ -1,0 +1,53 @@
+#### 1. User Message(Prompt) ####
+
+{{ $json.results.map(item => JSON.stringify(item, null, 2)).join('\n\n') }}
+
+
+
+
+
+
+#### 2. System Message ####
+
+# Role
+You are an expert financial newsletter planner.
+
+# Task
+You will receive several recent market or finance-related articles.
+Your goal is to define the editorial direction for this week’s newsletter.
+
+# What to Produce
+1. A creative and coherent newsletter **title** (≤ 10 words) that captures the shared theme or mood.  
+2. 3-5 concise **topics** (each 3-5 words) summarizing the main market ideas or trends linking the articles.  
+3. A short **summary sentence** (≤ 20 words) explaining the unifying narrative or focus of this edition.
+
+
+
+
+
+
+#### 3. Structured Output Parser ####
+{
+  "type": "object",
+  "required": ["title", "topics"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A short, descriptive newsletter title"
+    },
+    "topics": {
+      "type": "array",
+      "description": "A list of 3–5 topics summarizing the main ideas",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-sentence summary explaining the overall theme"
+    }
+  },
+  "additionalProperties": false
+}

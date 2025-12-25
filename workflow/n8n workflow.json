@@ -1,0 +1,1967 @@
+{
+  "name": "INVESTelligence Pre version copy",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -6880,
+        768
+      ],
+      "id": "873de3b5-74dc-4f6c-b4b7-f6330142b77b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -6432,
+        560
+      ],
+      "id": "efae6609-7019-4db9-9c79-a21f60dd09c9",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "nECo61Etev5KNWPV",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\"title\", \"topics\"],\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"description\": \"A short, descriptive newsletter title\"\n    },\n    \"topics\": {\n      \"type\": \"array\",\n      \"description\": \"A list of 3–5 topics summarizing the main ideas\",\n      \"minItems\": 3,\n      \"maxItems\": 5,\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"summary\": {\n      \"type\": \"string\",\n      \"description\": \"One-sentence summary explaining the overall theme\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -6304,
+        560
+      ],
+      "id": "248e3b78-ffbe-49a9-8905-cfcafd36d7c2",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.topics",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -6016,
+        336
+      ],
+      "id": "c6b2fe6f-4b13-4356-9239-c819525e65ee",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Topic: {{ $json.query }}\nResearch:\n{{ $json.results.map(item => JSON.stringify(item, null, 2)).join('\\n\\n') }}\n",
+        "options": {
+          "systemMessage": "=# Role\nYou are a skilled financial newsletter writer who helps readers—especially beginners—understand markets with confidence.\n\n# Objective\nWrite one standalone section for a newsletter based on the provided topic and related articles.\nYour goal is to sound both professional and approachable: authoritative in facts, but friendly in tone.\n\n# Instructions\n# Writing Style\n- Structure each section around:\n  1. What happened\n  2. Why it matters\n  3. What to watch next\n- Use clear, conversational language that avoids heavy jargon.\n- When you must use a financial term, briefly define it in parentheses.\n- Keep the section concise and informative (around 150–200 words).\n- Use a warm, confident tone—like a mentor explaining markets, not a textbook.\n- Include 1–3 **real, clickable source links** for credibility.\n- Do not invent data or sources."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -5504,
+        336
+      ],
+      "id": "f6248ee0-ab9a-489e-a69c-e2c84e34cb8a",
+      "name": "Section Writer Agent"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "output"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -5152,
+        336
+      ],
+      "id": "7475f54c-274a-436e-8eee-fa5d1599c590",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.results.map(item => JSON.stringify(item, null, 2)).join('\\n\\n') }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Role\nYou are an expert financial newsletter planner.\n\n# Task\nYou will receive several recent market or finance-related articles.\nYour goal is to define the editorial direction for this week’s newsletter.\n\n# What to Produce\n1. A creative and coherent newsletter **title** (≤ 10 words) that captures the shared theme or mood.  \n2. 3-5 concise **topics** (each 3-5 words) summarizing the main market ideas or trends linking the articles.  \n3. A short **summary sentence** (≤ 20 words) explaining the unifying narrative or focus of this edition."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -6432,
+        336
+      ],
+      "id": "1c7617fc-b070-465c-be0a-f22cfab49357",
+      "name": "Planning Agent"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import statistics\n\nresults = []\n\nfor item in items:\n    data = item.get(\"json\", item)\n    keyword = data.get(\"keyword\")\n    articles = data.get(\"articles\", [])\n\n    if not articles:\n        results.append({\n            \"json\": {\n                \"keyword\": keyword,\n                \"top_positive_article\": None,\n                \"top_negative_article\": None,\n                \"range_senti\": None,\n                \"range_category\": None,\n                \"range_summary\": None\n            }\n        })\n        continue\n\n    # Collect valid float scores\n    sentiments = []\n    for a in articles:\n        val = a.get(\"sentiment_score\")\n        if val is None:\n            val = a.get(\"sentiment_score\")\n        \n        if val is not None:\n            sentiments.append(float(val))\n    \n    # Calculate Median for this group (Default to 0.0 if empty)\n    if not sentiments:\n        sentiments = [0.0]\n        senti_median = 0.0\n    else:\n        senti_median = statistics.median(sentiments)\n\n    # 1. Range calculation\n    range_senti = max(sentiments) - min(sentiments)\n    range_senti = round(range_senti, 4)\n\n    if range_senti <= 0.3:\n        range_category = \"coherent\"\n        range_summary = \"Sentiment is highly aligned across articles.\"\n    elif range_senti <= 0.8:\n        range_category = \"divergent\"\n        range_summary = \"Sentiment shows moderate divergence.\"\n    else:\n        range_category = \"polarized\"\n        range_summary = \"Sentiment is sharply polarized.\"\n\n    # Helper: Get score safely, using Median for None values\n    def get_senti_score(x):\n        val = x.get(\"sentiment_score\")\n        if val is None:\n            val = x.get(\"sentiment_score\")\n        \n        # Use median if still None\n        if val is None:\n            return senti_median\n        return float(val)\n\n    # 2. Top Positive (Using Median fallback)\n    pos = max(articles, key=get_senti_score)\n    \n    top_positive_clean = {\n        \"title\": pos.get(\"title\"),\n        \"url\": pos.get(\"url\"),\n        \"content\": pos.get(\"content\"),\n        \"sentiment_score\": pos.get(\"sentiment_score\"),\n        \"final_score\": pos.get(\"final_score\") if pos.get(\"final_score\") is not None else pos.get(\"final_score_100\"),\n    }\n\n    # 3. Top Negative (Using Median fallback)\n    neg = min(articles, key=get_senti_score)\n    \n    top_negative_clean = {\n        \"title\": neg.get(\"title\"),\n        \"url\": neg.get(\"url\"),\n        \"content\": neg.get(\"content\") or neg.get(\"snippet\"),\n        \"sentiment_score\": neg.get(\"sentiment_score\"),\n        \"final_score\": neg.get(\"final_score\") if neg.get(\"final_score\") is not None else neg.get(\"final_score_100\"),\n    }\n\n    results.append({\n        \"json\": {\n            \"keyword\": keyword,\n            \"top_positive_article\": top_positive_clean,\n            \"top_negative_article\": top_negative_clean,\n            \"range_senti\": range_senti,\n            \"range_category\": range_category,\n            \"range_summary\": range_summary\n        }\n    })\n\nreturn results"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        672
+      ],
+      "id": "c8436f61-41be-4396-8e32-55ae66720fa1",
+      "name": "Sentiment Dispersion & Drivers"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "items = _input.all()\noutput_items = []\n\nimport math\n\nfor it in items:\n    group = it.get(\"json\", {})\n    keyword = group.get(\"keyword\")\n    articles = group.get(\"articles\", [])\n\n    sentiments = []\n    weights = []\n\n    for art in articles:\n        s = art.get(\"sentiment_score\") \n        if s is None:\n            continue\n        sentiments.append(float(s))\n        weights.append(float(art.get(\"final_score\", 0)) or 0.0)\n\n    n = len(sentiments)\n\n    if n == 0:\n        summary = {\n            \"keyword\": keyword,\n            \"n_articles\": 0\n        }\n    else:\n        sentiments_sorted = sorted(sentiments)\n        mean_senti = sum(sentiments) / n\n        median_senti = sentiments_sorted[n // 2] if n % 2 == 1 else \\\n            0.5 * (sentiments_sorted[n // 2 - 1] + sentiments_sorted[n // 2])\n\n        var = sum((x - mean_senti) ** 2 for x in sentiments) / n\n        std_senti = math.sqrt(var)\n\n        total_weight = sum(weights)\n        if total_weight > 0:\n            weighted_mean_senti = sum(w * s for w, s in zip(weights, sentiments)) / total_weight\n        else:\n            weighted_mean_senti = mean_senti\n\n        def ratio(cond):\n            cnt = sum(1 for x in sentiments if cond(x))\n            return cnt / n\n\n        pct_strong_neg = ratio(lambda x: x < -0.5)\n        pct_weak_neg   = ratio(lambda x: -0.5 <= x < -0.2)\n        pct_neutral    = ratio(lambda x: -0.2 <= x <= 0.2)\n        pct_weak_pos   = ratio(lambda x: 0.2 < x <= 0.5)\n        pct_strong_pos = ratio(lambda x: x > 0.5)\n\n        summary = {\n          \"keyword\": keyword,\n          \"n_articles\": n,\n          \"mean_senti\": round(mean_senti, 4),\n          \"median_senti\": round(median_senti, 4),\n          \"std_senti\": round(std_senti, 4),\n          \"weighted_mean_senti\": round(weighted_mean_senti, 4),\n      \n          \"pct_strong_neg\": f\"{pct_strong_neg * 100:.2f}%\",\n          \"pct_weak_neg\": f\"{pct_weak_neg * 100:.2f}%\",\n          \"pct_neutral\": f\"{pct_neutral * 100:.2f}%\",\n          \"pct_weak_pos\": f\"{pct_weak_pos * 100:.2f}%\",\n          \"pct_strong_pos\": f\"{pct_strong_pos * 100:.2f}%\"\n        }\n\n    output_items.append({\"json\": summary})\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        896
+      ],
+      "id": "08806883-5165-433e-9e5a-72c2bc77cc49",
+      "name": "Sentiment Statistics"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "items = _input.all()\noutput_items = []\n\nfor item in items:\n    group = item.get(\"json\", {})\n    keyword = group.get(\"keyword\")\n    articles = group.get(\"articles\", [])\n\n    # 1. First sort all articles by final_score\n    ranked = sorted(articles, key=lambda a: a.get(\"final_score_100\", 0), reverse=True)\n\n    # 2. Filter: Only keep articles with final_score_100 >= 50\n    ranked = [a for a in ranked if a.get(\"final_score_100\", 0) >= 50]\n\n    # 3. Then take the top 5 after filtering\n    cleaned_articles = []\n    for art in ranked[:5]:\n        cleaned_articles.append({\n            \"title\": art.get(\"title\"),\n            \"url\": art.get(\"url\"),\n            \"content\": art.get(\"content\", \"\"),\n            \"final_score\": art.get(\"final_score_100\"),\n            \"sentiment_score\": art.get(\"sentiment_polarization_score\")\n        })\n\n    output_items.append({\n        \"json\": {\n            \"keyword\": keyword,\n            \"articles\": cleaned_articles\n        }\n    })\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        480
+      ],
+      "id": "73220593-5a52-4afe-820e-e0672b06c0df",
+      "name": "Scoring Ranking"
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "query": "SELECT \n  \nFROM input1 \nLEFT JOIN input2 ON input1.keyword = input2.keyword",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1760,
+        560
+      ],
+      "id": "58b60c71-98e2-467c-ab1e-5d81f1635d4b",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "keyword",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1536,
+        560
+      ],
+      "id": "06c5b6cd-e719-44ec-8338-12e1d3855c66",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Here is the keyword block for generating the micro-level newsletter section:\n\n{{ JSON.stringify($json, null, 2) }}\n\nPlease generate the HTML section following the system instructions."
+            },
+            {
+              "role": "system",
+              "content": "=# Role\nYou are an expert financial micro-analysis newsletter editor. You write concise, professional HTML sections that summarize keyword-level market sentiment and highlight the most relevant news.\n\n# Task\nYou will receive a single keyword block containing:\n- A list of ranked articles (title, url, content [cleaned full-text excerpt]), final_score, sentiment_score.\n- Sentiment statistics (mean, median, std, weighted_mean_senti, percentage buckets).\n- Sentiment dispersion diagnostic (range_senti, range_category, range_summary).\n- Highlight today’s Top 5 articles using the ranking list.\n\nYour job is to generate a polished HTML newsletter section for this keyword.\n\n# Goals\n1. Produce a clear, readable, insight-oriented sentiment summary.\n2. Use all provided statistics and diagnostics to generate a one-sentence narrative (“auto_summary”).\n3. Highlight today’s Top 5 articles using the ranking list.\n4. Maintain a professional financial-analysis tone.\n5. Keep the entire output ≤ 150 words per keyword.\n6. Ensure <h2> remains (equal level to macro block).\n7. Improve visual aesthetics: unified link styling, article layout, and pastel background.\n\n# HTML Structure (with unified styles)\n1) <style> block (only include once per newsletter)\n```html\n<style>\nul.article-list {\n  list-style: none;\n  padding-left: 0;\n}\nul.article-list li {\n  background-color: #FFDAC1;\n  margin-bottom: 12px;\n  padding: 8px 12px;\n  border-radius: 8px;\n  font-size: 14px;\n  line-height: 1.5em;\n}\nul.article-list li a {\n  text-decoration: none;\n  color: #444444;\n  font-weight: bold;\n}\nul.article-list li a:hover {\n  text-decoration: underline;\n}\nstrong {\n  color: #000000;\n}\n</style>\n```\n\n2) Section structure\n```html\n<h2>{keyword} — Market Sentiment Today</h2>\n\n<p>\n<strong>Sentiment Index:</strong> {weighted_mean_senti}<br>\n<strong>Distribution:</strong> {pct_strong_pos} strong positive, {pct_weak_pos} weak positive,\n{pct_neutral} neutral, {pct_weak_neg} weak negative, {pct_strong_neg} strong negative<br>\n<strong>Dispersion:</strong> {range_category} ({range_senti}); {range_summary}<br>\n<strong>Key Narrative:</strong> {auto_summary}\n</p>\n\n<p><strong>Top 5 Articles</strong></p>\n<ul class=\"article-list\">\n  <li>\n    <a href=\"{url1}\">{title1}</a> (score {final_score1})<br>{snippet1}\n  </li>\n  ...\n</ul>\n\n<p><strong>📊 Interactive Dashboard:</strong> <a href=\"https://investelligence.streamlit.app/\" style=\"color:#444;\">View more on Streamlit</a></p>\n```\n\n# Narrative Rules\n- auto_summary must integrate:\n  * the weighted sentiment level,\n  * sentiment distribution (e.g., skewed, mixed, concentrated),\n  * the dispersion classification,\n  * top positive and top negative drivers.\n- Do not fabricate information. Only use provided data.\n🟡- When rendering article content, keep the full excerpt when relevant, but skip common distractors:\n    (\"# \", \"## \", \"Go to\", \"Your Rankings\", \"Subscribe\", disclaimers, timestamps like \"Reuters | Dec\", or truncated \"Learn more...\" lines.)\n\n# Output Format\nReturn a JSON object:\n{\n  \"micro_html\": \"<style>...</style><h2>...</h2><p>...</p><ul class='article-list'>...</ul><p>...</p>\"\n}\n\nReturn only this JSON. No markdown, no commentary.\n"
+            }
+          ]
+        },
+        "simplify": "={{ true }}",
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "json_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"required\": [\"role\", \"keyword\", \"micro_html\"],\n  \"properties\": {\n    \"role\": {\n      \"type\": \"string\",\n      \"description\": \"Must always be 'micro'\",\n      \"enum\": [\"micro\"]\n    },\n    \"keyword\": {\n      \"type\": \"string\",\n      \"description\": \"The keyword this section is about (e.g. 'bitcoin', 'tesla')\"\n    },\n    \"micro_html\": {\n      \"type\": \"string\",\n      \"description\": \"Full HTML block for this keyword section. Must begin with a <style> block and include structured content using only <h2>, <p>, <ul>, <li>, <a>. Top 5 articles must be rendered as a styled <ul>.\"\n    }\n  },\n  \"additionalProperties\": false\n}\n"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -1312,
+        544
+      ],
+      "id": "9caa7645-6186-46b4-aeaf-93000eedbc01",
+      "name": "Micro Editor",
+      "credentials": {
+        "openAiApi": {
+          "id": "nECo61Etev5KNWPV",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Sections JSON:\n{{ JSON.stringify($json.sections || $json.output, null, 2) }}"
+            },
+            {
+              "role": "system",
+              "content": "=# Role\nYou are an expert financial newsletter editor.\n\n# Task\nYou will receive several macro-level drafted sections (as JSON). Your job is to professionally format, edit, and package them into an HTML newsletter suitable for investors and finance professionals.\n\n# Goals\n1. Improve clarity, flow, and consistency across all sections.\n2. Maintain a concise, informative tone: confident but not flashy.\n3. Keep total word count ≤ 1000 words (hard cap).\n4. Ensure the final structure follows a professional financial newsletter.\n5. Convert all embedded links into valid clickable <a href=\"...\">...</a> HTML.\n6. Match visual and semantic style with micro blocks (title level <h2>, pastel section color, unified link style).\n7. Absolutely no made-up facts or invented citations.\n\n# Input Format\nYou will receive:\nSections JSON:\n{{ JSON.stringify($json.sections || $json.output, null, 2) }}\n\nEach section contains:\n- \"title\": headline for that macro section\n- \"body\": raw text with optional markdown-style links\n\n# Output Format Requirements\nYou must output a JSON object with fields: role, subject, content.\nSet role = \"macro\".\nSet subject = an 80-character max title that clearly summarizes the day’s themes.\nReturn only the object. Do not retry or self-correct.\n\n# HTML Structure (strict, consistent with micro)\nOnly use: <style>, <p>, <h2>, <h3>, <ul>, <li>, <a href=\"...\">...</a>.\nDo not use: <div>, <script>, <img>, <span>, or inline CSS beyond what's specified.\n\nFinal structure must follow:\n\n1. <style> — inject once at the top:\n```html\n<style>\nul.article-list {\n  list-style: none;\n  padding-left: 0;\n}\nul.article-list li {\n  background-color: #FFDAC1;\n  margin-bottom: 12px;\n  padding: 8px 12px;\n  border-radius: 8px;\n  font-size: 14px;\n  line-height: 1.5em;\n}\nul.article-list li a {\n  text-decoration: none;\n  color: #444444;\n  font-weight: bold;\n}\nul.article-list li a:hover {\n  text-decoration: underline;\n}\nstrong {\n  color: #000000;\n}\n</style>\n```\n\n2. Introduction\n- One <p> block\n- Summarize how today’s major themes connect and why they matter now\n- Include today’s date using {{ $now.format('yyyy-MM-dd') }}\n\n3. Main Sections\n- For each section in the JSON array:\n  - <h2> Cleaned or lightly improved title\n  - 1–3 <p> paragraphs rewritten from the section body\n    • Each ≤ 120 words\n    • Convert markdown links to <a> tags\n    • Improve transitions and flow\n    • Remove unverifiable or speculative claims\n\n4. Sources (consolidated)\n- <h3>Sources</h3>\n- <ul class=\"article-list\">\n  - Each <li><a href=\"...\">[Publication Name] – [Article Title]</a></li>\n  - Deduplicate URLs\n  - Alphabetize by Publication Name\n  - Truncate overly long titles to ~100 characters\n\n5. Conclusion\n- One <p> block\n- Tie together implications for investors\n- Optionally mention upcoming catalysts (e.g., CPI release, Fed meeting)\n- No new facts; only interpretation\n\n# Subject Line Rules\n1. Must be ≤ 80 characters\n2. Use no emojis or clickbait\n3. Example format: “Fed Pivot, AI Valuation Stress, China Housing Weakness”\n\n# Output Format (must strictly follow this schema)\n{\n  \"role\": \"macro\",\n  \"subject\": \"A precise ≤80-character subject line here\",\n  \"content\": \"[HTML content here: including <style> + body]\"\n}\n\nYou must return only the JSON object. Do not include any explanation, commentary, or retries.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "json_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"required\": [\"role\", \"subject\", \"content\"],\n  \"properties\": {\n    \"role\": {\n      \"type\": \"string\",\n      \"description\": \"Must always be 'macro'\",\n      \"enum\": [\"macro\"]\n    },\n    \"subject\": {\n      \"type\": \"string\",\n      \"description\": \"Email subject line (≤ 80 characters)\"\n    },\n    \"content\": {\n      \"type\": \"string\",\n      \"description\": \"Full HTML newsletter body. Must begin with a <style> block for consistent layout and link styling, followed by HTML-structured content using only <h2>, <h3>, <p>, <ul>, <li>, <a>.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -4928,
+        336
+      ],
+      "id": "c8a79801-c823-4d8c-9ea4-71cd0318becd",
+      "name": "Macro Editor",
+      "credentials": {
+        "openAiApi": {
+          "id": "nECo61Etev5KNWPV",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// --------- Extract macro and micro items ---------------\nconst macro = items.find(i => i.json.role === \"macro\")?.json;\nif (!macro) throw new Error(\"No macro output found!\");\n\nconst micros = items\n  .filter(i => i.json.role === \"micro\")\n  .map(i => i.json);\n\n// --------- HTML Email Template ----------------\n\nconst template = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <style>\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Arial, sans-serif;\n      background: #f5f6fa;\n      margin: 0;\n      padding: 0;\n    }\n    .container {\n      max-width: 760px;\n      margin: 0 auto;\n      background: #ffffff;\n      padding: 32px;\n      border-radius: 12px;\n      box-shadow: 0px 0px 8px rgba(0,0,0,0.08);\n    }\n    h1, h2 {\n      color: #2c3e50;\n      margin-top: 32px;\n    }\n    p {\n      line-height: 1.55;\n      color: #333;\n      font-size: 15px;\n    }\n    .micro-section {\n      margin-top: 28px;\n      padding: 20px;\n      border-left: 4px solid #4a90e2;\n      background: #f8fbff;\n      border-radius: 6px;\n    }\n    ul li {\n      margin-bottom: 12px;\n    }\n    hr {\n      border: none;\n      border-bottom: 1px solid #ddd;\n      margin: 32px 0;\n    }\n  </style>\n</head>\n\n<body>\n  <div class=\"container\">\n\n    <h1>{{subject}}</h1>\n\n    <div>\n      {{macro_html}}\n    </div>\n\n    <hr/>\n\n    <p>\n      For full visual analytics—including score maps, sentiment heatmaps, and keyword trend clouds—\n      visit the <a href=\"https://investelligence.streamlit.app/\" target=\"_blank\"><strong>INVESTelligence Dashboard</strong></a>.\n    </p>\n\n    <h2>Keyword Highlights</h2>\n\n    {{micro_blocks}}\n\n    <hr/>\n\n  </div>\n</body>\n</html>\n`;\n\n// --------- Build micro blocks ----------------\n\nlet microBlocks = \"\";\n\nif (micros.length === 0) {\n  microBlocks = \"<p>No keyword sentiment data available today.</p>\";\n} else {\n  microBlocks = micros.map(m => `\n    <div class=\"micro-section\">\n      ${m.content}\n    </div>\n  `).join(\"\\n\");\n}\n\n// --------- Build final HTML ----------------\n\nconst finalHtml = template\n  .replace(\"{{subject}}\", macro.subject)\n  .replace(\"{{macro_html}}\", macro.content)\n  .replace(\"{{micro_blocks}}\", microBlocks);\n\n// --------- Return item ----------------\n\nreturn [\n  {\n    json: {\n      subject: macro.subject,\n      content: finalHtml\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -512,
+        336
+      ],
+      "id": "6ddedc8a-57ae-462b-96a0-542fa99174fb",
+      "name": "Final Assembly"
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = $json.output?.[0]?.content?.[0]?.text || {};\n\nreturn [\n  {\n    json: {\n      role: out.role || \"macro\",\n      subject: out.subject || \"\",\n      content: out.content || \"\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4576,
+        336
+      ],
+      "id": "9432450e-a4e7-4aa1-b953-215006ce8f26",
+      "name": "Restore Macro"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst result = [];\n\nfor (const item of items) {\n  const out = item.json.output?.[0]?.content?.[0]?.text || {};\n\n  result.push({\n    json: {\n      role: out.role || \"micro\",\n      keyword: out.keyword || \"\",\n      content: out.micro_html || \"\"\n    }\n  });\n}\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        560
+      ],
+      "id": "b3e61ab6-90d4-4c7c-be8b-1ccee12af23a",
+      "name": "Restore Micro"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -736,
+        336
+      ],
+      "id": "1368eed3-4602-413e-a10e-dfa1126bbf39",
+      "name": "Merge-Final"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from difflib import SequenceMatcher\n\ndef similarity(a, b):\n    return SequenceMatcher(None, a, b).ratio()\n\nitems = _input.all()\narticles = [item[\"json\"] for item in items]\n\nunique_news = []\n\nfor i in range(len(articles)):\n    current = articles[i]\n\n    if current.get(\"is_duplicate\"):\n        continue\n\n    current[\"pickup_count\"] = 0\n\n    title1 = current.get(\"title\",\"\").lower()\n\n    for j in range(i + 1, len(articles)):\n        compare = articles[j]\n\n        if compare.get(\"is_duplicate\"):\n            continue\n\n        title2 = compare.get(\"title\",\"\").lower()\n\n        if similarity(title1, title2) > 0.55:\n            current[\"pickup_count\"] += 1\n            compare[\"is_duplicate\"] = True\n\n\n    current.pop(\"is_duplicate\", None)\n\n    unique_news.append(current)\n\nreturn [{\"json\": item} for item in unique_news]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3760,
+        1280
+      ],
+      "id": "01326268-276b-4b6e-a2a3-b4bc1e0613d6",
+      "name": "News Deduplicated"
+    },
+    {
+      "parameters": {
+        "jsCode": "let rows = [];\nrows.push(\"keyword,word,count\");  // header\n\nfor (const item of items) {\n  const data = item.json;\n  const keyword = data.keyword || \"\";\n\n  for (const pair of data.word_count || []) {\n    const word = pair[0];\n    const count = pair[1];\n    rows.push(`${keyword},${word},${count}`);\n  }\n}\n\nreturn [\n  {\n    json: {\n      csv_content: rows.join(\"\\n\")\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3168,
+        1280
+      ],
+      "id": "9db8071e-5cf9-42a6-929a-c3e52a880e8d",
+      "name": "Word Count to csv"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=data/{{ $now.toFormat(\"yyyy-MM-dd\") }}/word_count.csv",
+        "fileContent": "={{$json[\"csv_content\"]}}",
+        "commitMessage": "=data update: word_count {{ $now.toFormat(\"yyyy-MM-dd\") }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -2880,
+        1280
+      ],
+      "id": "af39ba55-6ccd-4814-8619-66c1753bf456",
+      "name": "Word Count To Github",
+      "webhookId": "ab9417db-31e0-447d-b93e-a16560d3b7e8",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import statistics\n\nitems = _input.all()\n\n# Collect scores\nm_vals = [i[\"json\"].get(\"materiality_score\") for i in items if i[\"json\"].get(\"materiality_score\") is not None]\nq_vals = [i[\"json\"].get(\"qual_score\") for i in items if i[\"json\"].get(\"qual_score\") is not None]\n\nm_median = statistics.median(m_vals) if m_vals else 0.5\nq_median = statistics.median(q_vals) if q_vals else 0.5\n\nresults = []\n\nfor item in items:\n    original = item.get(\"json\", {})\n    \n    # Copy only known fields to avoid mutation side-effects\n    j = dict(original)  # shallow copy\n\n    m_score = j.get(\"materiality_score\", m_median)\n    q_score = j.get(\"qual_score\", q_median)\n\n    final_score = float(m_score) * 0.6 + float(q_score) * 0.4\n\n    j[\"final_score_100\"] = round(final_score * 100, 2)\n\n    # preserve everything else including 'content'\n    results.append({\"json\": j})\n\nreturn results\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2432,
+        912
+      ],
+      "id": "e215e6d1-f36b-497d-9308-ca945ce53223",
+      "name": "News Score Final"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst rows = $input.all().map(item => item.json);\n\nconst toNum = (v) => {\n  if (v === undefined || v === null) return '';\n  if (typeof v === 'number') return v;\n  return parseFloat(String(v).replace('%', '').trim());\n};\n\nlet csv = 'keyword,strong_neg,weak_neg,neutral,weak_pos,strong_pos\\n';\n\nfor (const row of rows) {\n  const strongNeg = toNum(row.pct_strong_neg);\n  const weakNeg   = toNum(row.pct_weak_neg);\n  const neutral   = toNum(row.pct_neutral);\n  const weakPos   = toNum(row.pct_weak_pos);\n  const strongPos = toNum(row.pct_strong_pos);\n\n  csv += `${row.keyword},${strongNeg},${weakNeg},${neutral},${weakPos},${strongPos}\\n`;\n}\n\nreturn [\n  {\n    json: {\n      csv,\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        992
+      ],
+      "id": "6b1a804d-aca1-45cd-9938-e071810f7101",
+      "name": "Sentiment Statistics to csv"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=data/{{ $now.toFormat(\"yyyy-MM-dd\") }}/sentiment_statistics.csv",
+        "fileContent": "={{$json[\"csv\"]}}",
+        "commitMessage": "=data update: sentiment_statistics {{ $now.toFormat(\"yyyy-MM-dd\") }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -1248,
+        992
+      ],
+      "id": "685cb2f4-4b4f-4445-a3bb-de42672c942a",
+      "name": "Sentiment Statistics  Github",
+      "webhookId": "4ffa1fe9-8d81-454f-a0a8-adf0f0ff06be",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const subject = String($json.subject || \"newsletter\");\n\n// 保证 html 始终是 string\nlet html = $json.content;\nif (typeof html !== \"string\") {\n  html = html ? JSON.stringify(html) : \"\";\n}\n\n// safe filename\nconst safeSubject = subject.replace(/[^a-zA-Z0-9-_ ]/g, \"_\");\nconst date = new Date().toISOString().slice(0, 10);\nconst filename = `${safeSubject}_${date}.html`;\n\n// safe base64\nconst base64 = Buffer.from(html, \"utf8\").toString(\"base64\");\n\nreturn [\n  {\n    json: { filename, base64 }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        528
+      ],
+      "id": "406613f6-6b86-4eb2-921b-344689b36f48",
+      "name": "Final Assembly to html"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Perform a specific entity expansion for the following topic.\n\nInput Data:\n{\n  \"seed\": \"{{ $json.keyword }}\",\n  \"weight\": {{ $json.weight }}\n}\n\nReturn a valid JSON object matching this exact schema:\n{\n  \"seed\": string,\n  \"weight\": number,\n  \"include_keywords\": [\n    { \n      \"term\": string, \n      \"importance\": number \n    }\n  ]\n}"
+            },
+            {
+              "role": "system",
+              "content": "=You are a Financial Knowledge Graph Engineer. Your goal is to map a Seed Topic to its specific real-world ecosystem.\n\n### 0. MANDATORY STRUCTURE (CRITICAL)\nYour output \"include_keywords\" list MUST follow this strict order:\n1.  **The FIRST item MUST be the exact seed topic itself.**\n    - term: \"{{ $json.keyword }}\" (Verbatim copy)\n    - importance: 1.0 (Fixed value)\n2.  **The remaining 4-6 items** should be the semantic expansions derived from the angles below.\n\n### STRICT PROHIBITIONS\n- NO Abstract Concepts: Do NOT output generic terms like \"Supply Chain\", \"Regulations\", \"Geopolitics\", \"Technology\", \"Innovation\".\n- NO Lazy Associations: If the seed is \"Tesla\", do NOT output \"Electric Vehicles\". Output \"Model Y\" or \"Cybertruck\".\n\n### EXPANSION LOGIC: THE 6 CANONICAL ANGLES (For items 2-7)\nGenerate specific keywords based on these realities:\n1.  **Policy & Geopolitics:** Specific named laws, bans, or sanctions (e.g., \"China Export Quota\").\n2.  **Supply Chain:** Specific upstream materials (e.g., \"Neodymium\").\n3.  **Corporate Strategy:** Named projects or M&A (e.g., \"Mountain Pass Mine\").\n4.  **Market Dynamics:** Specific pricing or inventory events.\n5.  **Legal/Scrutiny:** Specific investigations.\n6.  **Tech/Innovation:** Specific technologies (e.g., \"Permanent Magnets\").\n\n### SCORING RUBRIC (Importance: 0.1 - 1.0)\n- **1.0**: The Seed itself (Must be the first item).\n- **High (0.9 - 0.95)**: Core flagship products, key raw materials, or existential threats.\n- **Medium (0.7 - 0.8)**: Key suppliers, specific policies, or major downstream applications.\n- **Low (0.5 - 0.6)**: Contextual trends or indirect factors.\n\nReturn ONLY valid JSON."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -6080,
+        1344
+      ],
+      "id": "927733ee-619c-4b10-a5eb-b9fc143a0749",
+      "name": "Semantic Expansion",
+      "executeOnce": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "nECo61Etev5KNWPV",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=data/{{ $now.toFormat(\"yyyy-MM-dd\") }}/scores.csv",
+        "fileContent": "={{$json[\"csv\"]}}",
+        "commitMessage": "=data update: scores {{ $now.toFormat(\"yyyy-MM-dd\") }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -1760,
+        1088
+      ],
+      "id": "fef32c35-98c0-447e-9ebb-b35c1428df07",
+      "name": "Scores To Github",
+      "webhookId": "cec9b9c0-1026-4b6a-99a0-92667a262e58",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all().map(i => i.json);\n\nlet csv = \"keyword,title,url,snippet,final_score,sentiment_score\\n\";\n\nfor (const group of data) {\n  // 1. Handle keyword: escape double quotes\n  const keyword = (group.keyword || \"\").replace(/\"/g, '\"\"');\n\n  for (const art of group.articles) {\n    // 2. Handle title: escape double quotes\n    const title = (art.title || \"\").replace(/\"/g, '\"\"');\n\n    // 3. Handle url: escape double quotes (essential for URLs containing commas)\n    const url = (art.url || \"\").replace(/\"/g, '\"\"');\n\n    // 4. Handle snippet: escape double quotes\n    const content = (art.content || \"\").replace(/\"/g, '\"\"');\n\n    const fs = art.final_score_100 ?? \"\";\n    const ss = art.sentiment_score ?? \"\";\n\n    // 5. Build row: wrap text fields (keyword, title, url, snippet) in double quotes\n    csv += `\"${keyword}\",\"${title}\",\"${url}\",\"${content}\",${fs},${ss}\\n`;\n  }\n}\n\nreturn [\n  {\n    json: { csv }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1088
+      ],
+      "id": "eae67f45-6d13-4bdf-9040-81268ce45dce",
+      "name": "Scores to csv"
+    },
+    {
+      "parameters": {
+        "jsCode": "// items = [{json: {...}}, ...]\n\nconst rows = items.map(i => i.json);\n\n// Extract all keys (in case some rows differ)\nconst headers = Object.keys(rows[0]);\n\n// Build CSV\nlet csv = headers.join(\",\") + \"\\n\";\n\nfor (const row of rows) {\n  const line = headers.map(h => {\n    let v = row[h] ?? \"\";\n    // Escape quotes\n    v = String(v).replace(/\"/g, '\"\"');\n    // Wrap fields containing commas or quotes\n    if (v.includes(\",\") || v.includes('\"') || v.includes(\"\\n\")) {\n      v = `\"${v}\"`;\n    }\n    return v;\n  }).join(\",\");\n  csv += line + \"\\n\";\n}\n\nreturn [{ json: { csv_content: csv } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3440,
+        1472
+      ],
+      "id": "fe35040e-a971-42fc-967f-b739c7ead19b",
+      "name": "News Deduped to CSV"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=data/{{ $now.toFormat(\"yyyy-MM-dd\") }}/dedupted_news.csv",
+        "fileContent": "={{$json[\"csv_content\"]}}",
+        "commitMessage": "=data update: dedputed news output {{ $now.toFormat(\"yyyy-MM-dd\") }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -3168,
+        1472
+      ],
+      "id": "f9b32152-95cc-4483-84bc-b57350ee2a7d",
+      "name": "News Deduped To Github",
+      "webhookId": "12d62288-927b-4e8e-b298-f28e3fd5effa",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "You are a financial planning analyst generating a research plan for a daily market intelligence report. to help with my investment.  Given the current macroeconomic environment and recent financial headlines, identify 3-5 key themes that deserve attention today.  Each theme should be distinct and focused on a specific topic (e.g., company events, policy moves, sector shifts, or geopolitics).",
+        "options": {
+          "topic": "news",
+          "time_range": "day"
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        -6656,
+        336
+      ],
+      "id": "81d6ed69-9dfb-4346-af2f-14116a7f9d4c",
+      "name": "Initial Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "A0cXlyo5owstaVZT",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{ $json['output.topics'] }}",
+        "options": {
+          "topic": "general",
+          "time_range": "day",
+          "include_raw_content": true
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        -5728,
+        336
+      ],
+      "id": "a3b8795d-bdef-44ea-8a20-2fc401175fff",
+      "name": "Research Topics",
+      "credentials": {
+        "tavilyApi": {
+          "id": "A0cXlyo5owstaVZT",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{ $json.term }}",
+        "options": {
+          "topic": "news",
+          "max_results": 5,
+          "include_raw_content": false
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        -4864,
+        1488
+      ],
+      "id": "763a975a-2688-4dcb-bbd5-a44afced5088",
+      "name": "Search",
+      "executeOnce": false,
+      "credentials": {
+        "tavilyApi": {
+          "id": "A0cXlyo5owstaVZT",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6325866-602a-4ac7-a5ee-a0baf36abc85",
+              "name": "keyword",
+              "value": "={{ $json.keyword }}",
+              "type": "string"
+            },
+            {
+              "id": "aeedb0a4-3dd3-4b7d-be52-eeacea33f40d",
+              "name": "weight",
+              "value": "={{ $json.weight }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -6368,
+        1344
+      ],
+      "id": "e1715a0c-b0b8-4ce8-93e1-f43c3d5fe313",
+      "name": "Keywords Cleaned"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "18DO1w04Ct92pdHUIh5NQCkr2g95gmC6v4_X5tz7gl5Y",
+          "mode": "list",
+          "cachedResultName": "user_subscription",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18DO1w04Ct92pdHUIh5NQCkr2g95gmC6v4_X5tz7gl5Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18DO1w04Ct92pdHUIh5NQCkr2g95gmC6v4_X5tz7gl5Y/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "active"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -6656,
+        1344
+      ],
+      "id": "0218c334-a768-4792-9874-b04e04033dda",
+      "name": "Get keywords",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Er8emlNUq5BHiieQ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "=POST",
+        "url": "https://api.tavily.com/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $json.term }}\",\n  \"topic\": \"news\",\n  \"days\": 1,\n  \"search_depth\": \"advanced\",\n  \"include_domains\": [\n\"reuters.com\", \"bloomberg.com\", \"wsj.com\", \"ft.com\", \"nikkei.com\", \"investors.com\",\n  \"mining.com\", \"oilprice.com\", \"techcrunch.com\", \"theinformation.com\", \"barrons.com\", \"spglobal.com\", \"utilitydive.com\", \"argusmedia.com\", \"pv-magazine.com\", \"hydrocarbonprocessing.com\",\n  \"nytimes.com\", \"economist.com\", \"apnews.com\", \"bbc.com\", \"washingtonpost.com\", \"axios.com\", \"time.com\", \"forbes.com\",\n  \"cnbc.com\", \"marketwatch.com\", \"finance.yahoo.com\", \"businessinsider.com\", \"seekingalpha.com\",\n  \"nature.com\", \"science.org\", \"worldbank.org\", \"imf.org\", \"iea.org\", \"who.int\", \"un.org\", \"bis.org\",\n  \"energy.gov\", \"commerce.gov\", \"defense.gov\"\n  ],\n  \"max_results\": 10,\n  \"include_text\": true\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -4960,
+        1072
+      ],
+      "id": "425cd45d-bcbf-4b15-818a-216c59eb4ab5",
+      "name": "HTTP Request by Tavily",
+      "executeOnce": false,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "query": "SELECT DISTINCT\n  input2.seed as keyword,\n  input2.weight,\n  `query` as expansion,\n  input2.importance as expansion_importance,\n  title,\n  url,\n  score as tavily_score,\n  content\nFROM input1 \nINNER JOIN input2 ON input1.`query` = input2.term\nORDER BY keyword",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -4128,
+        1280
+      ],
+      "id": "1a2e2644-caea-4715-8f38-972ca86a1d91",
+      "name": "Combine Keywords & Content"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -4384,
+        1280
+      ],
+      "id": "058c2aa0-ab5c-4e5b-8e60-b84b3a5a339d",
+      "name": "Combine two sources"
+    },
+    {
+      "parameters": {
+        "batchSize": 5,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -3584,
+        928
+      ],
+      "id": "044771e2-2468-4f1a-be93-a02901225681",
+      "name": "Loop Over Items",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "items = _input.all()\ngroups = {}\n\nfor item in items:\n    original_json = item.get(\"json\", {})\n\n\n    content_check = original_json.get(\"content\")\n    if not content_check:\n        original_json[\"content\"] = \"[WARNING: No Content Found]\"\n        \n   \n    art = dict(original_json)\n    \n\n    keyword = (art.get(\"keyword\") or \"unknown\").strip().lower()\n    groups.setdefault(keyword, []).append(art)\n\noutput_items = []\n\nfor keyword, article_list in groups.items():\n    #article_list.sort(key=lambda x: x.get(\"final_score_100\", 0), reverse=True)\n\n    output_items.append({\n        \"json\": {\n            \"keyword\": keyword,\n            \"count\": len(article_list),\n            \"articles\": article_list\n        }\n    })\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2256,
+        912
+      ],
+      "id": "3894c98f-c385-4391-bff2-0601e8014647",
+      "name": "Group by keywords"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Evaluate the following news article using the scoring framework in the System Prompt.\n\nMetadata:\n- Keywords: {{ $json.keyword }}\n- URL: {{ $json.url }}\n\nNews Title: \n{{ $json.title }}\nNews Content:\n{{ $json.content }}\n\n----------------\nExample of desired \"entities\" output format for a similar article:\n[\"Bitcoin\", \"Options Market\", \"Macro Sentiment\", \"Tech Stocks Correlation\", \"Institutional Flows\"]"
+            },
+            {
+              "role": "system",
+              "content": "=You are a senior financial analyst AI specializing in content-based event materiality assessment. You must evaluate news articles strictly based on the text provided. Do not use any external information, assumptions, or metadata.\n\nYour job is to score the article using the rule-based framework defined below. Follow all instructions exactly.\n\n========================================================\nGLOBAL RULES (DO NOT VIOLATE)\n1. You must output a single valid JSON object. No extra text, no markdown, no code fences.\n2. For the \"meta\" section in output, you must copy the values provided in the USER INPUT exactly.\n3. You must not use any information outside the article text.\n4. For Event Severity, Market Proximity, and Forward Impact, you must provide a one-sentence justification referring only to the article text.\n5. If uncertain, choose the more conservative (lower) score.\n6. Entity & Concept Extraction Strategy:\n   Extract a list of 5-8 items representing the key nodes of the story.\n   You MUST include a mix of:\n   - Specific Assets (e.g., \"Bitcoin\", \"NVDA\", \"Gold\")\n   - Market Sectors (e.g., \"AI Stocks\", \"Defi\", \"Semiconductors\")\n   - Macro Drivers (e.g., \"Inflation\", \"Fed Rates\", \"Regulatory Crackdown\")\n   - Market Mechanisms (e.g., \"Options Skew\", \"ETF Inflows\", \"Short Squeeze\")\n   - Key Institutions (e.g., \"SEC\", \"BlackRock\")\n   \n   FILTERING RULES:\n   - REMOVE insignificant data providers or sources (e.g., DO NOT include \"Derive.xyz\", \"Bloomberg Terminal\", \"Report\").\n   - REMOVE generic words (e.g., \"Price\", \"Growth\", \"Market\").\n   - Normalize terms (e.g., use \"Options Market\" instead of \"options trading data\").\n\n========================================================\nSCORING FRAMEWORK (DO NOT ALTER)\n\n--------\nDimension A – Materiality (0 to 12 total)\n\n1. Event Severity (0 to 4)\n4 = major structural impact such as regulation, litigation rulings, production halt, mergers or acquisitions, or earnings shock\n3 = medium operational impact such as tariffs, rating downgrade, or supply chain delays\n2 = minor operational updates such as product launch or leadership change\n1 = weak impact\n0 = no meaningful economic impact\n\n2. Market Proximity (0 to 4) (Score relevance relative to the provided \"Keyword\")\n4 = direct impact on the keyword subject or its core supply chain\n3 = same sector or strong indirect exposure\n2 = weak upstream or downstream linkage\n1 = macro level narrative\n0 = unrelated sector\n\n3. Forward Impact (0 to 4)\n4 = strong forward looking signal such as policy drafts, long term contracts, or capacity shifts\n3 = medium predictive value such as trend shifts or market share movement\n2 = short term disruptions\n1 = no forward significance\n0 = retrospective or historical content\n\n--------\nDimension B – Sentiment Score (-1 to 1)\n\nSentiment Score is a continuous decimal value between -1.0 and 1.0.\nYour task is to capture the nuance of the tone. Do NOT default to round numbers like 0.0, 0.5, or 1.0 unless the sentiment is perfectly aligned with those exact points.\n\nScoring Guide:\n-1.0 to -0.8 = Extreme pessimism, crisis, panic.\n-0.7 to -0.4 = Clear downside risks, concern, or negative outlook.\n-0.3 to -0.1 = Mild skepticism or slight underperformance.\n0.0 = Perfectly neutral, purely factual reporting with no emotive language.\n+0.1 to +0.3 = Cautious optimism or mild positive signs.\n+0.4 to +0.7 = Clear growth, opportunity, or bullish signals.\n+0.8 to +1.0 = Extreme enthusiasm, breakthrough success.\n\nBase the judgment only on the article’s wording and tone.\nYou must provide a one-sentence justification.\n\n========================================================\nOUTPUT FORMAT (STRICT)\n\nYou must output exactly the following JSON object structure.\nCRITICAL: You must COPY the numeric values for quality_score, source_credibility, and pickup_count exactly from the Metadata section of the user input.\nYou MUST include the article content exactly as provided in the user input, without altering, summarizing, rewriting, or removing any characters.\nYou MUST copy the value of \"pickup_count\" exactly as provided in the user input. Do not transform, infer, or recompute it.\n\n{\n  \"meta\": {\n    \"title\": \"...\",\n    \"keyword\": \"...\",\n    \"url\": \"...\",\n    \"quality_score\": 0.0,\n    \"source_credibility\": 0.0,\n    \"pickup_count\": 0\n  },\n  \"content\": \"...\",\n  \"scores\": {\n    \"event_severity\": {\"score\": 0, \"reason\": \"...\"},\n    \"market_proximity\": {\"score\": 0, \"reason\": \"...\"},\n    \"forward_impact\": {\"score\": 0, \"reason\": \"...\"},\n    \"sentiment_score\": {\"score\": 0.00, \"reason\": \"...\"}\n  },\n  \"entities\": [\"Entity1\", \"Entity2\", \"Entity3\"]\n}\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -3376,
+        944
+      ],
+      "id": "d4268ee5-6b1e-4064-a444-e29d97213006",
+      "name": "Materiality Score",
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "nECo61Etev5KNWPV",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\n\nitems = _input.all()\nresults = []\n\nfor item in items:\n    try:\n        output_data = item.get(\"json\", {}).get(\"output\", [])\n        if not output_data:\n            continue\n\n        raw_text = output_data[0][\"content\"][0][\"text\"]\n        raw = json.loads(raw_text)\n\n        meta = raw.get(\"meta\", {})\n        title = meta.get(\"title\")\n        keyword = meta.get(\"keyword\")\n        url = meta.get(\"url\")\n        pickup_count = meta.get(\"pickup_count\", 0)\n        content = raw.get(\"content\")\n        scores = raw.get(\"scores\", {})\n\n        sev = float(scores.get(\"event_severity\", {}).get(\"score\", 0))\n        prox = float(scores.get(\"market_proximity\", {}).get(\"score\", 0))\n        fwd = float(scores.get(\"forward_impact\", {}).get(\"score\", 0))\n\n        materiality_score = round((sev + prox + fwd) / 12.0, 4)\n\n        sentiment_obj = scores.get(\"sentiment_score\", {})\n        senti_score = float(sentiment_obj.get(\"score\", 0))\n\n        entities = raw.get(\"entities\", [])\n        if not isinstance(entities, list):\n            entities = []\n\n        out_json = {\n            \"title\": title,\n            \"keyword\": keyword,\n            \"url\": url,\n            \"content\": content,\n            \"pickup_count\": pickup_count,\n            \"materiality_score\": materiality_score,\n            \"event_severity_score\": sev,\n            \"market_proximity_score\": prox,\n            \"forward_impact_score\": fwd,\n            \"sentiment_score\": senti_score,\n            \"mentioned_entities\": entities\n        }\n\n        results.append({\"json\": out_json})\n\n    except Exception as e:\n        results.append({\n            \"json\": {\n                \"error\": str(e),\n                \"raw_input\": str(item)\n            }\n        })\n\nreturn results\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3008,
+        912
+      ],
+      "id": "61125e19-7407-40fa-b693-f66308516099",
+      "name": "Materiality Score Formatted",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\n# Access n8n input data\nitems = _input.all()\noutput_items = []\n\n# Filter threshold\nMIN_SCORE_THRESHOLD = 0.3\n\nfor item in items:\n    try:\n        # Access payload\n        node_data = item.get(\"json\", {})\n        parent_query = node_data.get(\"query\") or node_data.get(\"seed\", \"unknown_query\")\n        \n        # Get raw results\n        results_list = node_data.get(\"results\", [])\n        \n        # Handle single item structure\n        if not results_list and \"url\" in node_data:\n            results_list = [node_data]\n\n        filtered_results = []\n        \n        for result in results_list:\n            score = float(result.get(\"score\", 0))\n            \n            # Skip low quality data\n            if score < MIN_SCORE_THRESHOLD:\n                continue \n            \n            if parent_query:\n                result[\"query\"] = parent_query\n            \n            filtered_results.append(result)\n\n        # Output flattened valid results\n        if filtered_results:\n            for valid_res in filtered_results:\n                output_items.append({\"json\": valid_res})\n\n    except Exception:\n        continue\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4576,
+        1488
+      ],
+      "id": "5420e471-f756-4372-a7ad-e5a6274fed8f",
+      "name": "Score Filter 2"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\n# Access n8n input data\nitems = _input.all()\noutput_items = []\n\nfor item in items:\n    try:\n        # Access the payload inside n8n's 'json' key\n        node_data = item.get(\"json\", {})\n        \n        # Navigate the nested structure from the LLM output\n        output_list = node_data.get(\"output\", [])\n        if not output_list: continue\n\n        content_blocks = output_list[0].get(\"content\", [])\n        if not content_blocks: continue\n\n        raw_text = content_blocks[0].get(\"text\", \"\")\n        if not raw_text: continue\n\n        # Cleaning: Remove markdown code blocks\n        text = raw_text.strip()\n        # Remove ```json or ``` at the start\n        text = re.sub(r\"^```[a-zA-Z]*\\n?\", \"\", text)\n        # Remove ``` at the end\n        text = re.sub(r\"\\n?```$\", \"\", text)\n        \n        # Safety: Extract the JSON object if there is extra text around it\n        match = re.search(r\"\\{[\\s\\S]*\\}\", text)\n        if match:\n            text = match.group(0)\n\n        # Parse JSON\n        parsed = json.loads(text)\n        \n        # Append to results in n8n format\n        output_items.append({\"json\": parsed})\n\n    except Exception:\n        # Skip items that fail parsing\n        continue\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5728,
+        1344
+      ],
+      "id": "55130027-7a48-48ee-bf60-6ba19424fbec",
+      "name": "Expansion Clean 1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "include_keywords",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -5440,
+        1344
+      ],
+      "id": "df645677-125e-4345-939f-9eca576c24c8",
+      "name": "Expansion Clean 2"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Step 0: Flatten articles from all blocks\n\nflat_items = []\n\nfor item in _input.all():\n    block = item.get(\"json\", item)\n    articles = block.get(\"articles\", [])\n    for art in articles:\n        flat_items.append(art)\n\n# Step 1: Clean & Group by keyword\ngroups = {}\n\nfor data in flat_items:\n    keyword = data.get(\"keyword\")\n    entities = data.get(\"mentioned_entities\", [])\n    score = data.get(\"final_score_100\", 0)\n\n    if not keyword or not entities or score < 40:\n        continue\n\n    clean_node = {\n        \"title\": data.get(\"title\"),\n        \"url\": data.get(\"url\"),\n        \"entities\": entities,\n        \"score\": score,\n        \"sentiment\": data.get(\"sentiment_score\", 0)\n    }\n\n    k_key = str(keyword).strip().lower()\n    groups.setdefault(k_key, []).append(clean_node)\n\n# Step 2: Output formatting\noutput_items = []\n\nfor k, nodes in groups.items():\n    output_items.append({\n        \"json\": {\n            \"keyword\": k,\n            \"graph_data\": nodes,\n            \"node_count\": len(nodes)\n        }\n    })\n\nreturn output_items\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1280
+      ],
+      "id": "35a349bc-cfc9-4677-a777-14a76f41ad57",
+      "name": "Entities Network",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=data/{{ $now.toFormat(\"yyyy-MM-dd\") }}/entities.json",
+        "fileContent": "={{ $json.file_content }}",
+        "commitMessage": "=data update: entities {{ $now.toFormat(\"yyyy-MM-dd\") }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -1312,
+        1280
+      ],
+      "id": "944b56bb-f81b-422e-a7bb-c140002b9c59",
+      "name": "Entities To Github",
+      "webhookId": "cec9b9c0-1026-4b6a-99a0-92667a262e58",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# --------------------------------------------------\n# Graph Entity Cleaner & Normalizer\n# --------------------------------------------------\n\n# 1. Configuration: Entity Normalization Map\n# Merge variations into a single canonical term\nENTITY_MAP = {\n    \"etfs\": \"ETF\",\n    \"crypto\": \"Cryptocurrency\",\n    \"cryptocurrencies\": \"Cryptocurrency\",\n    \"crypto market\": \"Cryptocurrency\",\n    \"federal reserve\": \"Fed\",\n    \"us military\": \"US Government\",\n    \"sec\": \"SEC\",\n    \"securities and exchange commission\": \"SEC\",\n    \"ai\": \"Artificial Intelligence\",\n    \"stock market\": \"Equities\",\n    \"options market\": \"Derivatives\",\n    \"blackrock\": \"BlackRock\",  # Ensure casing\n}\n\n# 2. Configuration: Generic Stopwords to Remove\n# These words are too broad to form meaningful clusters\nSTOPWORDS = {\n    \"report\", \"analysts\", \"today\", \"price\", \"market\", \"sector\", \"industry\", \n    \"investors\", \"growth\", \"demand\", \"supply\", \"news\", \"company\"\n}\n\nitems = _input.all()\noutput_items = []\n\nfor item in items:\n    group = item.get(\"json\", {})\n    keyword = str(group.get(\"keyword\", \"\")).lower().strip()\n    \n    # Add the main keyword itself to stopwords for this group\n    # (e.g., remove \"Bitcoin\" node from \"Bitcoin\" keyword graph)\n    current_stopwords = STOPWORDS.copy()\n    current_stopwords.add(keyword)\n    \n    cleaned_articles = []\n    \n    for article in group.get(\"graph_data\", []):\n        original_entities = article.get(\"entities\", [])\n        clean_entities = set()\n        \n        for ent in original_entities:\n            # Normalize: Lowercase for comparison\n            ent_lower = str(ent).lower().strip()\n            \n            # Check 1: Is it the keyword itself?\n            if ent_lower == keyword:\n                continue\n                \n            # Check 2: Is it a generic stopword?\n            if ent_lower in current_stopwords:\n                continue\n            \n            # Check 3: Map to canonical name (e.g., \"ETFs\" -> \"ETF\")\n            # Uses the map, otherwise Title Cases the original\n            canonical = ENTITY_MAP.get(ent_lower)\n            if not canonical:\n                # Default formatting: Title Case (e.g., \"ai stocks\" -> \"Ai Stocks\")\n                # Better: Use the original casing if available, or .title()\n                canonical = ent\n                \n            clean_entities.add(canonical)\n            \n        # Update the article with cleaned entities\n        # Convert set back to list\n        article[\"entities\"] = list(clean_entities)\n        \n        # Only keep articles that still have entities left\n        if article[\"entities\"]:\n            cleaned_articles.append(article)\n            \n    # Update group\n    group[\"graph_data\"] = cleaned_articles\n    group[\"node_count\"] = len(cleaned_articles)\n    \n    output_items.append({\"json\": group})\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        1280
+      ],
+      "id": "63ebf166-e76b-4504-a9d2-bb27c314006b",
+      "name": "Entities Network Cleaned"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "items = _input.all()\ncleaned_rows = []\n\nfor item in items:\n    # 1. Get the group data\n    group = item.get(\"json\", {})\n    \n    # 2. Get the list of articles from this group\n    articles = group.get(\"articles\", [])\n    \n    # 3. Iterate through articles to extract specific fields\n    for art in articles:\n        # Validation: Skip if essential plotting axes are missing\n        if art.get(\"source_credibility\") is None or art.get(\"materiality_score\") is None:\n            continue\n\n        # 4. Create the clean object (Selecting only needed columns)\n        # Flattening the structure: One dict per article\n        row = {\n            \"keyword\": art.get(\"keyword\") or group.get(\"keyword\"),\n            \"title\": art.get(\"title\"),\n            \"url\": art.get(\"url\"),\n            \"source_credibility\": float(art.get(\"source_credibility\")),\n            \"materiality_score\": float(art.get(\"materiality_score\")),\n            \"pickup_count\": int(art.get(\"pickup_count\") or 0),\n            \"sentiment_score\": float(art.get(\"sentiment_score\") or 0),\n            \"final_score\": float(art.get(\"final_score_100\") or 0)\n        }\n        \n        cleaned_rows.append({\"json\": row})\n\nreturn cleaned_rows"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        1472
+      ],
+      "id": "df2cfa9f-32bd-496c-bc43-6706958d6ebb",
+      "name": "Alpha Quadrant"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=data/{{ $now.toFormat(\"yyyy-MM-dd\") }}/alpha.csv",
+        "fileContent": "={{ $json.csv_string }}",
+        "commitMessage": "=data update: alpha quadrant {{ $now.toFormat(\"yyyy-MM-dd\") }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -1536,
+        1472
+      ],
+      "id": "4b047b55-f862-4e2c-ae58-1dfddcd3f6ea",
+      "name": "Alpha To Github",
+      "webhookId": "cec9b9c0-1026-4b6a-99a0-92667a262e58",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\n\n# --- Helper Functions ---\n\ndef strip_urls(line: str) -> str:\n    if not line: return \"\"\n    line = re.sub(r'https?://\\S+', '', line)\n    return re.sub(r'www\\.\\S+', '', line)\n\ndef clean_text_content(text):\n    if not text: return \"\"\n    \n    lines = text.split('\\n')\n    valid_lines = []\n    \n    # Noise phrases to filter out\n    noise = [\n        \"futures\", \"/ ozt\", \"/ bbl\", \"brent crude\", \"sign in\", \"subscribe\", \n        \"read more\", \"click here\", \"all rights reserved\", \"advertisement\", \n        \"cookie policy\", \"skip navigation\", \"markets data\"\n    ]\n    \n    for line in lines:\n        line = strip_urls(line)\n        stripped = line.strip()\n        \n        if not stripped: continue\n        \n        # Filter noise\n        if any(x in stripped.lower() for x in noise):\n            continue\n        \n        # Filter short fragments (unless it ends with punctuation)\n        if len(stripped) < 60 and not stripped.endswith(('.', '!', '?', '\"', '”')):\n            continue\n            \n        valid_lines.append(stripped)\n        \n    return \"\\n\\n\".join(valid_lines)\n\n# --- Main Logic ---\n\nitems = _input.all()\noutput_list = []\n\n# No seen_urls set here (Deduplication disabled as requested)\n\nfor item in items:\n    # 1. Safe extraction (Fixes the AttributeError)\n    source_data = item.get(\"json\", {})\n    if not source_data:\n        continue\n        \n    # Convert to standard dict to allow modification\n    news = dict(source_data)\n    \n    # 2. Clean Content\n    # Try multiple fields in case one is missing\n    raw_text = news.get(\"content\") or news.get(\"raw_content\") or \"\"\n    cleaned_text = clean_text_content(raw_text)\n\n    # 3. Quality Gate (Remove only if text is practically empty)\n    # Still useful to remove pure ad pages, but won't remove duplicates\n    if len(cleaned_text) < 30:\n        continue\n\n    # Update content in place\n    news[\"content\"] = cleaned_text\n    \n    output_list.append({\"json\": news})\n\nreturn output_list"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3904,
+        1280
+      ],
+      "id": "8d45b9af-70b3-4534-8183-5ce07030a103",
+      "name": "News Cleaned",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\nimport re\n\n# Access n8n input data\nitems = _input.all()\noutput_items = []\n\n# Filter threshold\nMIN_SCORE_THRESHOLD = 0.1\n\nfor item in items:\n    try:\n        # Access payload\n        node_data = item.get(\"json\", {})\n        parent_query = node_data.get(\"query\") or node_data.get(\"seed\", \"unknown_query\")\n        \n        # Get raw results\n        results_list = node_data.get(\"results\", [])\n        \n        # Handle single item structure\n        if not results_list and \"url\" in node_data:\n            results_list = [node_data]\n\n        filtered_results = []\n        \n        for result in results_list:\n            score = float(result.get(\"score\", 0))\n            \n            # Skip low quality data\n            if score < MIN_SCORE_THRESHOLD:\n                continue \n            \n            if parent_query:\n                result[\"query\"] = parent_query\n            \n            filtered_results.append(result)\n\n        # Output flattened valid results\n        if filtered_results:\n            for valid_res in filtered_results:\n                output_items.append({\"json\": valid_res})\n\n    except Exception:\n        continue\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4672,
+        1072
+      ],
+      "id": "95f9b4c2-4d74-4242-90ee-d954d3ccddfe",
+      "name": "Score Filter 1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6717b0fd-fb4b-4b7e-bcbd-33b282869c82",
+              "name": "seed",
+              "value": "={{ $json.seed }}",
+              "type": "string"
+            },
+            {
+              "id": "6f2a57e3-db2c-44d6-a815-d3b93f830a57",
+              "name": "weight",
+              "value": "={{ $json.weight }}",
+              "type": "number"
+            },
+            {
+              "id": "2ea7714b-11d6-42ce-b9b0-53eb16b459e9",
+              "name": "term",
+              "value": "={{ $json.include_keywords.term }}",
+              "type": "string"
+            },
+            {
+              "id": "5cef2e0d-e579-4e66-909a-373a075a12d7",
+              "name": "importance",
+              "value": "={{ $json.include_keywords.importance }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5152,
+        1344
+      ],
+      "id": "e1a6420c-b32b-42fd-b2d0-a97f6be0ccb7",
+      "name": "Expansion Clean 3"
+    },
+    {
+      "parameters": {
+        "sendTo": "zsuo@usc.edu",
+        "subject": "=Financial Newsletter {{ $now.toFormat('yyyy.MM.dd') }}",
+        "message": "={{ $json.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        336
+      ],
+      "id": "d935b45f-f2de-423b-9be2-e8b12f531e4b",
+      "name": "Send Newsletter",
+      "webhookId": "544ede29-4b67-4438-b854-ec40c3d9fa4d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8oeSxG3Z4vje6t26",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/ZihanSuo",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "INVESTelligence",
+          "mode": "list",
+          "cachedResultName": "INVESTelligence",
+          "cachedResultUrl": "https://github.com/ZihanSuo/INVESTelligence"
+        },
+        "filePath": "=newsletter_archive/newsletter_{{ $now.toFormat(\"yyyy-MM-dd\") }}.html",
+        "fileContent": "={{ $json.base64 }}",
+        "commitMessage": "Daily newsletter update"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        528
+      ],
+      "id": "43c24b87-f899-4343-98c8-a2fa33e33ce8",
+      "name": "HTML To Github",
+      "webhookId": "c0866cd1-ab14-4ae7-b7cf-3cf834393158",
+      "credentials": {
+        "githubApi": {
+          "id": "yNSR2Jx4sfifH4hi",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Read all input items\nconst items = $input.all();\n\n// Extract JSON payloads (each item.json)\nconst data = items.map(i => i.json);\n\n// Convert to formatted JSON string\nconst jsonString = JSON.stringify(data, null, 2);\n\n// Build dynamic filename\nconst dateStr = new Date().toISOString().split('T')[0];\nconst fileName = `entity_graph_${dateStr}.json`;\n\n// Return file content for GitHub upload node\nreturn [\n  {\n    json: {\n      file_name: fileName,\n      file_content: jsonString\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        1280
+      ],
+      "id": "d0057918-b0be-4203-805a-f3a6dbcff919",
+      "name": "Entities to json"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get all input items (flattened JSON objects)\nconst items = $input.all();\n\n// 2. Define CSV Header\n// Ensure this order matches the concatenation order below\nlet csv = \"keyword,title,url,source_credibility,materiality_score,pickup_count,sentiment_score,final_score\\n\";\n\n// 3. Iterate through items to build the CSV string\nfor (const item of items) {\n  const row = item.json;\n\n  // --- Helper: Escape double quotes for CSV format ---\n  // If text contains \", replace with \"\" and wrap the whole field in \"\n  const safe = (text) => {\n    if (text === null || text === undefined) return '\"\"';\n    return `\"${String(text).replace(/\"/g, '\"\"')}\"`;\n  };\n\n  // --- Extract and sanitize string fields ---\n  const keyword = safe(row.keyword);\n  const title = safe(row.title);\n  const url = safe(row.url);\n  \n  // --- Handle numeric fields ---\n  // Use empty string if null/undefined to avoid \"undefined\" in CSV\n  const cred = row.source_credibility ?? \"\";\n  const mat = row.materiality_score ?? \"\";\n  const pick = row.pickup_count ?? \"\";\n  const senti = row.sentiment_score ?? \"\";\n  const final = row.final_score ?? \"\";\n\n  // --- Append row to CSV string ---\n  csv += `${keyword},${title},${url},${cred},${mat},${pick},${senti},${final}\\n`;\n}\n\n// 4. Generate dynamic filename (e.g., scatter_data_2025-12-09.csv)\nconst today = new Date().toISOString().split('T')[0];\nconst fileName = `scatter_data_${today}.csv`;\n\n// 5. Return result\nreturn [\n  {\n    json: {\n      csv_string: csv,\n      file_name: fileName\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        1472
+      ],
+      "id": "2639b122-bd00-4eb7-84f1-3d7f280ce8b8",
+      "name": "Alpha to csv"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\nfrom collections import Counter\n\n# 1. Define stopwords\nSTOPWORDS = {\n    \"i\", \"me\", \"my\", \"myself\", \"we\", \"our\", \"ours\", \"ourselves\", \"you\", \"your\", \"yours\", \n    \"yourself\", \"yourselves\", \"he\", \"him\", \"his\", \"himself\", \"she\", \"her\", \"hers\", \n    \"herself\", \"it\", \"its\", \"itself\", \"they\", \"them\", \"their\", \"theirs\", \"themselves\", \n    \"what\", \"which\", \"who\", \"whom\", \"this\", \"that\", \"these\", \"those\", \"am\", \"is\", \"are\", \n    \"was\", \"were\", \"be\", \"been\", \"being\", \"have\", \"has\", \"had\", \"having\", \"do\", \"does\", \n    \"did\", \"doing\", \"a\", \"an\", \"the\", \"and\", \"but\", \"if\", \"or\", \"because\", \"as\", \"until\", \n    \"while\", \"of\", \"at\", \"by\", \"for\", \"with\", \"about\", \"against\", \"between\", \"into\", \n    \"through\", \"during\", \"before\", \"after\", \"above\", \"below\", \"to\", \"from\", \"up\", \"down\", \n    \"in\", \"out\", \"on\", \"off\", \"over\", \"under\", \"again\", \"further\", \"then\", \"once\", \"here\", \n    \"there\", \"when\", \"where\", \"why\", \"how\", \"all\", \"any\", \"both\", \"each\", \"few\", \"more\", \n    \"most\", \"other\", \"some\", \"such\", \"no\", \"nor\", \"not\", \"only\", \"own\", \"same\", \"so\", \n    \"than\", \"too\", \"very\", \"s\", \"t\", \"can\", \"will\", \"just\", \"don\", \"should\", \"now\",\n    # Common scraping noise\n    \"said\", \"says\", \"mr\", \"mrs\", \"inc\", \"ltd\", \"corp\", \"image\", \"video\", \"market\"\n}\n\nMIN_WORD_LEN = 3\n\ndef normalize_token(token: str) -> str:\n    # Remove plural 's' only if word is long enough to avoid bugs like this->thi\n    if token.endswith(\"s\") and len(token) > 4:\n        return token[:-1]\n    return token\n\n# 2. Group articles\nitems = _input.all()\ngroups = {} \n\nfor item in items:\n    art = item.get(\"json\", {})\n    # Use query or seed as key\n    keyword = art.get(\"keyword\")\n    keyword = str(keyword).strip().lower()\n    groups.setdefault(keyword, []).append(art)\n\n# 3. Analyze\noutput_items = []\n\nfor keyword, articles in groups.items():\n    counter = Counter()\n\n    for art in articles:\n        # Combine title and content\n        title = art.get(\"title\") or \"\"\n        content = art.get(\"content\") or \"\"\n        text = (title + \" \" + content).lower()\n        \n        if not text.strip(): continue\n\n        # Tokenize using regex\n        tokens = re.findall(r\"[a-z]+\", text)\n\n        # Filter and normalize\n        clean_tokens = []\n        for t in tokens:\n            if len(t) >= MIN_WORD_LEN and t not in STOPWORDS:\n                clean_tokens.append(normalize_token(t))\n\n        counter.update(clean_tokens)\n\n    # Output as list of lists: [[\"word\", count], ...]\n    word_count = counter.most_common(20)\n\n    output_items.append({\n        \"json\": {\n            \"keyword\": keyword,\n            \"article_count\": len(articles),\n            \"word_count\": word_count\n        }\n    })\n\nreturn output_items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3424,
+        1280
+      ],
+      "id": "7c6b178d-17d4-4673-801d-9baacd2b0af6",
+      "name": "Word Count"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from urllib.parse import urlparse\n\n# --- Media Trust List Configuration ---\nsource_map = {\n    # [Tier 0] Institutional & Academic Authority (0.99)\n    \"gov\": 0.99, \"nature.com\": 0.99, \"science.org\": 0.99,\n    \"worldbank.org\": 0.99, \"imf.org\": 0.99, \"iea.org\": 0.99,\n    \"who.int\": 0.99, \"un.org\": 0.99, \"bis.org\": 0.99,\n\n    # [Tier 1] Global Financial Core (0.98)\n    \"reuters.com\": 0.98, \"bloomberg.com\": 0.98,\n    \"wsj.com\": 0.98, \"ft.com\": 0.98,\n    \"nikkei.com\": 0.97, \"investors.com\": 0.96,\n\n    # [Tier 2] Industry Verticals (0.92 - 0.95)\n    \"mining.com\": 0.95,       \"oilprice.com\": 0.94,\n    \"techcrunch.com\": 0.95,   \"theinformation.com\": 0.94,\n    \"barrons.com\": 0.94,      \"spglobal.com\": 0.93,\n    \"utilitydive.com\": 0.92,  \"argusmedia.com\": 0.92,\n    \"pv-magazine.com\": 0.92,  \"hydrocarbonprocessing.com\": 0.91,\n\n    # [Tier 3] High-Quality General News (0.88 - 0.90)\n    \"nytimes.com\": 0.90,      \"economist.com\": 0.90,\n    \"apnews.com\": 0.90,       \"bbc.com\": 0.89,\n    \"washingtonpost.com\": 0.88, \"axios.com\": 0.85,\n    \"time.com\": 0.85,         \"forbes.com\": 0.85,\n\n    # [Tier 4] Aggregators & Tier 2 (0.80 - 0.85)\n    \"cnbc.com\": 0.85,         \"marketwatch.com\": 0.82,\n    \"finance.yahoo.com\": 0.80, \"businessinsider.com\": 0.78,\n    \"seekingalpha.com\": 0.75,\n\n    # [Tier 5] Low Credibility / Cautionary (< 0.6)\n    \"dailymail.co.uk\": 0.5,   \"nypost.com\": 0.5,\n    \"twitter.com\": 0.2,       \"reddit.com\": 0.2,\n    \"zerohedge.com\": 0.3,     \"thestreet.com\": 0.4,\n    \"benzinga.com\": 0.4,      \"medium.com\": 0.3\n}\n\ndef get_source_score(url):\n    if not url: return 0.5\n    try:\n        # Extract clean domain\n        domain = urlparse(url).netloc.lower().replace(\"www.\", \"\")\n        \n        # 1. Dynamic Rule: Gov sites\n        if domain.endswith(\".gov\"): return 0.99\n        \n        # 2. Dictionary Match (Longest match first)\n        for key in sorted(source_map.keys(), key=len, reverse=True):\n            if key in domain:\n                return source_map[key]\n                \n        # 3. Default for unknown sources\n        # Set to 0.5 for strict filtering in dual-stream architecture\n        return 0.5 \n    except:\n        return 0.5\n\n# --- Execution Logic ---\nitems = _input.all()\nresults = []\n\nfor item in items:\n    art = item.get(\"json\", item)\n    url = art.get(\"url\", \"\")\n    \n    # Calculate score\n    score = get_source_score(url)\n    \n    # Append score to JSON\n    art[\"source_credibility\"] = score\n    \n    results.append({\"json\": art})\n\nreturn results"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2832,
+        912
+      ],
+      "id": "1af4000d-6664-45c9-b5f6-c1edd4b38d76",
+      "name": "Quality Score 1 (Source Credibility)"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# ==========================================\n# Node 2: Weighted Final Scoring (Balanced)\n# Formula: Final = (Cred * 0.40) + (Topic * 0.25) + (Pickup * 0.15) + (Search * 0.20)\n# ==========================================\n\n# --- Weight Configuration ---\nW_CREDIBILITY = 0.40  # Reduced slightly to allow relevance to matter more\nW_TOPIC       = 0.25  # Strategic priority\nW_PICKUP      = 0.15  # Market Buzz\nW_SEARCH      = 0.20  # INCREASED: Penalizes off-topic articles from big media\n\n# --- Pickup Normalization ---\nMAX_PICKUP_CAP = 3.0 \n\nitems = _input.all()\nresults = []\n\nfor item in items:\n    art = item.get(\"json\", item)\n    \n    # 1. Get Metrics (Strict inputs)\n    \n    # A. Source Credibility\n    c_score = float(art.get(\"source_credibility\", 0.5))\n    \n    # B. Topic Importance\n    t_weight = float(art.get(\"weight\", 0.8))\n    e_imp = float(art.get(\"expansion_importance\", 1.0))\n    t_score = t_weight * e_imp\n    \n    # C. Pickup Score\n    raw_pickup = float(art.get(\"pickup_count\", 0))\n    p_score = min(raw_pickup / MAX_PICKUP_CAP, 1.0)\n    \n    # D. Search Relevance\n    s_score = float(art.get(\"tavily_score\", 0.6))\n    \n    # 2. Calculate Final Weighted Score\n    final_score = (c_score * W_CREDIBILITY) + \\\n                  (t_score * W_TOPIC) + \\\n                  (p_score * W_PICKUP) + \\\n                  (s_score * W_SEARCH)\n                  \n    # 3. Normalize and Round\n    final_score = round(min(final_score, 1.0), 4)\n    \n    # Save derived metrics\n    art[\"qual_score\"] = final_score\n\n    # ==========================================\n    # 4. Reorder Output Columns (Strict Order)\n    # ==========================================\n    \n    target_order = [\n        \"keyword\",               \n        \"weight\",                \n        \"expansion_importance\",  \n        \"qual_score\",            \n        \"title\",\n        \"url\",\n        \"content\",\n        \"source_credibility\",\n        \"tavily_score\",\n        \"pickup_count\"\n    ]\n    \n    ordered_art = {}\n    \n    # Ensure keyword exists\n    if \"keyword\" not in art:\n        art[\"keyword\"] = art.get(\"query\") or art.get(\"seed\") or \"unknown\"\n\n    # Insert keys in target order\n    for key in target_order:\n        if key in art:\n            ordered_art[key] = art[key]\n            \n    # Append remaining keys\n    for key, val in art.items():\n        if key not in ordered_art:\n            ordered_art[key] = val\n\n    results.append({\"json\": ordered_art})\n\nreturn results"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2640,
+        912
+      ],
+      "id": "ae5b1f8f-4612-4c81-a5a3-14bbace4b488",
+      "name": "Quality Score 2 (Weighted)",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get keywords",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Initial Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Planning Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Section Writer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Planning Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Research Topics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Section Writer Agent": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Macro Editor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planning Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sentiment Statistics": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Sentiment Statistics to csv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scoring Ranking": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sentiment Dispersion & Drivers": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Micro Editor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Micro Editor": {
+      "main": [
+        [
+          {
+            "node": "Restore Micro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Macro Editor": {
+      "main": [
+        [
+          {
+            "node": "Restore Macro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Assembly": {
+      "main": [
+        [
+          {
+            "node": "Final Assembly to html",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Newsletter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Macro": {
+      "main": [
+        [
+          {
+            "node": "Merge-Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Micro": {
+      "main": [
+        [
+          {
+            "node": "Merge-Final",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge-Final": {
+      "main": [
+        [
+          {
+            "node": "Final Assembly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Deduplicated": {
+      "main": [
+        [
+          {
+            "node": "News Deduped to CSV",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Word Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Word Count to csv": {
+      "main": [
+        [
+          {
+            "node": "Word Count To Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Score Final": {
+      "main": [
+        [
+          {
+            "node": "Group by keywords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sentiment Statistics to csv": {
+      "main": [
+        [
+          {
+            "node": "Sentiment Statistics  Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Assembly to html": {
+      "main": [
+        [
+          {
+            "node": "HTML To Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Semantic Expansion": {
+      "main": [
+        [
+          {
+            "node": "Expansion Clean 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scores to csv": {
+      "main": [
+        [
+          {
+            "node": "Scores To Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Deduped to CSV": {
+      "main": [
+        [
+          {
+            "node": "News Deduped To Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initial Search": {
+      "main": [
+        [
+          {
+            "node": "Planning Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Topics": {
+      "main": [
+        [
+          {
+            "node": "Section Writer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search": {
+      "main": [
+        [
+          {
+            "node": "Score Filter 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keywords Cleaned": {
+      "main": [
+        [
+          {
+            "node": "Semantic Expansion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get keywords": {
+      "main": [
+        [
+          {
+            "node": "Keywords Cleaned",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request by Tavily": {
+      "main": [
+        [
+          {
+            "node": "Score Filter 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Keywords & Content": {
+      "main": [
+        [
+          {
+            "node": "News Cleaned",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine two sources": {
+      "main": [
+        [
+          {
+            "node": "Combine Keywords & Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Materiality Score Formatted",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Materiality Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Group by keywords": {
+      "main": [
+        [
+          {
+            "node": "Scoring Ranking",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sentiment Statistics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sentiment Dispersion & Drivers",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scores to csv",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Entities Network",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Alpha Quadrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Materiality Score": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Materiality Score Formatted": {
+      "main": [
+        [
+          {
+            "node": "Quality Score 1 (Source Credibility)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score Filter 2": {
+      "main": [
+        [
+          {
+            "node": "Combine two sources",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Expansion Clean 1": {
+      "main": [
+        [
+          {
+            "node": "Expansion Clean 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expansion Clean 2": {
+      "main": [
+        [
+          {
+            "node": "Expansion Clean 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entities Network": {
+      "main": [
+        [
+          {
+            "node": "Entities Network Cleaned",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entities Network Cleaned": {
+      "main": [
+        [
+          {
+            "node": "Entities to json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alpha Quadrant": {
+      "main": [
+        [
+          {
+            "node": "Alpha to csv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Cleaned": {
+      "main": [
+        [
+          {
+            "node": "News Deduplicated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score Filter 1": {
+      "main": [
+        [
+          {
+            "node": "Combine two sources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expansion Clean 3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request by Tavily",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Combine Keywords & Content",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Word Count To Github": {
+      "main": [
+        []
+      ]
+    },
+    "News Deduped To Github": {
+      "main": [
+        []
+      ]
+    },
+    "Sentiment Statistics  Github": {
+      "main": [
+        []
+      ]
+    },
+    "Scores To Github": {
+      "main": [
+        []
+      ]
+    },
+    "Entities To Github": {
+      "main": [
+        []
+      ]
+    },
+    "Alpha To Github": {
+      "main": [
+        []
+      ]
+    },
+    "Send Newsletter": {
+      "main": [
+        []
+      ]
+    },
+    "HTML To Github": {
+      "main": [
+        []
+      ]
+    },
+    "Entities to json": {
+      "main": [
+        [
+          {
+            "node": "Entities To Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alpha to csv": {
+      "main": [
+        [
+          {
+            "node": "Alpha To Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Word Count": {
+      "main": [
+        [
+          {
+            "node": "Word Count to csv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quality Score 1 (Source Credibility)": {
+      "main": [
+        [
+          {
+            "node": "Quality Score 2 (Weighted)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quality Score 2 (Weighted)": {
+      "main": [
+        [
+          {
+            "node": "News Score Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "America/Los_Angeles",
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "yHcHeafz3n9VaJAy"
+  },
+  "versionId": "ebfc6963-4cbb-4879-9e60-825d23994829",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b13c889a00879f9aa49b2c9933f474a4bd20d8ec36dafd0d4e97f1e366f4f044"
+  },
+  "id": "yHcHeafz3n9VaJAy",
+  "tags": []
+}

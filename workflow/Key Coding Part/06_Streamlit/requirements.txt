@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+plotly
+networkx
+streamlit-agraph
+requests
+wordcloud
+matplotlib
+pyvis==0.2.1  

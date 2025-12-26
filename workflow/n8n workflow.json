@@ -777,7 +777,7 @@
             },
             {
               "name": "Authorization",
-              "value": "Bearer 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"
+              "value": "Bearer your api" #Fill your tavily api here
             }
           ]
         },
